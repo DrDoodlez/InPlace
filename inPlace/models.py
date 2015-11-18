@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from inPlace import db
+from InPlace import db
 # TODO: добавить корректную модель
 accept_colors = ["red", "green", "blue", "yellow", "magenta", "cyan",
                  "black", "white", "brown"]

@@ -1,4 +1,4 @@
-from boxes import db
+from InPlace import db
 
 db.drop_all()
 db.create_all()

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from inPlace import app
+from InPlace import app
 from flask import render_template, request, url_for, redirect, session, flash, g
 from .models import User, authenticate_user, register_user, create_box
 from .forms import CreateBoxForm, RegistrationForm, LoginForm

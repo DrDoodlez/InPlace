@@ -7,7 +7,7 @@ class DefaultConfig:
     LISTEN_PORT = 5000
     WTF_CSRF_ENABLED = True
     SECRET_KEY = '?ZW]eJW2Wf"|P&1P7rPOOXKEv6PHw|ZPjftEY$H^&Vu6q<Z,":<)H@M'
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'inPlace.db')
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'InPlace.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = True
 
 class DevelConfig(DefaultConfig):
