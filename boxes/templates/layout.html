@@ -1,0 +1,33 @@
+<!doctype html>
+
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta name="description" content="Учебное приложение для
+                                      управления вашими коробочками">
+
+    {% block head %}
+    <!-- Add normalize.css which enables browsers to render all elements more consistently and in line with modern standards as it only targets particular styles that need normalizing -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/normalize.css') }}" media="all">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" media="all">
+    <title>{% block title %}{% endblock %} - Коробочки!™</title>
+    {% endblock %}
+  </head>
+  <body>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class='flashes'>
+          {% for message in messages %}
+            <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+    <div id="content">{% block content %}{% endblock %}</div>
+    <div id="footer">
+      {% block footer %}
+      &copy; Copyright 2015.
+      {% endblock %}
+    </div>
+  </body>
+</html>

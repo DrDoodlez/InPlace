@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+{% block title %}Ваши{% endblock %}
+{% block content %}
+  <h1>Список коробочек</h1>
+  {% if boxes %}
+    <ol class="boxes">
+      {% for b in boxes %}
+        <li>
+          <span class="box-color" style="background: {{b.color}}">&nbsp;</span>
+          <a href="boxes/{{b.name}}">{{b.name}}</a>
+        </li>
+      {% endfor %}
+    </ol>
+  {% else %}
+    <p>К сожалению, у вас пока нет Коробочек!</p>
+  {% endif %}
+
+  <form method="POST" action="" name="create-box">
+    {{ form.hidden_tag() }}
+    <p>
+      {{form.name.label}}: {{form.name()}}
+      {% if form.name.errors %}
+        <ul class=errors>
+          {% for error in form.name.errors %}
+            <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </p>
+    <p>
+      {{form.color.label}}: {{form.color()}}
+    </p>
+    <p>
+      <input type="submit" value="Добавить Коробочку!">
+    </p>
+  </form>
+{% endblock %}
