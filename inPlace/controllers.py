@@ -1,30 +1,31 @@
 # -*- coding: utf-8 -*-
-from boxes import app
+from inPlace import app
 from flask import render_template, request, url_for, redirect, session, flash, g
-from .models import Box, User, authenticate_user, register_user, create_box
+from .models import User, authenticate_user, register_user, create_box
 from .forms import CreateBoxForm, RegistrationForm, LoginForm
 
 @app.route('/')
 def index():        
     return render_template('index.html', user=g.user)
 
-@app.route('/boxes', methods=["GET", "POST"])
-def boxes_list():
-    form = CreateBoxForm(request.form)
+# TODO: Add new routes
+# @app.route('/boxes', methods=["GET", "POST"])
+# def inPlace_list():
+#     form = CreateBoxForm(request.form)
     
-    if g.user:
-        boxes = g.user.boxes
-    else:
-        flash(u'Чтобы просматривать список Коробочек!™ вам необходимо войти в систему')
-        return redirect('/login')
+#     if g.user:
+#         boxes = g.user.boxes
+#     else:
+#         flash(u'Чтобы просматривать список Коробочек!™ вам необходимо войти в систему')
+#         return redirect('/login')
     
-    if form.validate_on_submit():
-        # TODO: обработать ошибки добавления новой коробочки
-        box = create_box(g.user, form.name.data, form.color.data)
+#     if form.validate_on_submit():
+#         # TODO: обработать ошибки добавления новой коробочки
+#         box = create_box(g.user, form.name.data, form.color.data)
         
-        return redirect('/boxes')
+#         return redirect('/boxes')
     
-    return render_template('boxes.html', boxes=boxes, form=form)
+#     return render_template('boxes.html', boxes=boxes, form=form)
 
 @app.route('/register', methods=["GET", "POST"])
 def registration():
