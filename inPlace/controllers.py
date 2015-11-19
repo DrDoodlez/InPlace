@@ -33,13 +33,20 @@ def index():
 def registration():
     form = RegistrationForm(request.form)
     if form.validate_on_submit():
+        app.logger.debug("Going to register a user with login '%s' and password '%s'",
+                    form.login.data, form.password.data)
+
         avatar_image = request.files[form.avatar.name]
-        
+        app.logger.debug("User image file: %s", avatar_image)
+       
+
         # TODO: обработать ошибки добавления нового пользователя        
         user = register_user(form.login.data, form.email.data, form.name.data, form.password.data)
         set_user_avatar(user, avatar_image)
-        
+
+        app.logger.debug("User '%s' successfully registered", user.login)        
         flash(u'Пользователь %s успешно зарегистрирован.' % form.login.data)
+        
         return redirect('/login')
         
     return render_template('register.html', form=form)

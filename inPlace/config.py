@@ -11,6 +11,7 @@ class DefaultConfig:
     SQLALCHEMY_TRACK_MODIFICATIONS = True
     UPLOAD_FOLDER = os.path.join(basedir, "boxes/static/uploads/")
     AVATARS_FOLDER = os.path.join(UPLOAD_FOLDER, "avatars/")
+    LOG_FILE = os.path.join(basedir, "boxes.log")
 
     
 class DevelConfig(DefaultConfig):

@@ -10,4 +10,13 @@ if 'INPLACE_SETTINGS' in os.environ:
     
 db = SQLAlchemy(app)
 
+if not app.debug:
+    import logging
+    file_handler = logging.FileHandler(app.config["LOG_FILE"])
+    file_handler.setLevel(logging.WARNING)
+
+    loggers = [app.logger, logging.getLogger('sqlalchemy')]
+    for logger in loggers:
+        logger.addHandler(file_handler)
+    
 import InPlace.controllers
