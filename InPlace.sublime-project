@@ -2,10 +2,10 @@
 	"folders":
 	[
 		{
-			"path": "tests"
+			"path": "InPlace"
 		},
 		{
-			"path": "inPlace"
+			"path": "C:\\VDev\\source\\boxes\\boxes"
 		}
 	]
 }
