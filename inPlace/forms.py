@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from flask.ext.wtf import Form
-from wtforms import BooleanField, StringField, PasswordField, SelectField, validators
-
+from wtforms import BooleanField, StringField, PasswordField, SelectField, FileField, validators
+import re
 class CreateBoxForm(Form):
     name = StringField(u'Название Коробочки!', [validators.InputRequired()])
     # FIXME: генерировать список доступных цветов на основе модели
@@ -13,6 +13,7 @@ class RegistrationForm(Form):
     login = StringField(u'Имя пользователя', [validators.Length(min=4, max=25)])
     name = StringField(u'Имя', [validators.InputRequired()])
     email = StringField(u'Эл. адрес', [validators.Email()])
+    avatar = FileField(u'Изображение пользователя')
     password = PasswordField(u'Пароль', [
         validators.InputRequired(),
         validators.EqualTo('confirm', message=u'Пароли должны совпадать')])

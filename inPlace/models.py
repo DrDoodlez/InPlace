@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
-from InPlace import db
+from InPlace import app, db
+import uuid, os
+
 # TODO: добавить корректную модель
 accept_colors = ["red", "green", "blue", "yellow", "magenta", "cyan",
                  "black", "white", "brown"]
@@ -21,7 +23,8 @@ class Box(db.Model):
     name = db.Column(db.String(64))
     color = db.Column(db.Enum(*accept_colors))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    
+    avatar_id = db.Column(db.String(32))
+
     def __init__(self, name, color):
         self.name = name
         self.color = color
@@ -57,6 +60,16 @@ def authenticate_user(login, password):
         return user
 
     return None
+
+def set_user_avatar(user, image_file):
+    avatar_filename = uuid.uuid4().hex + ".jpg"
+    image_file.save(os.path.join(app.config['AVATARS_FOLDER'],
+                                   avatar_filename))
+    user.avatar_id = avatar_filename
+
+    # TODO: если записать в БД не удалось - удалить файл аватарки
+    db.session.add(user)
+    db.session.commit()
 
 def create_box(user, name, color):
     box = Box(name, color)

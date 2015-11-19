@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 from InPlace import app
 from flask import render_template, request, url_for, redirect, session, flash, g
-from .models import User, authenticate_user, register_user, create_box
+from .models import Box, User, authenticate_user, register_user, create_box, set_user_avatar
 from .forms import CreateBoxForm, RegistrationForm, LoginForm
+from werkzeug import secure_filename
+
 
 @app.route('/')
 def index():        
@@ -31,8 +33,12 @@ def index():
 def registration():
     form = RegistrationForm(request.form)
     if form.validate_on_submit():
+        avatar_image = request.files[form.avatar.name]
+        
         # TODO: обработать ошибки добавления нового пользователя        
         user = register_user(form.login.data, form.email.data, form.name.data, form.password.data)
+        set_user_avatar(user, avatar_image)
+        
         flash(u'Пользователь %s успешно зарегистрирован.' % form.login.data)
         return redirect('/login')
         
