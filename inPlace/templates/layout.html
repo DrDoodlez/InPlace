@@ -10,10 +10,17 @@
     <!-- Add normalize.css which enables browsers to render all elements more consistently and in line with modern standards as it only targets particular styles that need normalizing -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/normalize.css') }}" media="all">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" media="all">
-    <title>{% block title %}{% endblock %} - Коробочки!™</title>
+    <title>{% block title %}{% endblock %}</title>
     {% endblock %}
   </head>
   <body>
+    <div class="header">
+      <img class="header-image" src="{{ url_for('static', filename='img/Cup.jpg') }}">
+      <div class ="site-name">ВМесте</div>
+      <div class="search-input">
+        <input type="search" name="search" placeholder="Поиск по сайту">
+      </div>
+    </div>
     {% with messages = get_flashed_messages() %}
       {% if messages %}
         <ul class='flashes'>
@@ -26,7 +33,7 @@
     <div id="content">{% block content %}{% endblock %}</div>
     <div id="footer">
       {% block footer %}
-      &copy; Copyright 2015.
+      <!-- &copy; Copyright 2015. -->
       {% endblock %}
     </div>
   </body>
