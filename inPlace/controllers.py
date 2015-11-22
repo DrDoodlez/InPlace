@@ -10,6 +10,12 @@ from werkzeug import secure_filename
 def index():        
     return render_template('index.html', user=g.user)
 
+@app.route('/search')
+def openSearch():        
+    return render_template('search.html')
+
+
+
 # TODO: Add new routes
 # @app.route('/boxes', methods=["GET", "POST"])
 # def inPlace_list():

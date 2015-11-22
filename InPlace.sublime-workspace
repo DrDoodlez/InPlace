@@ -296,92 +296,10 @@
 	"buffers":
 	[
 		{
-			"file": "runserver.py",
+			"file": "InPlace/static/css/styles.css",
 			"settings":
 			{
-				"buffer_size": 97,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "setup.py",
-			"settings":
-			{
-				"buffer_size": 367,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "InPlace/__init__.py",
-			"settings":
-			{
-				"buffer_size": 293,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "InPlace/config.py",
-			"settings":
-			{
-				"buffer_size": 606,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "InPlace/controllers.py",
-			"settings":
-			{
-				"buffer_size": 2280,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "InPlace/forms.py",
-			"settings":
-			{
-				"buffer_size": 1142,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "inPlace/models.py",
-			"settings":
-			{
-				"buffer_size": 2047,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/C/Users/Admin/Desktop/Разработка на питоне.txt",
-			"settings":
-			{
-				"buffer_size": 4693,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "inPlace/templates/index.html",
-			"settings":
-			{
-				"buffer_size": 291,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"contents": "Package Control Messages\n========================\n\nPackage Control:\n---------------\n\n  Version 3.1 Release Notes\n  \n  Package Control continues its focus on polish and fixing edge-case bugs. Some\n  of the changes in this version include:\n  \n   - quick panel for Install Package now stays open on Windows with recent\n     versions of ST3, even when focus is lost\n   - new \"downloader_precedence\" setting to allow users to use specific HTTP\n     backend due to network proxy or SSL issues\n   - added Install Local Dependency command for package developers to more\n     easily deal with dependencies during development\n   - improved handling of git/hg package upgrade errors\n   - better handling of locked .sublime-package files on Windows\n   - performance improvements for users with a large number of open windows\n  \n  For package developers, the list of available dependencies has been growing:\n  https://github.com/wbond/package_control_channel/blob/master/repository/dependencies.json\n  \n  Enjoy!\n  \n\n  Version 3.0 Release Notes\n  \n  \n  **** Windows Sublime Text 3 Users ****\n  \n  Due to a bug in Package Control 2.0, Windows ST3 users will need to open the\n  Sublime Text console (ctrl+`) and execute the following Python to properly\n  upgrade. All other users may ignore this part of the message.\n  \n  Make sure NOT to copy the leading two spaces, or an \"unexpected indent\" error\n  will occur.\n  \n  import urllib.request,os,sys; exec(\"if sys.version_info < (3,) or os.name != 'nt': raise OSError('This code is for Windows ST3 only!')\"); pr='Preferences.sublime-settings'; ip='ignored_packages'; n='Package Control'; s=sublime.load_settings(pr); ig=s.get(ip); ig.append(n); s.set(ip,ig); sublime.save_settings('Preferences.sublime-settings'); pf=n+'.sublime-package'; urllib.request.install_opener(urllib.request.build_opener(urllib.request.ProxyHandler())); by=urllib.request.urlopen('https://packagecontrol.io/'+pf.replace(' ','%20')).read(); open(os.path.join(sublime.installed_packages_path(),pf),'wb').write(by); ig.remove(n); s.set(ip,ig); sublime.save_settings(pr); print('Package Control: 3.0.0 upgrade successful!')\n  \n  ********\n  \n  \n  Package Control 3.0 adds a bunch of polish, improving the Sublime Text\n  experience for users and package developers:\n  \n   - improved upgrades of themes, color schemes and syntaxes\n   - dependency support\n   - SSL for Linux\n   - new secondary Windows HTTP backend\n   - patches for Python in Sublime Text 2 on Windows\n   - commands to easily remove channels and repositories\n   - an events API for packages\n   - improved documentation\n  \n  \n  As of July 2014, I now work for myself. This has allowed me to spend more time\n  working on open source software, including Package Control. If you appreciate\n  the work I've done, please consider a small donation. If even 5% of regular\n  users donated the price of a coffee or beer, that would cover quite a bit of\n  my development time! See https://packagecontrol.io/about for options.\n  \n  \n  Some recent Package Control stats:\n  \n   - every weekday over 1M JSON requests hit the channel server\n   - in December, the channel server will transmit 4TB+ of compressed JSON\n   - users have installed, upgraded or removed 85M+ packages since late 2011\n  \n  \n  Read more about the release at:\n  \n  https://packagecontrol.io/news#2014-12-23-Package_Control_30_Released\n  \n",
-			"settings":
-			{
-				"buffer_size": 3361,
-				"line_ending": "Unix",
-				"name": "Package Control Messages",
-				"scratch": true
-			}
-		},
-		{
-			"file": "InPlace.sublime-project",
-			"settings":
-			{
-				"buffer_size": 79,
+				"buffer_size": 1424,
 				"line_ending": "Unix"
 			}
 		}
@@ -464,25 +382,51 @@
 	},
 	"expanded_folders":
 	[
-		"/C/VDev/source/InPlace/inPlace",
-		"/C/VDev/source/InPlace/inPlace/templates"
+		"/C/VDev/source/InPlace/InPlace",
+		"/C/VDev/source/InPlace/InPlace/static",
+		"/C/VDev/source/InPlace/InPlace/static/css",
+		"/C/VDev/source/InPlace/InPlace/templates"
 	],
 	"file_history":
 	[
-		"/C/VDev/source/InPlace/initdb.py",
-		"/C/VDev/source/InPlace/setup.py",
+		"/C/Users/Admin/Desktop/Разработка на питоне.txt",
+		"/C/Users/Admin/Desktop/Инструкция по настройке.txt",
+		"/C/Users/Admin/Desktop/SW/задание.txt",
+		"/C/devenv/Vagrantfile",
+		"/C/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.7.4/plugins/providers/virtualbox/driver/version_5_0.rb",
+		"/C/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.7.4/plugins/providers/virtualbox/driver/version_4_3.rb",
+		"/C/VDev/source/InPlace/InPlace/templates/index.html",
+		"/C/Users/Admin/Desktop/doc/Веб приложение/style.css",
+		"/C/VDev/source/InPlace/InPlace/config.py",
+		"/C/VDev/source/InPlace/InPlace/__init__.py",
+		"/C/VDev/source/InPlace/InPlace/controllers.py",
+		"/C/VDev/source/InPlace/InPlace/templates/register.html",
+		"/C/VDev/source/InPlace/InPlace/forms.py",
+		"/C/VDev/source/InPlace/InPlace/models.py",
+		"/C/VDev/source/InPlace/InPlace/templates/search.html",
+		"/C/VDev/source/InPlace/InPlace/templates/layout.html",
+		"/C/VDev/source/InPlace/InPlace.sublime-project",
+		"/C/VDev/source/boxes/boxes/__init__.py",
+		"/C/Users/Admin/Downloads/webarch.txt",
+		"/C/Users/Admin/Desktop/doc/Веб приложение/start.html",
+		"/C/Users/Admin/Desktop/doc/Веб приложение/serch.html",
+		"/C/Users/Admin/Desktop/doc/Веб приложение/place.html",
+		"/C/Users/Admin/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/C/Users/Admin/AppData/Roaming/Sublime Text 3/Packages/Default/Preferences.sublime-settings",
+		"/C/VDev/source/InPlace/inPlace/templates/index.html",
 		"/C/VDev/source/InPlace/runserver.py",
+		"/C/VDev/source/InPlace/setup.py",
+		"/C/VDev/source/InPlace/inPlace/models.py",
+		"/C/VDev/source/InPlace/initdb.py",
 		"/C/VDev/source/InPlace/inPlace/__init__.py",
 		"/C/VDev/source/InPlace/inPlace/config.py",
 		"/C/VDev/source/InPlace/inPlace/forms.py",
-		"/C/VDev/source/InPlace/inPlace/models.py",
 		"/C/VDev/source/InPlace/inPlace/controllers.pyc",
 		"/C/VDev/source/InPlace/boxes/models.py",
 		"/C/VDev/source/InPlace/boxes/controllers.py",
 		"/C/VDev/source/InPlace/boxes/config.py",
 		"/C/VDev/source/InPlace/boxes/__init__.py",
 		"/C/VDev/source/InPlace/.gitignore",
-		"/C/Users/Admin/Desktop/Разработка на питоне.txt",
 		"/C/Users/Admin/Desktop/комп техн 17.11.15.txt",
 		"/C/VDev/source/boxes/boxes/config.py",
 		"/C/VDev/Vagrantfile",
@@ -572,31 +516,7 @@
 		"/C/devenv/sources/webhmi/webhmi-components/event-browser/styles/eventBrowserDefaultRenderer.scss",
 		"/C/devenv/sources/webhmi/webhmi-components/controller/faceplates/controller__default.json",
 		"/C/devenv/sources/webhmi/webhmi/app/applications/regression-test-set/views/grid-with-on-off-switches.js",
-		"/C/devenv/sources/webhmi/webhmi/app/middleware/operations/chrome/Tooltip/Tooltip.js",
-		"/C/devenv/sources/webhmi/webhmi/app/middleware/operations/chrome/Tooltip/TooltipChrome.jsontemplate",
-		"/C/devenv/sources/webhmi/webhmi/app/themes/light.css",
-		"/C/devenv/sources/webhmi/webhmi-components/dropdown-menu/styles/dropdownMenuDefaultRenderer.scss",
-		"/C/devenv/sources/webhmi/webhmi/app/themes/light-theme.json",
-		"/C/devenv/sources/webhmi/webhmi/app/styles.css",
-		"/C/devenv/sources/webhmi/webhmi-components/tab/renderers/tab__default.js",
-		"/C/devenv/sources/webhmi/webhmi-components/dropdown-menu/theme.json",
-		"/C/devenv/sources/webhmi/webhmi-installer/theme-assets/app.theme.json",
-		"/C/devenv/sources/webhmi/webhmi-installer/theme-assets/styles/Faceplate.scss",
-		"/C/devenv/sources/webhmi/platform-common/libs/popover-helper.js",
-		"/C/devenv/sources/webhmi/webhmi/app/blocks/templates/FaceplateContextMenuTemplate.html",
-		"/C/devenv/sources/webhmi/webhmi-components/controller/faceplates/contents/controller__parameters-faceplate.js",
-		"/C/devenv/sources/webhmi/platform-common/libs/contextMenu.min.js",
-		"/C/devenv/sources/webhmi/webhmi-components/list/styles/listDefaultRenderer.scss",
-		"/C/devenv/sources/webhmi/webhmi-installer/theme-assets/styles/Tooltip.scss",
-		"/C/devenv/sources/webhmi/webhmi-components/list/renderers/list__default.js",
-		"/C/devenv/sources/webhmi/webhmi-components/analog-measurement/tooltips/contents/analog-measurement__default-tooltip.js",
-		"/C/devenv/sources/webhmi/webhmi-components/controller/tooltips/contents/controller__alarms-tooltip.js",
-		"/C/devenv/sources/webhmi/webhmi-components/motor/tooltips/contents/motor__alarms-tooltip.js",
-		"/C/devenv/sources/webhmi/webhmi/app/components/base/definition.js",
-		"/C/devenv/sources/webhmi/webhmi/app/components/components/List/templates/listViewTemplate.html",
-		"/C/devenv/sources/webhmi/webhmi/app/components/components/Tab/renderers/tabDefaultRenderer.test.js",
-		"/C/devenv/sources/webhmi/webhmi/app/components/components/List/templates/listViewHeaderTemplate.html",
-		"/C/devenv/sources/webhmi/webhmi-components/analog-measurement/analog-measurement.ts"
+		"/C/devenv/sources/webhmi/webhmi/app/middleware/operations/chrome/Tooltip/Tooltip.js"
 	],
 	"find":
 	{
@@ -742,6 +662,7 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"content",
 			"boxes",
 			"_outlookChanged",
 			"_previouslyAppliedStyles",
@@ -868,8 +789,7 @@
 			"list",
 			".tooltip",
 			"concat",
-			"getFaultsObject",
-			"concat"
+			"getFaultsObject"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -889,24 +809,24 @@
 	"groups":
 	[
 		{
-			"selected": 10,
+			"selected": 0,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "runserver.py",
+					"file": "InPlace/static/css/styles.css",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 97,
+						"buffer_size": 1424,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								1424,
+								1424
 							]
 						],
 						"settings":
@@ -915,337 +835,7 @@
 							"incomplete_sync": null,
 							"remote_loading": false,
 							"synced": false,
-							"syntax": "Packages/Python/Python.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 10,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "setup.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 367,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"color_scheme": "Packages/User/Color Highlighter/themes/Monokai (SL).tmTheme",
-							"incomplete_sync": null,
-							"remote_loading": false,
-							"synced": false,
-							"syntax": "Packages/Python/Python.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 9,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "InPlace/__init__.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 293,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								265,
-								265
-							]
-						],
-						"settings":
-						{
-							"color_scheme": "Packages/User/Color Highlighter/themes/Monokai (SL).tmTheme",
-							"incomplete_sync": null,
-							"remote_loading": false,
-							"synced": false,
-							"syntax": "Packages/Python/Python.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 8,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "InPlace/config.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 606,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								336,
-								343
-							]
-						],
-						"settings":
-						{
-							"color_scheme": "Packages/User/Color Highlighter/themes/Monokai (SL).tmTheme",
-							"incomplete_sync": null,
-							"remote_loading": false,
-							"synced": false,
-							"syntax": "Packages/Python/Python.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 7,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "InPlace/controllers.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2280,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								30,
-								30
-							]
-						],
-						"settings":
-						{
-							"color_scheme": "Packages/User/Color Highlighter/themes/Monokai (SL).tmTheme",
-							"incomplete_sync": null,
-							"remote_loading": false,
-							"synced": false,
-							"syntax": "Packages/Python/Python.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 6,
-					"type": "text"
-				},
-				{
-					"buffer": 5,
-					"file": "InPlace/forms.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1142,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"color_scheme": "Packages/User/Color Highlighter/themes/Monokai (SL).tmTheme",
-							"incomplete_sync": null,
-							"remote_loading": false,
-							"synced": false,
-							"syntax": "Packages/Python/Python.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 5,
-					"type": "text"
-				},
-				{
-					"buffer": 6,
-					"file": "inPlace/models.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2047,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"color_scheme": "Packages/User/Color Highlighter/themes/Monokai (SL).tmTheme",
-							"incomplete_sync": null,
-							"remote_loading": false,
-							"synced": false,
-							"syntax": "Packages/Python/Python.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 4,
-					"type": "text"
-				},
-				{
-					"buffer": 7,
-					"file": "/C/Users/Admin/Desktop/Разработка на питоне.txt",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 4693,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2252,
-								2357
-							]
-						],
-						"settings":
-						{
-							"color_scheme": "Packages/User/Color Highlighter/themes/Monokai (SL).tmTheme",
-							"incomplete_sync": null,
-							"remote_loading": false,
-							"synced": false,
-							"syntax": "Packages/Text/Plain text.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 330.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 3,
-					"type": "text"
-				},
-				{
-					"buffer": 8,
-					"file": "inPlace/templates/index.html",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 291,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								275,
-								275
-							]
-						],
-						"settings":
-						{
-							"color_scheme": "Packages/User/Color Highlighter/themes/Monokai (SL).tmTheme",
-							"incomplete_sync": null,
-							"remote_loading": false,
-							"synced": false,
-							"syntax": "Packages/HTML/HTML.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 9,
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 3361,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								3361,
-								3361
-							]
-						],
-						"settings":
-						{
-							"color_scheme": "Packages/User/Color Highlighter/themes/Monokai (SL).tmTheme",
-							"incomplete_sync": null,
-							"syntax": "Packages/Text/Plain text.tmLanguage",
-							"word_wrap": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 10,
-					"file": "InPlace.sublime-project",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 79,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"color_scheme": "Packages/User/Color Highlighter/themes/Monokai (SL).tmTheme",
-							"incomplete_sync": null,
-							"remote_loading": false,
-							"synced": false,
-							"syntax": "Packages/JavaScript/JSON.tmLanguage"
+							"syntax": "Packages/CSS/CSS.tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,

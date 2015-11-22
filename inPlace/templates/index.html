@@ -37,9 +37,10 @@
     <!-- <ul class="image-grid">
     {% for p in places %}
         <li class="grid-item">
-            <img class="grid-img" src="{{ url_for('static', filename='img/{{p.label}}.jpg') }}" 
-            href="places/{{p.name}}">
-            <div>{{p.name}}</div>
+            <a href="places/{{p.name}}">
+                <img class="grid-img" src="{{ url_for('static', filename='img/{{p.label}}.jpg') }}">
+                <div>{{p.name}}</div>
+            </a>
         </li>
     {% endfor %}
     </ul> -->
