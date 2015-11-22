@@ -2,7 +2,46 @@
 {% block title %}Главная страница {% endblock %}
 
 
-
 {% block content %}
-    
+    <ul class="image-grid">
+        <li class="grid-item">
+            <img class="grid-img" src="{{ url_for('static', filename='img/testPlace.jpg') }}">
+            <div>Тестовое место 1</div>
+        </li>
+        <li class="grid-item">
+            <img class="grid-img" src="{{ url_for('static', filename='img/testPlace.jpg') }}">
+            <div>Тестовое место 2</div>
+        </li>
+        <li class="grid-item">
+            <img class="grid-img" src="{{ url_for('static', filename='img/testPlace.jpg') }}">
+            <div>Тестовое место 3</div>
+        </li>
+        <li class="grid-item">
+            <img class="grid-img" src="{{ url_for('static', filename='img/testPlace.jpg') }}">
+            <div>Тестовое место4</div>
+        </li>
+        <li class="grid-item">
+            <img class="grid-img" src="{{ url_for('static', filename='img/testPlace.jpg') }}">
+            <div>Тестовое место 5</div>
+        </li>
+        <li class="grid-item">
+            <img class="grid-img" src="{{ url_for('static', filename='img/testPlace.jpg') }}">
+            <div>Тестовое место 6</div>
+        </li>
+        <li class="grid-item">
+            <img class="grid-img" src="{{ url_for('static', filename='img/testPlace.jpg') }}">
+            <div>Тестовое место 6</div>
+        </li>
+    </ul> 
+
+    <!-- <ul class="image-grid">
+    {% for p in places %}
+        <li class="grid-item">
+            <img class="grid-img" src="{{ url_for('static', filename='img/{{p.label}}.jpg') }}" 
+            href="places/{{p.name}}">
+            <div>{{p.name}}</div>
+        </li>
+    {% endfor %}
+    </ul> -->
+
 {% endblock %}

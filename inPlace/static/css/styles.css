@@ -29,3 +29,38 @@ body {
     margin-top: 60px;
     margin-left: 200px;
 }
+
+.image-grid {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+  
+    -webkit-flex-flow: row wrap;
+    /*justify-content: space-around;*/
+    justify-content: space-between
+}
+
+.grid-item {
+    /*background: tomato;*/
+    padding: 5px;
+    /*width: 200px;*/
+    height: 200px;
+    margin-top: 30px;
+  
+    line-height: 20px;
+    /*color: white;*/
+    font-weight: bold;
+    font-size: 20px;
+    text-align: center;
+}
+
+.grid-img {
+    height: inherit;
+    width: inherit;
+}
