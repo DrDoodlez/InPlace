@@ -14,7 +14,10 @@ def index():
 def openSearch():        
     return render_template('search.html')
 
-
+#TODO: Добавить передачу модели, для открытия конкретного места
+@app.route('/place', methods=["GET", "POST"])
+def open_place():
+    return render_template('place.html')
 
 # TODO: Add new routes
 # @app.route('/boxes', methods=["GET", "POST"])

@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+{% block title %}PlaceName{% endblock %}
+
+<!-- TODO: Изменить шаблон на использование модели -->
+{% block content %}
+<div class="palce-up">
+    <img class="place-img" src="{{ url_for('static', filename='img/testPlace.jpg') }}">
+
+    <div class="place-right"> 
+        <div class="place-name">PlaceName</div>
+        <div class="place-text">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean sem nisi, ultrices vel risus eu, convallis efficitur mi. Vestibulum commodo sed ipsum id pharetra. Donec dictum eros massa, vitae finibus arcu ultrices at. Phasellus vulputate eget massa ac luctus. Quisque nec justo a dui blandit rutrum quis quis quam. Ut hendrerit faucibus enim et bibendum. Nulla viverra diam diam, sit amet vestibulum tellus fringilla lacinia. Mauris at dui ut augue porttitor imperdiet non non erat. Sed purus lorem, pharetra placerat elementum et, lacinia vel mi. Quisque eget libero ligula. Morbi commodo accumsan neque vel sollicitudin.
+        </div>
+    </div>
+</div>
+
+<!-- TODO: http://demo.pixelcom.crimea.ua/javascript/tabs/tabs-aria.htm  настроить стили -->
+<ul class="tabs">
+  <li><a href="#one">Меню</a></li>
+  <li><a href="#two">Описание</a></li>
+  <li><a href="#three">Отзывы</a></li>
+  <li><a href="#four">Мероприятия</a></li>
+  <li><a href="#five">Фотографии</a></li>
+</ul>
+<div class="tabs-content">
+<ul>
+  <li id="one">Содержимое 1-й вкладки</li>
+  <li id="two">Содержимое 2-й вкладки</li>
+  <li id="three">Содержимое 3-й вкладки</li>
+  <li id="four">Содержимое 4-й вкладки</li>
+  <li id="five">Содержимое 5-й вкладки</li>
+</ul>
+</div>
+
+{% endblock %}

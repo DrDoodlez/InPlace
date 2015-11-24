@@ -64,3 +64,50 @@ body {
     height: inherit;
     width: inherit;
 }
+
+.place-link {
+    height: inherit;
+    width: inherit;
+}
+
+.palce-up {
+    display: inline-block;
+}
+
+
+.place-right {
+    display: block;
+    margin-left: 50px;
+    width: 40%;
+    float: left;
+}
+
+.place-name {
+    font-size: 20pt;
+    margin-bottom: 10px;
+    margin-top: 20px;
+}
+
+.place-img {
+    width: 50%;
+    margin-left: 20px;
+    display: block;
+    float: left;
+}
+
+.tabs-content {
+    width:960px;
+    height:300px;
+    overflow:hidden;
+}
+.tabs-content ul {
+    list-style: none
+    /* Эти 3 линии для Opera */
+    height: 320px;
+    overflow: scroll;
+    overflow-y: hidden;
+}
+.tabs-content ul li {
+    width:960px;
+    height:300px;
+}
