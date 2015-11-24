@@ -3,6 +3,12 @@
 
 
 {% block content %}
+    {% if user %}
+        <div class="user-indicator">{{user.name}}</div>
+        <a class="login-link" href="/logout">выйти</a>
+    {% else %}
+        <a class="login-link" href="/login">войти в систему</a>
+    {% endif %}
     <ul class="image-grid">
         <li class="grid-item">
             <img class="grid-img" src="{{ url_for('static', filename='img/testPlace.jpg') }}">
