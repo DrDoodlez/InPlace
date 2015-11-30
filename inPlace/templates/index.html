@@ -1,11 +1,12 @@
 {% extends "layout.html" %}
 {% block title %}Главная страница {% endblock %}
 
-
+<!-- TODO: Доработать стили. Сделать нормальную кнопку добавления. и др. -->
 {% block content %}
     {% if user %}
         <div class="user-indicator">{{user.name}}</div>
         <a class="login-link" href="/logout">выйти</a>
+        <a class="place-add-link" href="/add"> Добавить место </a>
     {% else %}
         <a class="login-link" href="/login">войти в систему</a>
     {% endif %}
