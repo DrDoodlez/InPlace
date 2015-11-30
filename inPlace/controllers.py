@@ -8,16 +8,16 @@ from werkzeug import secure_filename
 
 @app.route('/')
 def index():
-    return render_template('index.html', user=g.user, places=Place.query)
+    return render_template('index.html', user = g.user, places = Place.query)
 
 @app.route('/search')
 def openSearch():        
     return render_template('search.html')
 
 #TODO: Добавить передачу модели, для открытия конкретного места
-@app.route('/place', methods=["GET", "POST"])
-def open_place():
-    return render_template('place.html')
+@app.route('/places/<int:place_id>', methods = ["GET", "POST"])
+def open_place(place_id):
+    return render_template('place.html', place = Place.query.filter(Place.id == place_id).first())
 
 @app.route('/add', methods=["GET", "POST"])
 def add_place():
