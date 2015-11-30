@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 from InPlace import app
 from flask import render_template, request, url_for, redirect, session, flash, g
-from .models import Box, User, authenticate_user, register_user, create_box, set_user_avatar
+from .models import Box, User, Place, authenticate_user, register_user, create_box, set_user_avatar, create_place
 from .forms import CreateBoxForm, RegistrationForm, LoginForm
 from werkzeug import secure_filename
 
 
 @app.route('/')
-def index():        
-    return render_template('index.html', user=g.user)
+def index():
+    return render_template('index.html', user=g.user, places=Place.query)
 
 @app.route('/search')
 def openSearch():        

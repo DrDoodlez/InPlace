@@ -3,7 +3,7 @@
 
 
 {% block content %}
-    {% if user %}
+    <!--{% if user %}
         <div class="user-indicator">{{user.name}}</div>
         <a class="login-link" href="/logout">выйти</a>
     {% else %}
@@ -50,17 +50,16 @@
                 <div>Тестовое место 6</div>
             </a>
         </li>
-    </ul> 
+    </ul> -->
 
-    <!-- <ul class="image-grid">
+    <ul class="image-grid">
     {% for p in places %}
         <li class="grid-item">
-            <a href="places/{{p.name}}">
-                <img class="grid-img" src="{{ url_for('static', filename='img/{{p.label}}.jpg') }}">
+            <a class="place-link" href="/place">
+                <img class="grid-img" src="{{ url_for('static', filename='img/testPlace.jpg') }}">
                 <div>{{p.name}}</div>
             </a>
         </li>
     {% endfor %}
-    </ul> -->
-
+    </ul>
 {% endblock %}

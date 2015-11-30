@@ -46,6 +46,15 @@ class User(db.Model):
         self.name = name
         self.password = password
 
+class Place(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    name = db.Column(db.String(64))
+    description = db.Column(db.String(128))
+
+    def __init__(self, name, description):
+        self.name = name
+        self.description = description
+
 def register_user(login, email, name, password):
     user = User(login, email, name, password)
 
@@ -87,3 +96,15 @@ def create_box(user, name, color):
     db.session.commit()
 
     return box
+
+def create_place(name, description):
+    place = Place(name, description)
+
+    queryPlace = Place.query.filter_by(name=name, description=description).first()
+    
+    if not queryPlace:
+        db.session.add(place)
+        db.session.commit()
+        return place
+
+    return
