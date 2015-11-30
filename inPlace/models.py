@@ -97,6 +97,8 @@ def create_box(user, name, color):
 
     return box
 
+
+###### TODO: Доделать создание места: новые параметры, фотография ....########
 def create_place(name, description):
     place = Place(name, description)
 

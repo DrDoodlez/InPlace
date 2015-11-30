@@ -2,7 +2,7 @@
 from InPlace import app
 from flask import render_template, request, url_for, redirect, session, flash, g
 from .models import Box, User, Place, authenticate_user, register_user, create_box, set_user_avatar, create_place
-from .forms import CreateBoxForm, RegistrationForm, LoginForm
+from .forms import CreateBoxForm, RegistrationForm, LoginForm, CreatePlaceForm
 from werkzeug import secure_filename
 
 
@@ -18,6 +18,22 @@ def openSearch():
 @app.route('/place', methods=["GET", "POST"])
 def open_place():
     return render_template('place.html')
+
+@app.route('/add', methods=["GET", "POST"])
+def add_place():
+    form = CreatePlaceForm(request.form)
+
+    # POST  - сохранение добавленого места
+    if form.validate_on_submit():
+
+        ###### TODO: Нужно доделать добавление фотографии месту.########
+        photo = request.files[form.photo.name]
+        place = create_place(form.name.data, form.description.data)
+        
+        return redirect('/')
+
+    return render_template('add_place.html', form = form)
+
 
 # TODO: Add new routes
 # @app.route('/boxes', methods=["GET", "POST"])

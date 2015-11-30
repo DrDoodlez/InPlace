@@ -4,6 +4,14 @@
 		"selected_items":
 		[
 			[
+				"ma",
+				"margin-top"
+			],
+			[
+				"fo",
+				"font-size"
+			],
+			[
 				"in",
 				"inline-block"
 			],
@@ -299,15 +307,23 @@
 			"file": "InPlace/static/css/styles.css",
 			"settings":
 			{
-				"buffer_size": 1045,
+				"buffer_size": 1690,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "InPlace/templates/index.html",
+			"file": "InPlace/templates/place.html",
 			"settings":
 			{
-				"buffer_size": 1745,
+				"buffer_size": 1634,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "InPlace/config.py",
+			"settings":
+			{
+				"buffer_size": 793,
 				"line_ending": "Unix"
 			}
 		},
@@ -315,7 +331,15 @@
 			"file": "InPlace/controllers.py",
 			"settings":
 			{
-				"buffer_size": 2840,
+				"buffer_size": 3008,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "InPlace/models.py",
+			"settings":
+			{
+				"buffer_size": 2463,
 				"line_ending": "Unix"
 			}
 		},
@@ -421,13 +445,16 @@
 	],
 	"file_history":
 	[
+		"/C/Users/Admin/Documents/Metso/sources/docs/infa/infa.txt",
+		"/C/VDev/source/InPlace/InPlace/templates/index.html",
+		"/C/VDev/source/InPlace/InPlace/templates/login.html",
+		"/C/Users/Admin/Desktop/Генерации.txt",
 		"/C/Users/Admin/Desktop/Разработка на питоне.txt",
 		"/C/Users/Admin/Desktop/Инструкция по настройке.txt",
 		"/C/Users/Admin/Desktop/SW/задание.txt",
 		"/C/devenv/Vagrantfile",
 		"/C/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.7.4/plugins/providers/virtualbox/driver/version_5_0.rb",
 		"/C/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.7.4/plugins/providers/virtualbox/driver/version_4_3.rb",
-		"/C/VDev/source/InPlace/InPlace/templates/index.html",
 		"/C/Users/Admin/Desktop/doc/Веб приложение/style.css",
 		"/C/VDev/source/InPlace/InPlace/config.py",
 		"/C/VDev/source/InPlace/InPlace/__init__.py",
@@ -545,10 +572,7 @@
 		"/C/devenv/sources/webhmi/platform-common/libs/contextMenu.js",
 		"/C/devenv/sources/webhmi/webhmi/app/bower_components/platform-common/libs/contextMenu.js",
 		"/C/devenv/sources/webhmi/webhmi/app/applications/testing/views/process-component-tooltip.js",
-		"/C/devenv/sources/webhmi/webhmi-components/event-browser/styles/eventBrowserDefaultRenderer.scss",
-		"/C/devenv/sources/webhmi/webhmi-components/controller/faceplates/controller__default.json",
-		"/C/devenv/sources/webhmi/webhmi/app/applications/regression-test-set/views/grid-with-on-off-switches.js",
-		"/C/devenv/sources/webhmi/webhmi/app/middleware/operations/chrome/Tooltip/Tooltip.js"
+		"/C/devenv/sources/webhmi/webhmi-components/event-browser/styles/eventBrowserDefaultRenderer.scss"
 	],
 	"find":
 	{
@@ -841,7 +865,7 @@
 	"groups":
 	[
 		{
-			"selected": 3,
+			"selected": 4,
 			"sheets":
 			[
 				{
@@ -850,15 +874,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1045,
+						"buffer_size": 1690,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								748,
-								748
+								1240,
+								1240
 							]
 						],
 						"settings":
@@ -872,7 +896,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 812.0,
+						"translation.y": 1440.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 3,
@@ -880,87 +904,19 @@
 				},
 				{
 					"buffer": 1,
-					"file": "InPlace/templates/index.html",
+					"file": "InPlace/templates/place.html",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1745,
+						"buffer_size": 1634,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1729,
-								1729
-							]
-						],
-						"settings":
-						{
-							"color_scheme": "Packages/User/Color Highlighter/themes/Monokai (SL).tmTheme",
-							"incomplete_sync": null,
-							"remote_loading": false,
-							"synced": false,
-							"syntax": "Packages/HTML/HTML.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "InPlace/controllers.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2840,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								505,
-								505
-							]
-						],
-						"settings":
-						{
-							"color_scheme": "Packages/User/Color Highlighter/themes/Monokai (SL).tmTheme",
-							"incomplete_sync": null,
-							"remote_loading": false,
-							"synced": false,
-							"syntax": "Packages/Python/Python.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": -0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "InPlace/templates/layout.html",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1464,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								679,
-								679
+								308,
+								318
 							]
 						],
 						"settings":
@@ -974,14 +930,150 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 120.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "InPlace/config.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 793,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								566,
+								566
+							]
+						],
+						"settings":
+						{
+							"color_scheme": "Packages/User/Color Highlighter/themes/Monokai (SL).tmTheme",
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "InPlace/controllers.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3008,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								129,
+								221
+							]
+						],
+						"settings":
+						{
+							"color_scheme": "Packages/User/Color Highlighter/themes/Monokai (SL).tmTheme",
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "InPlace/models.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2463,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1471,
+								1471
+							]
+						],
+						"settings":
+						{
+							"color_scheme": "Packages/User/Color Highlighter/themes/Monokai (SL).tmTheme",
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
 					"type": "text"
 				},
 				{
-					"buffer": 4,
+					"buffer": 5,
+					"file": "InPlace/templates/layout.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1464,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1005,
+								1005
+							]
+						],
+						"settings":
+						{
+							"color_scheme": "Packages/User/Color Highlighter/themes/Monokai (SL).tmTheme",
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 360.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
 					"file": "InPlace/templates/boxes.html",
 					"semi_transient": false,
 					"settings":
@@ -1011,7 +1103,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 6,
 					"type": "text"
 				}
 			]
