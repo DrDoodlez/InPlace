@@ -3,13 +3,13 @@
 
 <!-- TODO: Изменить шаблон на использование модели -->
 {% block content %}
-<div class="palce-up">
+<div class="place-up">
     <img class="place-img" src="{{ url_for('static', filename='img/testPlace.jpg') }}">
 
     <div class="place-right"> 
-        <div class="place-name">place.name</div>
+        <div class="place-name">{{place.name}}</div>
         <div class="place-text">
-            place.description
+            {{place.description}}
         </div>
     </div>
 </div>

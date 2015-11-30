@@ -55,7 +55,7 @@
     <ul class="image-grid">
     {% for p in places %}
         <li class="grid-item">
-            <a class="place-link" href="/place">
+            <a class="place-link" href="/places/{{p.id}}">
                 <img class="grid-img" src="{{ url_for('static', filename='img/testPlace.jpg') }}">
                 <div>{{p.name}}</div>
             </a>
