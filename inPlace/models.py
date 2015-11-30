@@ -109,4 +109,4 @@ def create_place(name, description):
         db.session.commit()
         return place
 
-    return
+    return None

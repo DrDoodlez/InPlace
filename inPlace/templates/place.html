@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% block title %}PlaceName{% endblock %}
 
-<!-- TODO: Изменить шаблон на использование модели -->
+<!-- TODO: Добавить использование фотографий из данных модели -->
 {% block content %}
 <div class="place-up">
     <img class="place-img" src="{{ url_for('static', filename='img/testPlace.jpg') }}">
@@ -14,8 +14,8 @@
     </div>
 </div>
 
-<!-- TODO: http://demo.pixelcom.crimea.ua/javascript/tabs/tabs-aria.htm  настроить стили -->
-<ul class="tabs">
+<!-- TODO: http://demo.pixelcom.crimea.ua/javascript/tabs/tabs-aria.htm  настроить стили табов -->
+<!-- <ul class="tabs">
   <li><a href="#one">Меню</a></li>
   <li><a href="#two">Описание</a></li>
   <li><a href="#three">Отзывы</a></li>
@@ -30,6 +30,6 @@
   <li id="four">Содержимое 4-й вкладки</li>
   <li id="five">Содержимое 5-й вкладки</li>
 </ul>
-</div>
+</div> -->
 
 {% endblock %}

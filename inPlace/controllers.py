@@ -8,32 +8,37 @@ from werkzeug import secure_filename
 
 @app.route('/')
 def index():
-    return render_template('index.html', user = g.user, places = Place.query)
+    places = Place.query
+    return render_template('index.html', user = g.user, places = places)
 
 @app.route('/search')
 def openSearch():        
     return render_template('search.html')
 
 #TODO: Добавить передачу модели, для открытия конкретного места
-@app.route('/places/<int:place_id>', methods = ["GET", "POST"])
+@app.route('/place/<int:place_id>', methods = ["GET", "POST"])
 def open_place(place_id):
-    return render_template('place.html', place = Place.query.filter(Place.id == place_id).first())
+    place = Place.query.filter(Place.id == place_id).first()
+    return render_template('place.html', place = place)
+
+@app.route('/place', methods = ["GET", "POST"])
+def open_test_place():
+    place = Place(u'Тестовое место', u'Данное место было взято не из базы... Смотрите реальные места на начальной странице')
+    return render_template('place.html', place = place)
 
 @app.route('/add', methods=["GET", "POST"])
 def add_place():
     form = CreatePlaceForm(request.form)
-
     # POST  - сохранение добавленого места
     if form.validate_on_submit():
 
         ###### TODO: Нужно доделать добавление фотографии месту.########
-        photo = request.files[form.photo.name]
+        #photo = request.files[form.photo.name]
         place = create_place(form.name.data, form.description.data)
         
         return redirect('/')
 
     return render_template('add_place.html', form = form)
-
 
 # TODO: Add new routes
 # @app.route('/boxes', methods=["GET", "POST"])
