@@ -40,11 +40,9 @@ def add_place():
 
     return render_template('add_place.html', form = form)
 
-# TODO: обновить место по ID в базе.
 @app.route('/place/update/<int:place_id>', methods=["GET", "POST"])
 def change_place(place_id):
     form = PlaceForm(request.form)
-    # POST  - сохранение добавленого места
     if form.validate_on_submit():
         ###### TODO: Нужно доделать добавление фотографии месту.########
         #photo = request.files[form.photo.name]
@@ -59,12 +57,10 @@ def change_place(place_id):
 
     return render_template('update_place.html', form = form, id = place_id)
 
-# TODO: удалить место по ID из базы.
 @app.route('/place/remove/<int:place_id>', methods=["GET", "POST"])
 def remove_place(place_id):
     delete_place(place_id)    
     return redirect('/')
-
 
 @app.route('/user', methods = ["GET", "POST"])
 def open_user():
@@ -73,7 +69,7 @@ def open_user():
     places = Place.query
     return render_template('user.html', user = user, places = places)
 
-# TODO: реализовать удаление картинки из списка 
+# TODO: реализовать удаление места из списка 
 # и возвращение к странице пользователя.
 @app.route('/user/remove_place/<int:user_id>/<int:place_id>', methods = ["GET", "POST"])
 def remove_place_from_user(user_id, place_id):

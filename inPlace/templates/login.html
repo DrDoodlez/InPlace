@@ -4,7 +4,7 @@
   <h1>Окунитесь в мир интересных мест ВМесте с нами!</h1>
 
   {% from "_formhelpers.html" import render_field %}
-  <form method="POST" action="/login">
+  <form method="POST" action="{{ url_for('login') }}">
      {{ form.hidden_tag() }}
     <p>
       {{ render_field(form.login) }}
@@ -16,6 +16,6 @@
   </form>
 
   <p>
-    Нет учетной записи? <a href="/register">Зарегистрируйтесь</a>.
+    Нет учетной записи? <a href="{{ url_for('registration') }}">Зарегистрируйтесь</a>.
   </p>
 {% endblock %}
