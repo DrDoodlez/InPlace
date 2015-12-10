@@ -8,6 +8,12 @@ class CreateBoxForm(Form):
     color = SelectField(u'Цвет Коробочки!', choices=[("blue", u'Синий'),
                                                      ("red", u'Красный'),
                                                      ("green", u'Зеленый')])
+    
+###### TODO: Добавить недостающие поля формы.########
+class CreatePlaceForm(Form):
+    name = StringField(u'Имя', [validators.InputRequired()])
+    description = StringField(u'Описание', [validators.InputRequired()])
+    photo = FileField(u'Основная фотография места')
 
 class RegistrationForm(Form):
     login = StringField(u'Имя пользователя', [validators.Length(min=4, max=25)])

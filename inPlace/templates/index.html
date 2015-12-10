@@ -3,12 +3,14 @@
 
 
 {% block content %}
-    <!--{% if user %}
+    {% if user %}
         <div class="user-indicator">{{user.name}}</div>
         <a class="login-link" href="/logout">выйти</a>
     {% else %}
         <a class="login-link" href="/login">войти в систему</a>
     {% endif %}
+    
+    <h1> Заглушка </h1>
     <ul class="image-grid">
         <li class="grid-item">
             <a class="place-link" href="/place">
@@ -50,12 +52,15 @@
                 <div>Тестовое место 6</div>
             </a>
         </li>
-    </ul> -->
+    </ul>
 
+
+    <h1> Реальные места </h1>
+    
     <ul class="image-grid">
     {% for p in places %}
         <li class="grid-item">
-            <a class="place-link" href="/places/{{p.id}}">
+            <a class="place-link" href="/place/{{p.id}}">
                 <img class="grid-img" src="{{ url_for('static', filename='img/testPlace.jpg') }}">
                 <div>{{p.name}}</div>
             </a>
