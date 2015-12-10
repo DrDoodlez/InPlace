@@ -1,10 +1,10 @@
 {% extends "layout.html" %}
-{% block title %}Добавление места{% endblock %}
+{% block title %}Редактирование места{% endblock %}
 
 {% block content %}
 
 {% from "_formhelpers.html" import render_field %}
-  <form method="POST" action="{{ url_for('add_place') }}" enctype="multipart/form-data">
+  <form method="POST" action="{{ url_for('change_place', place_id = id) }}" enctype="multipart/form-data">
     {{ form.hidden_tag() }}
     <p>
       {{ render_field(form.name) }}
@@ -15,7 +15,7 @@
     <p>
     {{ render_field(form.photo) }}
     </p>
-    <p><input type="submit" value="Добавить"></p>
+    <p><input type="submit" value="Сохранить"></p>
   </form>
 
 {% endblock %}

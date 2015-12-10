@@ -10,7 +10,7 @@ class CreateBoxForm(Form):
                                                      ("green", u'Зеленый')])
     
 ###### TODO: Добавить недостающие поля формы.########
-class CreatePlaceForm(Form):
+class PlaceForm(Form):
     name = StringField(u'Имя', [validators.InputRequired()])
     description = StringField(u'Описание', [validators.InputRequired()])
     photo = FileField(u'Основная фотография места')
