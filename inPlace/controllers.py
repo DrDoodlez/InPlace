@@ -40,6 +40,19 @@ def add_place():
 
     return render_template('add_place.html', form = form)
 
+@app.route('/user', methods = ["GET", "POST"])
+def open_user_page():
+    user = g.user
+    # места нужно получать из списка мест пользователя
+    places = Place.query
+    return render_template('user.html', user = user, places = places)
+
+# TODO: реализовать удаление картинки из списка 
+# и возвращение к странице пользователя.
+@app.route('/user/remove_place/<int:user_id>/<int:place_id>', methods = ["GET", "POST"])
+def remove_place_from_user(user_id, place_id):
+    return "WIP"
+
 # TODO: Add new routes
 # @app.route('/boxes', methods=["GET", "POST"])
 # def inPlace_list():

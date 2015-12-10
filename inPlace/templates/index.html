@@ -4,59 +4,14 @@
 <!-- TODO: Доработать стили. Сделать нормальную кнопку добавления. и др. -->
 {% block content %}
     {% if user %}
-        <div class="user-indicator">{{user.name}}</div>
+        <a class="user-indicator" href="/user">{{user.name}}</a>
         <a class="login-link" href="/logout">выйти</a>
         <a class="place-add-link" href="/add"> Добавить место </a>
     {% else %}
         <a class="login-link" href="/login">войти в систему</a>
     {% endif %}
-    
-    <h1> Заглушка </h1>
-    <ul class="image-grid">
-        <li class="grid-item">
-            <a class="place-link" href="/place">
-                <img class="grid-img" src="{{ url_for('static', filename='img/testPlace.jpg') }}">
-                <div>Тестовое место 1</div>
-            </a>
-        </li>
-        <li class="grid-item">
-            <a class="place-link" href="/place">
-                <img class="grid-img" src="{{ url_for('static', filename='img/testPlace.jpg') }}">
-                <div>Тестовое место 2</div>
-            </a>
-        </li>
-        <li class="grid-item">
-            <a class="place-link" href="/place">
-                <img class="grid-img" src="{{ url_for('static', filename='img/testPlace.jpg') }}">
-                <div>Тестовое место 3</div>
-            </a>
-        </li>
-        <li class="grid-item">
-            <img class="grid-img" src="{{ url_for('static', filename='img/testPlace.jpg') }}">
-            <div>Тестовое место4</div>
-        </li>
-        <li class="grid-item">
-            <a class="place-link" href="/place">
-                <img class="grid-img" src="{{ url_for('static', filename='img/testPlace.jpg') }}">
-                <div>Тестовое место 5</div>
-            </a>
-        </li>
-        <li class="grid-item">
-            <a class="place-link" href="/place">
-                <img class="grid-img" src="{{ url_for('static', filename='img/testPlace.jpg') }}">
-                <div>Тестовое место 6</div>
-            </a>
-        </li>
-        <li class="grid-item">
-            <a class="place-link" href="/place">
-                <img class="grid-img" src="{{ url_for('static', filename='img/testPlace.jpg') }}">
-                <div>Тестовое место 6</div>
-            </a>
-        </li>
-    </ul>
 
-
-    <h1> Реальные места </h1>
+    <h1> Все места </h1>
     
     <ul class="image-grid">
     {% for p in places %}

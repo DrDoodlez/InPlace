@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+{% block title %}Пользователь{% endblock %}
+
+<!-- TODO: Доработать стили. Сделать нормальную кнопку добавления. и др. -->
+{% block content %}
+
+<div class="user">
+    <div class="user__name">{{user.name}}</div>
+
+    <!-- нужно добавить извлечение картинки <img class="user__img" src="{{ url_for('static', filename='') }}"> -->
+    <img class="user__img" src="{{ url_for('static', filename='img/testPhoto.png') }}">
+</div>
+
+
+<h1> Мои места: </h1>
+<div class="user__places">
+    <ul class="image-grid">
+    {% for p in places %}
+        <li class="grid-item">
+            <a class="place-link" href="/place/{{p.id}}">
+                <img class="grid-img" src="{{ url_for('static', filename='img/testPlace.jpg') }}">
+                <div>{{p.name}}</div>
+            </a> 
+            <a class="place__remove" href="/user/remove_place/{{user.id}}/{{p.id}}">Убрать картинку</a>
+        </li>
+    {% endfor %}
+    </ul>
+</div>
+
+
+{% endblock %}
