@@ -17,7 +17,7 @@ def openSearch():
 #TODO: Добавить передачу модели, для открытия конкретного места
 @app.route('/places/<int:place_id>', methods = ["GET", "POST"])
 def open_place(place_id):
-    return render_template('place.html', place = Place.query.filter(Place.id == place_id).first())
+    return render_template('place.html', place = Place.query.get(place_id))
 
 # TODO: Add new routes
 # @app.route('/boxes', methods=["GET", "POST"])
