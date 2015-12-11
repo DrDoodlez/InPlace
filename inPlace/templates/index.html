@@ -4,11 +4,11 @@
 <!-- TODO: Доработать стили. Сделать нормальную кнопку добавления. и др. -->
 {% block content %}
     {% if user %}
-        <a class="user-indicator" href="/user">{{user.name}}</a>
-        <a class="login-link" href="/logout">выйти</a>
-        <a class="place-add-link" href="/add"> Добавить место </a>
+        <a class="user-indicator" href="{{ url_for('open_user') }}">{{user.name}}</a>
+        <a class="login-link" href="{{ url_for('logout') }}">выйти</a>
+        <a class="place-add-link" href="{{ url_for('add_place') }}"> Добавить место </a>
     {% else %}
-        <a class="login-link" href="/login">войти в систему</a>
+        <a class="login-link" href="{{ url_for('login') }}">войти в систему</a>
     {% endif %}
 
     <h1> Все места </h1>
@@ -16,7 +16,7 @@
     <ul class="image-grid">
     {% for p in places %}
         <li class="grid-item">
-            <a class="place-link" href="/place/{{p.id}}">
+            <a class="place-link" href="{{ url_for('open_place', place_id = p.id)}}">
                 <img class="grid-img" src="{{ url_for('static', filename='img/testPlace.jpg') }}">
                 <div>{{p.name}}</div>
             </a>

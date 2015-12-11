@@ -110,3 +110,17 @@ def create_place(name, description):
         return place
 
     return None
+
+# Не работает...почему-то не обновляется запись
+def update_place(place_id, name, description):
+    place = Place.query.filter_by(id = place_id).first()
+    place.name = name
+    place.description = description
+    db.session.commit()
+    print "Model:   %s %s" % (name, description)
+    return None
+
+def delete_place(place_id):
+    place = Place.query.filter_by(id = place_id).delete()
+    db.session.commit()
+    return None

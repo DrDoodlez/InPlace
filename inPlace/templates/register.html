@@ -4,7 +4,7 @@
   <h1>Станьте счастливым обладателем Коробочек!™</h1>
 
   {% from "_formhelpers.html" import render_field %}
-  <form method="POST" action="/register" enctype="multipart/form-data">
+  <form method="POST" action="{{ url_for('registration') }}" enctype="multipart/form-data">
     {{ form.hidden_tag() }}
     <p>
       {{ render_field(form.login) }}

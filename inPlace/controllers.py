@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from InPlace import app
 from flask import render_template, request, url_for, redirect, session, flash, g
-from .models import Box, User, Place, authenticate_user, register_user, create_box, set_user_avatar, create_place
-from .forms import CreateBoxForm, RegistrationForm, LoginForm, CreatePlaceForm
+from .models import Box, User, Place, authenticate_user, register_user, create_box, set_user_avatar, create_place, update_place, delete_place
+from .forms import CreateBoxForm, RegistrationForm, LoginForm, PlaceForm
 from werkzeug import secure_filename
 
 
@@ -12,23 +12,23 @@ def index():
     return render_template('index.html', user = g.user, places = places)
 
 @app.route('/search')
-def openSearch():        
+def open_search():        
     return render_template('search.html')
 
 #TODO: Добавить передачу модели, для открытия конкретного места
-@app.route('/place/<int:place_id>', methods = ["GET", "POST"])
+@app.route('/place/<int:place_id>', methods = ["GET"])
 def open_place(place_id):
     place = Place.query.get(place_id)
     return render_template('place.html', place = place)
 
-@app.route('/place', methods = ["GET", "POST"])
+@app.route('/place', methods = ["GET"])
 def open_test_place():
     place = Place(u'Тестовое место', u'Данное место было взято не из базы... Смотрите реальные места на начальной странице')
     return render_template('place.html', place = place)
 
-@app.route('/add', methods=["GET", "POST"])
+@app.route('/place/add', methods=["GET", "POST"])
 def add_place():
-    form = CreatePlaceForm(request.form)
+    form = PlaceForm(request.form)
     # POST  - сохранение добавленого места
     if form.validate_on_submit():
 
@@ -40,14 +40,36 @@ def add_place():
 
     return render_template('add_place.html', form = form)
 
+@app.route('/place/update/<int:place_id>', methods=["GET", "POST"])
+def change_place(place_id):
+    form = PlaceForm(request.form)
+    if form.validate_on_submit():
+        ###### TODO: Нужно доделать добавление фотографии месту.########
+        #photo = request.files[form.photo.name]
+        print "Controller:   %s %s" % (form.name.data, form.description.data)
+        update_place(place_id, form.name.data, form.description.data)
+        
+        return redirect('/')
+
+    place = Place.query.filter(Place.id == place_id).first()
+    form.name.data = place.name
+    form.description.data = place.description
+
+    return render_template('update_place.html', form = form, id = place_id)
+
+@app.route('/place/remove/<int:place_id>', methods=["GET", "POST"])
+def remove_place(place_id):
+    delete_place(place_id)    
+    return redirect('/')
+
 @app.route('/user', methods = ["GET", "POST"])
-def open_user_page():
+def open_user():
     user = g.user
     # места нужно получать из списка мест пользователя
     places = Place.query
     return render_template('user.html', user = user, places = places)
 
-# TODO: реализовать удаление картинки из списка 
+# TODO: реализовать удаление места из списка 
 # и возвращение к странице пользователя.
 @app.route('/user/remove_place/<int:user_id>/<int:place_id>', methods = ["GET", "POST"])
 def remove_place_from_user(user_id, place_id):

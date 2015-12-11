@@ -17,11 +17,11 @@
     <ul class="image-grid">
     {% for p in places %}
         <li class="grid-item">
-            <a class="place-link" href="/place/{{p.id}}">
+            <a class="place-link" href="{{ url_for('open_place',place_id = p.id) }}">
                 <img class="grid-img" src="{{ url_for('static', filename='img/testPlace.jpg') }}">
                 <div>{{p.name}}</div>
             </a> 
-            <a class="place__remove" href="/user/remove_place/{{user.id}}/{{p.id}}">Убрать картинку</a>
+            <a class="place__remove" href="{{ url_for('remove_place_from_user',user_id = user.id, place_id = p.id) }} /user/remove_place/{{user.id}}/{{p.id}}">Забыть место</a>
         </li>
     {% endfor %}
     </ul>

@@ -14,6 +14,8 @@
     </div>
 </div>
 
+<a class="place-link" href="{{ url_for('change_place', place_id=place.id) }}">Изменить</a>
+<a class="place-link" href="{{ url_for('remove_place', place_id=place.id) }}">Удалить</a>
 <!-- TODO: http://demo.pixelcom.crimea.ua/javascript/tabs/tabs-aria.htm  настроить стили табов -->
 <!-- <ul class="tabs">
   <li><a href="#one">Меню</a></li>
