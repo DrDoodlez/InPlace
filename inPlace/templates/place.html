@@ -3,6 +3,7 @@
 
 <!-- TODO: Добавить использование фотографий из данных модели -->
 {% block content %}
+
 <div class="place-up">
     <img class="place-img" src="{{ url_for('static', filename='img/testPlace.jpg') }}">
 
@@ -16,6 +17,10 @@
 
 <a class="place-link" href="{{ url_for('change_place', place_id=place.id) }}">Изменить</a>
 <a class="place-link" href="{{ url_for('remove_place', place_id=place.id) }}">Удалить</a>
+
+{% if user %}
+  <a class="place-link" href="{{ url_for('add_user_place', user_id=user.id, place_id=place.id) }}">Добавить в мои места</a>
+{% endif %}
 <!-- TODO: http://demo.pixelcom.crimea.ua/javascript/tabs/tabs-aria.htm  настроить стили табов -->
 <!-- <ul class="tabs">
   <li><a href="#one">Меню</a></li>

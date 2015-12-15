@@ -55,6 +55,15 @@ class Place(db.Model):
         self.name = name
         self.description = description
 
+class JoinUserPlace(db.Model):
+    id = db.Column(db.Integer)
+    user_id = db.Column(db.Integer, primary_key = True)
+    place_id = db.Column(db.Integer, primary_key = True)
+
+    def __init__(self, user_id, place_id):
+        self.user_id = user_id
+        self.place_id = place_id
+
 def register_user(login, email, name, password):
     user = User(login, email, name, password)
 
@@ -123,4 +132,15 @@ def update_place(place_id, name, description):
 def delete_place(place_id):
     place = Place.query.filter_by(id = place_id).delete()
     db.session.commit()
+    return None
+
+def create_user_place(user_id, place_id):
+    joinUserPlace = JoinUserPlace(user_id, place_id)
+
+    queryJoinUserPlace = JoinUserPlace.query.get((user_id, place_id))
+
+    if not queryJoinUserPlace:
+        db.session.add(joinUserPlace)
+        db.session.commit()
+
     return None
