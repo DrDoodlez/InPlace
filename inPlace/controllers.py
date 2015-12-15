@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from InPlace import app
 from flask import render_template, request, url_for, redirect, session, flash, g
-from .models import Box, User, Place, JoinUserPlace, authenticate_user, register_user, create_box, set_user_avatar, create_place, update_place, delete_place, create_user_place
+from .models import Box, User, Place, authenticate_user, register_user, create_box, set_user_avatar, create_place, update_place, delete_place, add_place_to_user
 from .forms import CreateBoxForm, RegistrationForm, LoginForm, PlaceForm
 from werkzeug import secure_filename
 
@@ -42,7 +42,7 @@ def add_place():
 
 @app.route('/place/add_user_place/<int:user_id>/<int:place_id>', methods=["GET", "POST"])
 def add_user_place(user_id, place_id):
-	create_user_place(user_id, place_id)
+	add_place_to_user(user_id, place_id)
 
 	return redirect('/')
 
@@ -72,10 +72,9 @@ def remove_place(place_id):
 def open_user():
     user = g.user
     # места нужно получать из списка мест пользователя
-    join_user_places = JoinUserPlace.query.filter_by(user_id = user.id)
-    places = Place.query
+    places = user.places
     #places = JoinUserPlace.query.filter_by(userId = user.Id).args.get(placeId)
-    return render_template('user.html', user = user, join_user_places = join_user_places, places = places)
+    return render_template('user.html', user = user, places = places)
 
 # TODO: реализовать удаление места из списка 
 # и возвращение к странице пользователя.

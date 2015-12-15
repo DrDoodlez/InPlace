@@ -15,15 +15,15 @@
 <h1> Мои места: </h1>
 <div class="user__places">
     <ul class="image-grid">
-    {% for jup in join_user_places %}
+    {% for p in places %}
         <li class="grid-item">
-            <a class="place-link" href="{{ url_for('open_place',place_id = jup.place_id) }}">
+            <a class="place-link" href="{{ url_for('open_place',place_id = p.id) }}">
                 <img class="grid-img" src="{{ url_for('static', filename='img/testPlace.jpg') }}">
                 <div>
-                    {{places.get(jup.place_id).name}}
+                    {{p.name}}
                 </div>
             </a> 
-            <a class="place__remove" href="{{ url_for('remove_place_from_user',user_id = user.id, place_id = jup.place_id) }} /user/remove_place/{{user.id}}/{{jup.place_id}}">Забыть место</a>
+            <a class="place__remove" href="{{ url_for('remove_place_from_user',user_id = user.id, place_id = p.id) }}">Забыть место</a>
         </li>
     {% endfor %}
     </ul>

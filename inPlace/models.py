@@ -38,7 +38,7 @@ class User(db.Model):
     email = db.Column(db.String(64), unique = True)
     name = db.Column(db.String(128))
     password = db.Column(db.String(64))
-    boxes = db.relationship('Box', backref='user', lazy='dynamic')
+    places = db.relationship('Place', backref='user', lazy='dynamic')
 
     def __init__(self, login, email, name, password):
         self.login = login
@@ -50,19 +50,11 @@ class Place(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(64))
     description = db.Column(db.String(128))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def __init__(self, name, description):
         self.name = name
         self.description = description
-
-class JoinUserPlace(db.Model):
-    id = db.Column(db.Integer)
-    user_id = db.Column(db.Integer, primary_key = True)
-    place_id = db.Column(db.Integer, primary_key = True)
-
-    def __init__(self, user_id, place_id):
-        self.user_id = user_id
-        self.place_id = place_id
 
 def register_user(login, email, name, password):
     user = User(login, email, name, password)
@@ -134,13 +126,10 @@ def delete_place(place_id):
     db.session.commit()
     return None
 
-def create_user_place(user_id, place_id):
-    joinUserPlace = JoinUserPlace(user_id, place_id)
-
-    queryJoinUserPlace = JoinUserPlace.query.get((user_id, place_id))
-
-    if not queryJoinUserPlace:
-        db.session.add(joinUserPlace)
-        db.session.commit()
-
+def add_place_to_user(user_id, place_id):
+    user = User.query.get(user_id)
+    place = Place.query.get(place_id)
+    user.places.append(place)
+    db.session.add(user)
+    db.session.commit()
     return None
