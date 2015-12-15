@@ -133,3 +133,11 @@ def add_place_to_user(user_id, place_id):
     db.session.add(user)
     db.session.commit()
     return None
+
+def delete_place_from_user(user_id, place_id):
+    user = User.query.get(user_id)
+    place = Place.query.get(place_id)
+    user.places.remove(place)
+    db.session.add(user)
+    db.session.commit()
+    return None

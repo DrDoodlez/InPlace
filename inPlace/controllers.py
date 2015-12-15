@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from InPlace import app
 from flask import render_template, request, url_for, redirect, session, flash, g
-from .models import Box, User, Place, authenticate_user, register_user, create_box, set_user_avatar, create_place, update_place, delete_place, add_place_to_user
+from .models import Box, User, Place, authenticate_user, register_user, create_box, set_user_avatar, create_place, update_place, delete_place, add_place_to_user, delete_place_from_user
 from .forms import CreateBoxForm, RegistrationForm, LoginForm, PlaceForm
 from werkzeug import secure_filename
 
@@ -44,7 +44,7 @@ def add_place():
 def add_user_place(user_id, place_id):
 	add_place_to_user(user_id, place_id)
 
-	return redirect('/')
+	return redirect("/place/" + str(place_id))
 
 @app.route('/place/update/<int:place_id>', methods=["GET", "POST"])
 def change_place(place_id):
@@ -80,7 +80,8 @@ def open_user():
 # и возвращение к странице пользователя.
 @app.route('/user/remove_place/<int:user_id>/<int:place_id>', methods = ["GET", "POST"])
 def remove_place_from_user(user_id, place_id):
-    return "WIP"
+    delete_place_from_user(user_id, place_id)
+    return redirect('/user')
 
 # TODO: Add new routes
 # @app.route('/boxes', methods=["GET", "POST"])
