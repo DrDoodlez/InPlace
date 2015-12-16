@@ -83,6 +83,11 @@ def remove_place_from_user(user_id, place_id):
     delete_place_from_user(user_id, place_id)
     return redirect('/user')
 
+@app.route('/user/remove_place_2/<int:user_id>/<int:place_id>', methods = ["GET", "POST"])
+def remove_place_from_user_2(user_id, place_id):
+    delete_place_from_user(user_id, place_id)
+    return redirect("/place/" + str(place_id))
+
 # TODO: Add new routes
 # @app.route('/boxes', methods=["GET", "POST"])
 # def inPlace_list():

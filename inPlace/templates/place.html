@@ -15,11 +15,15 @@
     </div>
 </div>
 
-<a class="place-link" href="{{ url_for('change_place', place_id=place.id) }}">Изменить</a>
-<a class="place-link" href="{{ url_for('remove_place', place_id=place.id) }}">Удалить</a>
+<a class="place-link" href="{{ url_for('change_place', place_id=place.id) }}">Изменить<br/></a>
+<a class="place-link" href="{{ url_for('remove_place', place_id=place.id) }}">Удалить<br/></a>
 
 {% if user %}
-  <a class="place-link" href="{{ url_for('add_user_place', user_id=user.id, place_id=place.id) }}">Добавить в мои места</a>
+    {% if place.user_id == user.id %}
+        <a class="place-link" href="{{ url_for('remove_place_from_user_2', user_id=user.id, place_id=place.id) }}">Удалить из моих мест<br/></a>
+    {% else %}
+        <a class="place-link" href="{{ url_for('add_user_place', user_id=user.id, place_id=place.id) }}">Добавить в мои места<br/></a>
+    {% endif %}
 {% endif %}
 <!-- TODO: http://demo.pixelcom.crimea.ua/javascript/tabs/tabs-aria.htm  настроить стили табов -->
 <!-- <ul class="tabs">
