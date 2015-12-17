@@ -3,10 +3,10 @@
 import os
 import unittest
 
-from boxes import app, db
-from boxes.models import User, register_user, authenticate_user
+from InPlace import app, db
+from InPlace.models import User, register_user, authenticate_user
 
-app.config.from_object('boxes.config.TestingConfig')
+app.config.from_object('InPlace.config.TestingConfig')
 
 class RegistrationTestCase(unittest.TestCase):
     def setUp(self):
@@ -26,7 +26,7 @@ class RegistrationTestCase(unittest.TestCase):
 
         self.assertEqual(rv.status_code, 302)
 
-suite = unittest.TestLoader().loadTestsFromTestCase(RegistrationTestCase)
+#suite = unittest.TestLoader().loadTestsFromTestCase(RegistrationTestCase)
         
 if __name__ == '__main__':
     unittest.main()

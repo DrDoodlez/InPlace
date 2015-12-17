@@ -3,10 +3,10 @@
 import os
 import unittest
 
-from boxes import app, db
-from boxes.models import User, register_user, authenticate_user
+from InPlace import app, db
+from InPlace.models import User, Place, register_user, authenticate_user, create_place, update_place, delete_place
 
-app.config.from_object('boxes.config.TestingConfig')
+app.config.from_object('InPlace.config.TestingConfig')
 
 class UserTestCase(unittest.TestCase):
     def setUp(self):
@@ -60,7 +60,44 @@ class UserTestCase(unittest.TestCase):
 
         self.assertIsNone(au)
 
-suite = unittest.TestLoader().loadTestsFromTestCase(UserTestCase)
+
+class PlaceTestCase(unittest.TestCase):
+    def setUp(self):
+        db.create_all()
+
+    def tearDown(self):
+        db.session.remove()
+        db.drop_all()
+
+    def test_create_place(self):
+        place = create_place(u"Место", u"Тестовое место")
+        
+        p = Place.query.filter_by(name=u"Место").first()
+        
+        self.assertEqual(p.description, u"Тестовое место")
+
+    def test_update_place(self):
+        place = Place(u"Место", u"Тестовое место")
+        db.session.add(place)
+        db.session.commit()
+
+        updated = update_place(place.id, u"Новое место", u"Новое тестовое место")
+
+        self.assertEqual(updated.id, place.id)
+        self.assertEqual(updated.name, u"Новое место")
+        self.assertEqual(updated.description, u"Новое тестовое место")
+
+    def test_delete_place(self): 
+        place = Place(u"Место", u"Тестовое место")
+        db.session.add(place)
+        db.session.commit()
+
+        delete_place(place.id)
+
+        p = Place.query.get(place.id)
+        self.assertEqual(p, None)
+
+#suite = unittest.TestLoader().loadTestsFromTestCase(UserTestCase)
         
 if __name__ == '__main__':
     unittest.main()
