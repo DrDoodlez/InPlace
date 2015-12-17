@@ -2,36 +2,13 @@
 from InPlace import app, db
 import uuid, os
 
-# TODO: добавить корректную модель
-accept_colors = ["red", "green", "blue", "yellow", "magenta", "cyan",
-                 "black", "white", "brown"]
-
 class ModelError(Exception):
     pass
 
 class DuplicateNameError(ModelError):
     pass
 
-class DuplicateColorError(ModelError):
-    pass
-
-class WrongColorError(ModelError):
-    pass
-
-class Box(db.Model):
-    id = db.Column(db.Integer, primary_key = True)
-    name = db.Column(db.String(64))
-    color = db.Column(db.Enum(*accept_colors))
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    avatar_id = db.Column(db.String(32))
-
-    def __init__(self, name, color):
-        self.name = name
-        self.color = color
-
-    def __repr__(self):
-        return '<Box %r>' % self.name
-
+###   User
 class User(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     login = db.Column(db.String(64), unique = True)
@@ -45,16 +22,6 @@ class User(db.Model):
         self.email = email
         self.name = name
         self.password = password
-
-class Place(db.Model):
-    id = db.Column(db.Integer, primary_key = True)
-    name = db.Column(db.String(64))
-    description = db.Column(db.String(128))
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-
-    def __init__(self, name, description):
-        self.name = name
-        self.description = description
 
 def register_user(login, email, name, password):
     user = User(login, email, name, password)
@@ -81,25 +48,17 @@ def set_user_avatar(user, image_file):
     db.session.add(user)
     db.session.commit()
 
-def create_box(user, name, color):
-    box = Box(name, color)
+###   Place
+class Place(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    name = db.Column(db.String(64))
+    description = db.Column(db.String(128))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
-    # Если у пользователя уже есть коробочка с таким именем
-    if filter(lambda b: b.name == name, user.boxes):
-        raise DuplicateNameError
-    
-    # Если у пользователя уже есть коробочка с таким цветом
-    if filter(lambda b: b.color == color, user.boxes):
-        raise DuplicateColorError
-    
-    user.boxes.append(box)
-    db.session.add(user)
-    db.session.commit()
+    def __init__(self, name, description):
+        self.name = name
+        self.description = description
 
-    return box
-
-
-###### TODO: Доделать создание места: новые параметры, фотография ....########
 def create_place(name, description):
     place = Place(name, description)
 
@@ -112,20 +71,20 @@ def create_place(name, description):
 
     return None
 
-# Не работает...почему-то не обновляется запись
 def update_place(place_id, name, description):
     place = Place.query.filter_by(id = place_id).first()
     place.name = name
     place.description = description
     db.session.commit()
-    print "Model:   %s %s" % (name, description)
-    return None
+    return place
 
 def delete_place(place_id):
     place = Place.query.filter_by(id = place_id).delete()
     db.session.commit()
     return None
 
+
+###   User-Place operation
 def add_place_to_user(user_id, place_id):
     user = User.query.get(user_id)
     place = Place.query.get(place_id)

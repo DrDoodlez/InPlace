@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from InPlace import app
 from flask import render_template, request, url_for, redirect, session, flash, g
-from .models import Box, User, Place, authenticate_user, register_user, create_box, set_user_avatar, create_place, update_place, delete_place, add_place_to_user, delete_place_from_user
-from .forms import CreateBoxForm, RegistrationForm, LoginForm, PlaceForm
+from .models import User, Place, authenticate_user, register_user, set_user_avatar, create_place, update_place, delete_place, add_place_to_user, delete_place_from_user
+from .forms import  RegistrationForm, LoginForm, PlaceForm
 from werkzeug import secure_filename
 
 
@@ -87,25 +87,6 @@ def remove_place_from_user(user_id, place_id):
 def remove_place_from_user_2(user_id, place_id):
     delete_place_from_user(user_id, place_id)
     return redirect("/place/" + str(place_id))
-
-# TODO: Add new routes
-# @app.route('/boxes', methods=["GET", "POST"])
-# def inPlace_list():
-#     form = CreateBoxForm(request.form)
-    
-#     if g.user:
-#         boxes = g.user.boxes
-#     else:
-#         flash(u'Чтобы просматривать список Коробочек!™ вам необходимо войти в систему')
-#         return redirect('/login')
-    
-#     if form.validate_on_submit():
-#         # TODO: обработать ошибки добавления новой коробочки
-#         box = create_box(g.user, form.name.data, form.color.data)
-        
-#         return redirect('/boxes')
-    
-#     return render_template('boxes.html', boxes=boxes, form=form)
 
 @app.route('/register', methods=["GET", "POST"])
 def registration():
