@@ -19,7 +19,13 @@ def place_search():
 
         if search_input == "":
             return redirect('/')
+
         places = find_place(search_input)
+
+        if places.count() == 0: 
+             request_text = u"Увы, по вашему запросу ничего не найдено"
+             return render_template('request_template.html',request_text = request_text)
+
         return render_template('index.html', user = g.user, places = places)
     return redirect('/')
 
