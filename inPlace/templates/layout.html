@@ -26,6 +26,14 @@
           <p><input type="submit" value="Поиск" hidden></p>
         </form>
       </div>
+      <div class = "user-header">
+      {% if g.user %}
+        <a class="user-indicator" href="{{ url_for('open_user') }}">{{g.user.name}}</a>
+        <a class="login-link" href="{{ url_for('logout') }}">выйти</a> 
+      {% else %}
+        <a class="login-link" href="{{ url_for('login') }}">войти в систему</a>
+      {% endif %}
+      </div>
     </div>
     {% with messages = get_flashed_messages() %}
       {% if messages %}

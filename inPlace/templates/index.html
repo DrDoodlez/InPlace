@@ -3,14 +3,7 @@
 
 <!-- TODO: Доработать стили. Сделать нормальную кнопку добавления. и др. -->
 {% block content %}
-    {% if user %}
-        <a class="user-indicator" href="{{ url_for('open_user') }}">{{user.name}}</a>
-        <a class="login-link" href="{{ url_for('logout') }}">выйти</a>
-        <a class="place-add-link" href="{{ url_for('add_place') }}"> Добавить место </a>
-    {% else %}
-        <a class="login-link" href="{{ url_for('login') }}">войти в систему</a>
-    {% endif %}
-
+    <a class="place-add-link" href="{{ url_for('add_place') }}"> Добавить место </a>
     <h1> Все места </h1>
     
     <ul class="image-grid">

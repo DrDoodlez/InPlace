@@ -5,12 +5,18 @@ body {
 
 .header {
     display: inline-block;
+    height: 150px;
 }
 .header-image {
     display: block;
     float: left;
     height: 100px;
-    margin-left: 30px;
+}
+
+.user-header {
+    display: block;
+    float: right;
+    margin-right: 50px;
 }
 
 .site-name {
@@ -27,7 +33,7 @@ body {
     font-size: 30px;
     display: block;
     margin-top: 25px;
-    margin-left: 200px;
+    margin-left: 230px;
 }
 
 .image-grid {
