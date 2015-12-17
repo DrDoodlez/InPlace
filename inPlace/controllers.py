@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 from InPlace import app
 from flask import render_template, request, url_for, redirect, session, flash, g
-from .models import User, Place, authenticate_user, register_user, set_user_avatar, create_place, update_place, delete_place, add_place_to_user, delete_place_from_user
-from .forms import  RegistrationForm, LoginForm, PlaceForm
+from .models import User, Place, authenticate_user, register_user, set_user_avatar, create_place
+from .models import update_place, delete_place, add_place_to_user, delete_place_from_user, find_place, create_event, update_event, delete_event
+from .forms import  RegistrationForm, LoginForm, PlaceForm, SearchForm
 from werkzeug import secure_filename
 
 
@@ -11,11 +12,17 @@ def index():
     places = Place.query
     return render_template('index.html', user = g.user, places = places)
 
-@app.route('/search')
-def open_search():        
-    return render_template('search.html')
+@app.route('/search', methods = ["POST"])
+def place_search():
+    if g.searchForm.validate_on_submit():
+        search_input = g.searchForm.search_input.data
 
-#TODO: Добавить передачу модели, для открытия конкретного места
+        if search_input == "":
+            return redirect('/')
+        places = find_place(search_input)
+        return render_template('index.html', user = g.user, places = places)
+    return redirect('/')
+
 @app.route('/place/<int:place_id>', methods = ["GET"])
 def open_place(place_id):
     place = Place.query.get(place_id)
@@ -71,13 +78,9 @@ def remove_place(place_id):
 @app.route('/user', methods = ["GET", "POST"])
 def open_user():
     user = g.user
-    # места нужно получать из списка мест пользователя
     places = user.places
-    #places = JoinUserPlace.query.filter_by(userId = user.Id).args.get(placeId)
     return render_template('user.html', user = user, places = places)
 
-# TODO: реализовать удаление места из списка 
-# и возвращение к странице пользователя.
 @app.route('/user/remove_place/<int:user_id>/<int:place_id>', methods = ["GET", "POST"])
 def remove_place_from_user(user_id, place_id):
     delete_place_from_user(user_id, place_id)
@@ -131,7 +134,7 @@ def logout():
 @app.before_request
 def verify_user_session():
     g.user = None
-    
+    g.searchForm = SearchForm(request.form)
     if 'user_id' not in session:        
         return
     
@@ -140,3 +143,5 @@ def verify_user_session():
     #TODO: проверить существует ли такой пользователь и может ли он
     #работать с системой
     g.user = User.query.get(int(user_id))
+
+

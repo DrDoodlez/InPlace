@@ -3,9 +3,6 @@
 <html lang="ru">
   <head>
     <meta charset="utf-8">
-    <meta name="description" content="Учебное приложение для
-                                      управления вашими коробочками">
-
     {% block head %}
     <!-- Add normalize.css which enables browsers to render all elements more consistently and in line with modern standards as it only targets particular styles that need normalizing -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/normalize.css') }}" media="all">
@@ -20,7 +17,14 @@
       </a>
       <div class ="site-name">ВМесте</div>
       <div class="search-input">
-        <input type="search" name="search" placeholder="Поиск по сайту">
+        {% from "_nolabels_formhelpers.html" import render_field %}
+        <form method="POST" action="{{ url_for('place_search') }}" enctype="multipart/form-data">
+          {{ g.searchForm.hidden_tag() }}
+          <p>
+            {{ render_field(g.searchForm.search_input) }}
+          </p>
+          <p><input type="submit" value="Поиск" hidden></p>
+        </form>
       </div>
     </div>
     {% with messages = get_flashed_messages() %}

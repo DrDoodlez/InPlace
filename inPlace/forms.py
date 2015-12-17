@@ -28,3 +28,6 @@ class RegistrationForm(Form):
 class LoginForm(Form):
     login = StringField(u'Имя пользователя', [validators.InputRequired()])
     password = PasswordField(u'Пароль', [validators.InputRequired()])
+
+class SearchForm(Form):
+    search_input = StringField()
