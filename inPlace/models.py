@@ -8,6 +8,7 @@ class ModelError(Exception):
 class DuplicateNameError(ModelError):
     pass
 
+##################################################################################
 ###   User
 class User(db.Model):
     id = db.Column(db.Integer, primary_key = True)
@@ -48,12 +49,16 @@ def set_user_avatar(user, image_file):
     db.session.add(user)
     db.session.commit()
 
+##################################################################################
 ###   Place
 class Place(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(64))
     description = db.Column(db.String(128))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    ## Отношения для событий и комментариев
+    events = db.relationship('Event', backref='place', lazy='dynamic')
+    comments = db.relationship('Comment', backref='place', lazy='dynamic')
 
     def __init__(self, name, description):
         self.name = name
@@ -72,7 +77,7 @@ def create_place(name, description):
     return None
 
 def update_place(place_id, name, description):
-    place = Place.query.filter_by(id = place_id).first()
+    place = Place.query.get(place_id)
     place.name = name
     place.description = description
     db.session.commit()
@@ -98,5 +103,85 @@ def delete_place_from_user(user_id, place_id):
     place = Place.query.get(place_id)
     user.places.remove(place)
     db.session.add(user)
+    db.session.commit()
+    return None
+
+
+##################################################################################
+###   Event   - Not Used
+class Event(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    name = db.Column(db.String(64))
+    description = db.Column(db.String(64), unique = True)
+    date = db.Column(db.Date)
+    place_id = db.Column(db.Integer, db.ForeignKey('place.id'))
+
+    def __init__(self, name, description, date):
+        self.name = name
+        self.description = description
+        self.date = date
+
+def create_event(name, description, date):
+    event = Event(name, description)
+
+    queryPlace = Event.query.filter_by(name=name, description=description).first()
+    
+    if not queryPlace:
+        db.session.add(event)
+        db.session.commit()
+        return event
+
+    return None
+
+def update_event(event_id, name, description):
+    event = Event.query.get(event_id)
+    event.name = name
+    event.description = description
+    event.date = date
+    db.session.commit()
+    return event
+
+def delete_event(event_id):
+    event = Event.query.filter_by(id =event_id).delete()
+    db.session.commit()
+    return None
+
+
+##################################################################################
+###   Comment   - Not Used
+class Comment(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    author = db.Column(db.String(64))
+    text = db.Column(db.String(64), unique = True)
+    date = db.Column(db.Date)
+    place_id = db.Column(db.Integer, db.ForeignKey('place.id'))
+
+    def __init__(self, author, text, date):
+        self.author = author
+        self.text = text
+        self.date = date
+
+def create_comment(author, text, date):
+    comment = Comment(author, text)
+
+    queryComment = Comment.query.filter_by(author=author, text=text).first()
+    
+    if not queryComment:
+        db.session.add(comment)
+        db.session.commit()
+        return comment
+
+    return None
+
+def update_comment(comment_id, author, text):
+    comment = Comment.query.get(comment_id)
+    comment.author = author
+    comment.text = text
+    comment.date = date
+    db.session.commit()
+    return comment
+
+def delete_comment(comment_id):
+    comment = Comment.query.filter_by(id = comment_id).delete()
     db.session.commit()
     return None
