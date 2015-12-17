@@ -4,7 +4,7 @@ import os
 import unittest
 
 from InPlace import app, db
-from InPlace.models import User, Place, register_user, authenticate_user, create_place, update_place, delete_place
+from InPlace.models import User, Place, Event, register_user, authenticate_user, create_place, update_place, delete_place, create_event, update_event, delete_event
 
 app.config.from_object('InPlace.config.TestingConfig')
 
@@ -96,6 +96,43 @@ class PlaceTestCase(unittest.TestCase):
 
         p = Place.query.get(place.id)
         self.assertEqual(p, None)
+
+
+class EventTestCase(unittest.TestCase):
+    def setUp(self):
+        db.create_all()
+
+    def tearDown(self):
+        db.session.remove()
+        db.drop_all()
+
+    def test_create_event(self):
+        event = create_event(u"Событие", u"Тестовое событие",u"01-01-15")
+        
+        e = Event.query.filter_by(name=u"Событие").first()
+        
+        self.assertEqual(e.description, u"Тестовое событие")
+
+    def test_update_event(self):
+        event = Event(u"Событие", u"Тестовое событие",u"01-01-15")
+        db.session.add(event)
+        db.session.commit()
+
+        updated = update_event(event.id, u"Новое событие", u"Новое тестовое событие","01-01-15")
+
+        self.assertEqual(updated.id, event.id)
+        self.assertEqual(updated.name, u"Новое событие")
+        self.assertEqual(updated.description, u"Новое тестовое событие")
+
+    def test_delete_event(self): 
+        event = Event(u"Место", u"Тестовое место",u"01-01-15")
+        db.session.add(event)
+        db.session.commit()
+
+        delete_event(event.id)
+
+        e = Event.query.get(event.id)
+        self.assertEqual(e, None)
 
 #suite = unittest.TestLoader().loadTestsFromTestCase(UserTestCase)
         

@@ -88,6 +88,9 @@ def delete_place(place_id):
     db.session.commit()
     return None
 
+def find_place(name):
+    queryPlace = Place.query.filter_by(name=name, description=description)
+    return queryPlace
 
 ###   User-Place operation
 def add_place_to_user(user_id, place_id):
@@ -113,7 +116,7 @@ class Event(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(64))
     description = db.Column(db.String(64), unique = True)
-    date = db.Column(db.Date)
+    date = db.Column(db.String(64))
     place_id = db.Column(db.Integer, db.ForeignKey('place.id'))
 
     def __init__(self, name, description, date):
@@ -122,7 +125,7 @@ class Event(db.Model):
         self.date = date
 
 def create_event(name, description, date):
-    event = Event(name, description)
+    event = Event(name, description, date)
 
     queryPlace = Event.query.filter_by(name=name, description=description).first()
     
@@ -133,7 +136,7 @@ def create_event(name, description, date):
 
     return None
 
-def update_event(event_id, name, description):
+def update_event(event_id, name, description, date):
     event = Event.query.get(event_id)
     event.name = name
     event.description = description
