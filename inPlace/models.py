@@ -146,6 +146,22 @@ def delete_event(event_id):
     db.session.commit()
     return None
 
+###   Place-Event operation
+def add_event_to_place(place_id, event_id):
+    place = Place.query.get(place_id)
+    event = Event.query.get(event_id)
+    place.events.append(event)
+    db.session.add(place)
+    db.session.commit()
+    return None
+
+def delete_event_from_place(place_id, event_id):
+    place = Place.query.get(place_id)
+    event = Event.query.get(event_id)
+    place.events.remove(event)
+    db.session.add(place)
+    db.session.commit()
+    return None
 
 ##################################################################################
 ###   Comment   - Not Used
@@ -183,5 +199,23 @@ def update_comment(comment_id, author, text):
 
 def delete_comment(comment_id):
     comment = Comment.query.filter_by(id = comment_id).delete()
+    db.session.commit()
+    return None
+
+
+###   Place-Commit operation
+def add_commit_to_place(place_id, commit_id):
+    place = Place.query.get(place_id)
+    commit = Commit.query.get(commit_id)
+    place.events.append(commit)
+    db.session.add(place)
+    db.session.commit()
+    return None
+
+def delete_commit_from_place(place_id, commit_id):
+    place = Place.query.get(place_id)
+    commit = Commit.query.get(commit_id)
+    place.events.remove(commit)
+    db.session.add(place)
     db.session.commit()
     return None
