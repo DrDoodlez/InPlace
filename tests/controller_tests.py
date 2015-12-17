@@ -26,7 +26,7 @@ class RegistrationTestCase(unittest.TestCase):
 
         self.assertEqual(rv.status_code, 302)
 
-#suite = unittest.TestLoader().loadTestsFromTestCase(RegistrationTestCase)
+suite = unittest.TestLoader().loadTestsFromTestCase(RegistrationTestCase)
         
 if __name__ == '__main__':
     unittest.main()

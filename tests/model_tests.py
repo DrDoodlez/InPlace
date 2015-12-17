@@ -4,7 +4,7 @@ import os
 import unittest
 
 from InPlace import app, db
-from InPlace.models import User, Place, Event, register_user, authenticate_user, create_place, update_place, delete_place, create_event, update_event, delete_event
+from InPlace.models import User, Place, Event, register_user, authenticate_user, create_place, update_place, delete_place, find_place, create_event, update_event, delete_event
 
 app.config.from_object('InPlace.config.TestingConfig')
 
@@ -96,6 +96,21 @@ class PlaceTestCase(unittest.TestCase):
 
         p = Place.query.get(place.id)
         self.assertEqual(p, None)
+
+    # Тест для поиска просто по имени (без подстрок)
+    def test_find_place(self): 
+        place = Place(u"Место", u"Тестовое место")
+        db.session.add(place)
+        db.session.commit()
+
+        place = Place(u"Место", u"Тестовое место2")
+        db.session.add(place)
+        db.session.commit()
+
+        places = find_place(u"Место")
+
+        self.assertEqual(places[0].description, u"Тестовое место")
+        self.assertEqual(places[1].description, u"Тестовое место2")
 
 
 class EventTestCase(unittest.TestCase):

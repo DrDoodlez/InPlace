@@ -88,8 +88,9 @@ def delete_place(place_id):
     db.session.commit()
     return None
 
+# Поиск без подстрок
 def find_place(name):
-    queryPlace = Place.query.filter_by(name=name, description=description)
+    queryPlace = Place.query.filter_by(name=name)
     return queryPlace
 
 ###   User-Place operation
