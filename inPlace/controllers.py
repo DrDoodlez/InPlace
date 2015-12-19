@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 from InPlace import app
 from flask import render_template, request, url_for, redirect, session, flash, g
-from .models import User, Place, authenticate_user, register_user, set_user_avatar, create_place
-from .models import update_place, delete_place, add_place_to_user, delete_place_from_user, find_place, create_event, update_event, delete_event
-from .forms import  RegistrationForm, LoginForm, PlaceForm, SearchForm
+from .models import User, Place, Event, authenticate_user, register_user, set_user_avatar, create_place
+from .models import update_place, delete_place, add_place_to_user, delete_place_from_user, find_place, create_event
+from .models import update_event, delete_event, add_event_to_place, add_event_to_user, delete_event_from_user
+from .forms import  RegistrationForm, LoginForm, PlaceForm, EventForm, SearchForm
 from werkzeug import secure_filename
 
 
@@ -32,7 +33,8 @@ def place_search():
 @app.route('/place/<int:place_id>', methods = ["GET"])
 def open_place(place_id):
     place = Place.query.get(place_id)
-    return render_template('place.html', user = g.user, place = place)
+    events = place.events
+    return render_template('place.html', user = g.user, place = place, events = events)
 
 @app.route('/place', methods = ["GET"])
 def open_test_place():
@@ -81,11 +83,75 @@ def remove_place(place_id):
     delete_place(place_id)    
     return redirect('/')
 
+#########################
+####### EVENT ###########
+#########################
+
+@app.route('/place/<int:place_id>/event/add', methods=["GET", "POST"])
+def add_event(place_id):
+    form = EventForm(request.form)
+    # POST  - сохранение добавленого места
+    if form.validate_on_submit():
+
+        ###### TODO: Нужно доделать добавление фотографии месту.########
+        #photo = request.files[form.photo.name]
+        event = create_event(form.name.data, form.description.data, form.date.data)
+        add_event_to_place(place_id, event)
+        
+        return redirect("/place/" + str(place_id))
+
+    return render_template('add_event.html', form = form, place_id = place_id)
+
+@app.route('/event/add_user_event/<int:user_id>/<int:event_id>', methods=["GET", "POST"])
+def add_user_event(user_id, event_id):
+    add_event_to_user(user_id, event_id)
+
+    return redirect("/event/" + str(event_id))
+
+@app.route('/user/remove_event/<int:user_id>/<int:event_id>', methods = ["GET", "POST"])
+def remove_event_from_user(user_id, event_id):
+    delete_event_from_user(user_id, event_id)
+    return redirect('/user')
+
+@app.route('/user/remove_event_2/<int:user_id>/<int:event_id>', methods = ["GET", "POST"])
+def remove_event_from_user_2(user_id, event_id):
+    delete_event_from_user(user_id, event_id)
+    return redirect("/event/" + str(event_id))
+
+@app.route('/event/<int:event_id>', methods = ["GET"])
+def open_event(event_id):
+    event = Event.query.get(event_id)
+    return render_template('event.html', user = g.user, event = event)
+
+@app.route('/event/update/<int:event_id>', methods=["GET", "POST"])
+def change_event(event_id):
+    form = EventForm(request.form)
+    if form.validate_on_submit():
+        ###### TODO: Нужно доделать добавление фотографии месту.########
+        #photo = request.files[form.photo.name]
+        print "Controller: %s %s %s" % (form.name.data, form.description.data, form.date.data)
+        update_event(event_id, form.name.data, form.description.data, form.date.data)
+        
+        return redirect("/event/" + str(event_id))
+
+    event = Event.query.filter(Event.id == event_id).first()
+    form.name.data = event.name
+    form.description.data = event.description
+    form.date.data = event.date
+
+    return render_template('update_event.html', form = form, id = event_id)
+
+@app.route('/event/remove/<int:event_id>', methods=["GET", "POST"])
+def remove_event(event_id):
+    delete_event(event_id)    
+    return redirect('/')
+
 @app.route('/user', methods = ["GET", "POST"])
 def open_user():
     user = g.user
     places = user.places
-    return render_template('user.html', user = user, places = places)
+    events = user.events
+    return render_template('user.html', user = user, places = places, events = events)
 
 @app.route('/user/remove_place/<int:user_id>/<int:place_id>', methods = ["GET", "POST"])
 def remove_place_from_user(user_id, place_id):

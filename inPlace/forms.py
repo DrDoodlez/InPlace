@@ -15,6 +15,12 @@ class PlaceForm(Form):
     description = StringField(u'Описание', [validators.InputRequired()])
     photo = FileField(u'Основная фотография места')
 
+class EventForm(Form):
+    name = StringField(u'Имя', [validators.InputRequired()])
+    description = StringField(u'Описание', [validators.InputRequired()])
+    date = StringField(u'Дата', [validators.InputRequired()])
+    photo = FileField(u'Основная фотография события')
+
 class RegistrationForm(Form):
     login = StringField(u'Имя пользователя', [validators.Length(min=4, max=25)])
     name = StringField(u'Имя', [validators.InputRequired()])

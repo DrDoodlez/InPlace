@@ -17,6 +17,7 @@ class User(db.Model):
     name = db.Column(db.String(128))
     password = db.Column(db.String(64))
     places = db.relationship('Place', backref='user', lazy='dynamic')
+    events = db.relationship('Event', backref='user', lazy='dynamic')
 
     def __init__(self, login, email, name, password):
         self.login = login
@@ -119,6 +120,7 @@ class Event(db.Model):
     description = db.Column(db.String(64), unique = True)
     date = db.Column(db.String(64))
     place_id = db.Column(db.Integer, db.ForeignKey('place.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def __init__(self, name, description, date):
         self.name = name
@@ -151,11 +153,18 @@ def delete_event(event_id):
     return None
 
 ###   Place-Event operation
-def add_event_to_place(place_id, event_id):
+def add_event_to_place(place_id, event):
     place = Place.query.get(place_id)
-    event = Event.query.get(event_id)
     place.events.append(event)
     db.session.add(place)
+    db.session.commit()
+    return None
+
+def add_event_to_user(user_id, event_id):
+    user = User.query.get(user_id)
+    event = Event.query.get(event_id)
+    user.events.append(event)
+    db.session.add(user)
     db.session.commit()
     return None
 
@@ -164,6 +173,14 @@ def delete_event_from_place(place_id, event_id):
     event = Event.query.get(event_id)
     place.events.remove(event)
     db.session.add(place)
+    db.session.commit()
+    return None
+
+def delete_event_from_user(user_id, event_id):
+    user = User.query.get(user_id)
+    event = Event.query.get(event_id)
+    user.events.remove(event)
+    db.session.add(user)
     db.session.commit()
     return None
 
