@@ -247,3 +247,13 @@ def delete_commit_from_place(place_id, commit_id):
     db.session.add(place)
     db.session.commit()
     return None
+
+##################################################################################
+###   Photo   - Not Used
+class Photo(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    description = db.Column(db.String(64), unique = True)
+    place_id = db.Column(db.Integer, db.ForeignKey('place.id'))
+
+    def __init__(self, description):
+        self.description = description
