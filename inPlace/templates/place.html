@@ -1,12 +1,13 @@
 {% extends "layout.html" %}
-{% block title %}PlaceName{% endblock %}
+{% block title %}{{place.name}}{% endblock %}
 
 <!-- TODO: Добавить использование фотографий из данных модели -->
 {% block content %}
 
 <div class="place-up">
+    {% if place.avatar_id %}
     <img class="place-img" src="{{ url_for('static', filename='uploads/avatars/'+place.avatar_id) }}">
-
+    {% endif %}
     <div class="place-right"> 
         <div class="place-name">{{place.name}}</div>
         <div class="place-text">

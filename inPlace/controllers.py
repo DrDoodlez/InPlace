@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from InPlace import app
 from flask import render_template, request, url_for, redirect, session, flash, g
-from .models import User, Place, authenticate_user, register_user, set_user_avatar, create_place, set_place_avatar
+from .models import User, Place, authenticate_user, register_user, create_place, set_image, delete_old_image
 from .models import update_place, delete_place, add_place_to_user, delete_place_from_user, find_place, create_event, update_event, delete_event
 from .forms import  RegistrationForm, LoginForm, PlaceForm, SearchForm, AvatarForm
 from werkzeug import secure_filename
@@ -45,14 +45,14 @@ def add_place():
 	# POST  - сохранение добавленого места
 	if form.validate_on_submit():
 
-		###### TODO: Нужно доделать добавление фотографии месту.########
-		#photo = request.files[form.photo.name]
-		avatar_image = request.files[form.avatar.name]
-
 		place = create_place(form.name.data, form.description.data)
-		set_place_avatar(place, avatar_image)
-		app.logger.debug("Place image file: %s", avatar_image)
-		return redirect('/')
+
+		avatar_image = request.files[form.avatar.name]
+		if avatar_image:
+			app.logger.debug("Place image file: %s", avatar_image)
+			set_image(place, avatar_image, 'AVATARS_FOLDER')
+		
+		return redirect('/place/' + str(place.id))
 
 	return render_template('add_place.html', form = form)
 
@@ -70,40 +70,44 @@ def change_place(place_id):
 		#photo = request.files[form.photo.name]
 		#print "Controller:   %s %s" % (form.name.data, form.description.data, form.avatar.data)
 		#avatar_image = request.files[form.avatar.name]
-    	#app.logger.debug("Place image file: %s", avatar_image)
-	    update_place(place_id, form.name.data, form.description.data)
-	    place = Place.query.filter(Place.id == place_id).first()
+		#app.logger.debug("Place image file: %s", avatar_image)
+		avatar_image = request.files[form.avatar.name]
+		update_place(place_id, form.name.data, form.description.data)
+		place = Place.query.filter(Place.id == place_id).first()
 
-	    form.name.data = place.name
-	    form.description.data = place.description
-	    
-	    return redirect('/')
+		if avatar_image:
+			app.logger.debug("Place image file update: %s", avatar_image)
+			delete_old_image(place, 'AVATARS_FOLDER')
+			app.logger.debug("Deleted image file, now updating ")
+			set_image(place, avatar_image, 'AVATARS_FOLDER')
+
+		form.name.data = place.name
+		form.description.data = place.description
+
+		if avatar_image:
+			form.avatar.data = place.avatar_id
+		
+		return redirect('/place/' + str(place.id))
 	return render_template('update_place.html', form = form, id = place_id)
 
 
 ##adds user avatar if it doesn't exsist
-@app.route('/user/<int:user_id>', methods=["GET", "POST"])
-def add_user_avatar(user_id):
-
+@app.route('/user/update/<int:user_id>', methods=["GET", "POST"])
+def change_user_profile(user_id):
 	form = AvatarForm(request.form)
-	app.logger.debug(" recieved form")
 	if form.validate_on_submit():
-		app.logger.debug("Going to add avatar to user with id '%s'", form.avatar.data)
-
 		avatar_image = request.files[form.avatar.name]
-		app.logger.debug("User image file: %s", avatar_image)
-	   
-		# TODO: обработать ошибки добавления нового пользователя        
-		user = User.query.get(int(user_id))
-		set_user_avatar(user, avatar_image)
-			
-		app.logger.debug("Avatar '%s' successfully added", form.avatar.data)        
-		flash(u'Пользователю успешно добавлена ава.' % form.avatar.data)
-		
-	#return open_user()
-	#return redirect('/user')
-	return render_template('user.html', user = user)
-	return render_template('user.html', user = user)
+
+		if avatar_image:
+			app.logger.debug("User image file update: %s", avatar_image)
+			user = User.query.get(int(user_id))
+			delete_old_image(user, 'AVATARS_FOLDER')
+			app.logger.debug("Deleted image file, now updating ")
+			set_image(user, avatar_image, 'AVATARS_FOLDER')
+			app.logger.debug("Avatar '%s' successfully added", form.avatar.data)        
+	
+		return redirect('/user')	
+	return render_template('update_user.html', form = form, id = user_id)
 
 		
 
@@ -141,7 +145,7 @@ def registration():
 
 		# TODO: обработать ошибки добавления нового пользователя        
 		user = register_user(form.login.data, form.email.data, form.name.data, form.password.data)
-		set_user_avatar(user, avatar_image)
+		set_image(user, avatar_image, 'AVATARS_FOLDER')
 
 		app.logger.debug("User '%s' successfully registered", user.login)        
 		flash(u'Пользователь %s успешно зарегистрирован.' % form.login.data)

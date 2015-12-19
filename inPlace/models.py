@@ -8,6 +8,32 @@ class ModelError(Exception):
 class DuplicateNameError(ModelError):
     pass
 
+
+##################################################################################
+###   Common methods
+
+def set_image(table, image_file, folder):
+	image_filename = uuid.uuid4().hex + ".jpg"
+	#if image_type == 'avatar':
+	image_file.save(os.path.join(app.config[folder], image_filename))
+	table.avatar_id = image_filename
+	#else: 
+	#	image_file.save(os.path.join(app.config['PHOTO_FOLDER'], image_filename))
+	#	table.avatar_id = avatar_filename                            
+
+	# TODO: если записать в БД не удалось - удалить файл аватарки
+	db.session.add(table)
+	db.session.commit()
+
+
+def delete_old_image(table, folder):
+    os.remove(os.path.join(app.config[folder], table.avatar_id))
+    db.session.commit()
+
+
+
+
+
 ##################################################################################
 ###   User
 class User(db.Model):
@@ -39,17 +65,6 @@ def authenticate_user(login, password):
         return user
 
     return None
-
-def set_user_avatar(user, image_file):
-    avatar_filename = uuid.uuid4().hex + ".jpg"
-    image_file.save(os.path.join(app.config['AVATARS_FOLDER'],
-                                   avatar_filename))
-    ## Аватарка 
-    user.avatar_id = avatar_filename
-
-    # TODO: если записать в БД не удалось - удалить файл аватарки
-    db.session.add(user)
-    db.session.commit()
 
 
 ##################################################################################
@@ -86,14 +101,7 @@ def update_place(place_id, name, description):
     place.name = name
     place.description = description
 
-    # TODO: обработать ошибки добавления нового пользователя        
-
-    #avatar_filename = uuid.uuid4().hex + ".jpg"
-    #avatar.save(os.path.join(app.config['AVATARS_FOLDER'],avatar_filename))
-    ## Аватарка 
-    #place.avatar_id = avatar_filename
-
-    # TODO: если записать в БД не удалось - удалить файл аватарки
+    # TODO: обработать ошибки добавления нового пользователя       
     db.session.commit()
     return place
 
@@ -124,16 +132,6 @@ def delete_place_from_user(user_id, place_id):
     db.session.commit()
     return None
 
-def set_place_avatar(place, image_file):
-    avatar_filename = uuid.uuid4().hex + ".jpg"
-    image_file.save(os.path.join(app.config['AVATARS_FOLDER'],
-                                   avatar_filename))
-    ## Аватарка 
-    place.avatar_id = avatar_filename
-
-    # TODO: если записать в БД не удалось - удалить файл аватарки
-    db.session.add(place)
-    db.session.commit()
 
 ##################################################################################
 ###   Event   - Not Used

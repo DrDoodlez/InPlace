@@ -10,7 +10,9 @@
     {% for p in places %}
         <li class="grid-item">
             <a class="place-link" href="{{ url_for('open_place', place_id = p.id)}}">
+                {% if p.avatar_id %}
                 <img class="place-img" src="{{ url_for('static', filename='uploads/avatars/'+p.avatar_id) }}">
+                {% endif %}
                 <div>
                     {{p.name}}                     
                     {% if p.user_id == user.id %}
