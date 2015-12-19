@@ -138,6 +138,11 @@ body {
     height: 100px;
 }
 
+.user-link {
+    height: inherit;
+    width: inherit;
+}
+
 .place__remove {
     font-size: 12px;
 }

@@ -8,17 +8,33 @@
     <div class="user__name">{{user.name}}</div>
 
     <!-- нужно добавить извлечение картинки <img class="user__img" src="{{ url_for('static', filename='') }}"> -->
-    <img class="user__img" src="{{ url_for('static', filename='img/testPhoto.png') }}">
-</div>
+    {% if user.avatar_id %}
+    <br/>
+    <img class="user__img" src="{{ url_for('static', filename='uploads/avatars/'+user.avatar_id) }}">
+    <div class="user-link">
+        <p><a href="">Изменить профиль</a></p>
+    </div>     
 
+    {% elif not user.avatar_id %}
 
+    <div class="user">
+        <p> No img =(</p>
+    </div>
+     <div class="user-link">
+        <p><a href="">Изменить профиль</a></p>
+    </div>   
+
+    {% endif %}
+</div>    
+<br/>
+<br/>
 <h1> Мои места: </h1>
 <div class="user__places">
     <ul class="image-grid">
     {% for p in places %}
         <li class="grid-item">
             <a class="place-link" href="{{ url_for('open_place',place_id = p.id) }}">
-                <img class="grid-img" src="{{ url_for('static', filename='img/testPlace.jpg') }}">
+                <img class="grid-img" src="{{ url_for('static', filename='uploads/avatars/'+p.avatar_id) }}">
                 <div>
                     {{p.name}}
                 </div>

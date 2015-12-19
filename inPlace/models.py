@@ -16,6 +16,7 @@ class User(db.Model):
     email = db.Column(db.String(64), unique = True)
     name = db.Column(db.String(128))
     password = db.Column(db.String(64))
+    avatar_id = db.Column(db.String(64))
     places = db.relationship('Place', backref='user', lazy='dynamic')
 
     def __init__(self, login, email, name, password):
@@ -43,11 +44,13 @@ def set_user_avatar(user, image_file):
     avatar_filename = uuid.uuid4().hex + ".jpg"
     image_file.save(os.path.join(app.config['AVATARS_FOLDER'],
                                    avatar_filename))
+    ## Аватарка 
     user.avatar_id = avatar_filename
 
     # TODO: если записать в БД не удалось - удалить файл аватарки
     db.session.add(user)
     db.session.commit()
+
 
 ##################################################################################
 ###   Place
@@ -56,6 +59,8 @@ class Place(db.Model):
     name = db.Column(db.String(64))
     description = db.Column(db.String(128))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    ## Аватарка 
+    avatar_id = db.Column(db.String(64))
     ## Отношения для событий и комментариев
     events = db.relationship('Event', backref='place', lazy='dynamic')
     comments = db.relationship('Comment', backref='place', lazy='dynamic')
@@ -80,6 +85,15 @@ def update_place(place_id, name, description):
     place = Place.query.get(place_id)
     place.name = name
     place.description = description
+
+    # TODO: обработать ошибки добавления нового пользователя        
+
+    #avatar_filename = uuid.uuid4().hex + ".jpg"
+    #avatar.save(os.path.join(app.config['AVATARS_FOLDER'],avatar_filename))
+    ## Аватарка 
+    #place.avatar_id = avatar_filename
+
+    # TODO: если записать в БД не удалось - удалить файл аватарки
     db.session.commit()
     return place
 
@@ -110,6 +124,16 @@ def delete_place_from_user(user_id, place_id):
     db.session.commit()
     return None
 
+def set_place_avatar(place, image_file):
+    avatar_filename = uuid.uuid4().hex + ".jpg"
+    image_file.save(os.path.join(app.config['AVATARS_FOLDER'],
+                                   avatar_filename))
+    ## Аватарка 
+    place.avatar_id = avatar_filename
+
+    # TODO: если записать в БД не удалось - удалить файл аватарки
+    db.session.add(place)
+    db.session.commit()
 
 ##################################################################################
 ###   Event   - Not Used
