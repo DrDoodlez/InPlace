@@ -4,7 +4,7 @@ import os
 import unittest
 
 from InPlace import app, db
-from InPlace.models import User, get_user, authenticate_user, register_user, set_user_avatar
+from InPlace.models import User, get_user, authenticate_user, register_user
 from InPlace.models import Place, get_place, create_place, update_place, delete_place, find_place
 from InPlace.models import Event, get_event, create_event, update_event, delete_event
 from InPlace.models import Comment, get_comment, create_comment, update_comment, delete_comment
@@ -81,6 +81,14 @@ class PlaceTestCase(unittest.TestCase):
         p = Place.query.filter_by(name=u"Место").first()
         
         self.assertEqual(p.description, u"Тестовое место")
+
+    # def test_creat_place_long_name(self):
+    #     longname = u"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1"
+        
+    #     self.assertRaises(Exception,
+    #                       create_place,
+    #                       longname,
+    #                       "Тестовое место")
 
     def test_update_place(self):
         place = Place(u"Место", u"Тестовое место")

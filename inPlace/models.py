@@ -38,7 +38,7 @@ def delete_old_image(table, folder):
 ###   User
 class User(db.Model):
     id = db.Column(db.Integer, primary_key = True)
-    login = db.Column(db.String(64), unique = True)
+    login = db.Column(db.String(25), unique = True)
     email = db.Column(db.String(64), unique = True)
     name = db.Column(db.String(128))
     password = db.Column(db.String(64))
@@ -77,7 +77,7 @@ def authenticate_user(login, password):
 class Place(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(64))
-    description = db.Column(db.String(128))
+    description = db.Column(db.String(200))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     ## Аватарка 
     avatar_id = db.Column(db.String(64))
