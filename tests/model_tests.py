@@ -4,7 +4,13 @@ import os
 import unittest
 
 from InPlace import app, db
-from InPlace.models import User, Place, Event, register_user, authenticate_user, create_place, update_place, delete_place, find_place, create_event, update_event, delete_event
+from InPlace.models import User, get_user, authenticate_user, register_user, set_user_avatar
+from InPlace.models import Place, get_place, create_place, update_place, delete_place, find_place
+from InPlace.models import Event, get_event, create_event, update_event, delete_event
+from InPlace.models import Comment, get_comment, create_comment, update_comment, delete_comment
+from InPlace.models import add_place_to_user, delete_place_from_user
+from InPlace.models import add_event_to_place, delete_event_from_place, add_event_to_user, delete_event_from_user
+from InPlace.models import add_comment_to_place, delete_comment_from_place
 
 app.config.from_object('InPlace.config.TestingConfig')
 
@@ -81,7 +87,7 @@ class PlaceTestCase(unittest.TestCase):
         db.session.add(place)
         db.session.commit()
 
-        updated = update_place(place.id, u"Новое место", u"Новое тестовое место")
+        updated = update_place(place, u"Новое место", u"Новое тестовое место")
 
         self.assertEqual(updated.id, place.id)
         self.assertEqual(updated.name, u"Новое место")
@@ -92,9 +98,9 @@ class PlaceTestCase(unittest.TestCase):
         db.session.add(place)
         db.session.commit()
 
-        delete_place(place.id)
+        delete_place(place)
 
-        p = Place.query.get(place.id)
+        p = get_place(place.id)
         self.assertEqual(p, None)
 
     # Тест для поиска просто по имени (без подстрок)
@@ -133,7 +139,7 @@ class EventTestCase(unittest.TestCase):
         db.session.add(event)
         db.session.commit()
 
-        updated = update_event(event.id, u"Новое событие", u"Новое тестовое событие","01-01-15")
+        updated = update_event(event, u"Новое событие", u"Новое тестовое событие","01-01-15")
 
         self.assertEqual(updated.id, event.id)
         self.assertEqual(updated.name, u"Новое событие")
@@ -144,7 +150,7 @@ class EventTestCase(unittest.TestCase):
         db.session.add(event)
         db.session.commit()
 
-        delete_event(event.id)
+        delete_event(event)
 
         e = Event.query.get(event.id)
         self.assertEqual(e, None)
