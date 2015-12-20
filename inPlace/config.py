@@ -2,7 +2,7 @@ import os
 basedir = os.path.abspath('%s/../' % os.path.dirname(__file__))
 
 class DefaultConfig:
-    DEBUG = False
+    DEBUG = True
     LISTEN_HOST = '0.0.0.0'
     LISTEN_PORT = 5000
     WTF_CSRF_ENABLED = True

@@ -95,7 +95,7 @@ body {
 }
 
 .place-img {
-    width: 50%;
+    width: 250px;
     margin-left: 20px;
     display: block;
     float: left;
@@ -136,6 +136,11 @@ body {
     margin-left: 20px;
     width: 100px;
     height: 100px;
+}
+
+.user-link {
+    height: inherit;
+    width: inherit;
 }
 
 .place__remove {

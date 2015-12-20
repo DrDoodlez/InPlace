@@ -8,6 +8,32 @@ class ModelError(Exception):
 class DuplicateNameError(ModelError):
     pass
 
+
+##################################################################################
+###   Common methods
+
+def set_image(table, image_file, folder):
+    image_filename = uuid.uuid4().hex + ".jpg"
+    #if image_type == 'avatar':
+    image_file.save(os.path.join(app.config[folder], image_filename))
+    table.avatar_id = image_filename
+    #else: 
+    #	image_file.save(os.path.join(app.config['PHOTO_FOLDER'], image_filename))
+    #	table.avatar_id = avatar_filename                            
+
+    # TODO: если записать в БД не удалось - удалить файл аватарки
+    db.session.add(table)
+    db.session.commit()
+
+
+def delete_old_image(table, folder):
+    os.remove(os.path.join(app.config[folder], table.avatar_id))
+    db.session.commit()
+
+
+
+
+
 ##################################################################################
 ###   User
 class User(db.Model):
@@ -16,6 +42,7 @@ class User(db.Model):
     email = db.Column(db.String(64), unique = True)
     name = db.Column(db.String(128))
     password = db.Column(db.String(64))
+    avatar_id = db.Column(db.String(64))
     places = db.relationship('Place', backref='user', lazy='dynamic')
     events = db.relationship('Event', backref='user', lazy='dynamic')
 
@@ -44,15 +71,6 @@ def authenticate_user(login, password):
 
     return None
 
-def set_user_avatar(user, image_file):
-    avatar_filename = uuid.uuid4().hex + ".jpg"
-    image_file.save(os.path.join(app.config['AVATARS_FOLDER'],
-                                   avatar_filename))
-    user.avatar_id = avatar_filename
-
-    # TODO: если записать в БД не удалось - удалить файл аватарки
-    db.session.add(user)
-    db.session.commit()
 
 ##################################################################################
 ###   Place
@@ -61,6 +79,8 @@ class Place(db.Model):
     name = db.Column(db.String(64))
     description = db.Column(db.String(128))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    ## Аватарка 
+    avatar_id = db.Column(db.String(64))
     ## Отношения для событий и комментариев
     events = db.relationship('Event', backref='place', lazy='dynamic')
     comments = db.relationship('Comment', backref='place', lazy='dynamic')
@@ -88,6 +108,8 @@ def create_place(name, description):
 def update_place(place, name, description):
     place.name = name
     place.description = description
+
+    # TODO: обработать ошибки добавления нового пользователя       
     db.session.commit()
     return place
 
@@ -238,3 +260,13 @@ def delete_comment_from_place(place, comment):
     db.session.add(place)
     db.session.comment()
     return True
+
+##################################################################################
+###   Photo   - Not Used
+class Photo(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    description = db.Column(db.String(64), unique = True)
+    place_id = db.Column(db.Integer, db.ForeignKey('place.id'))
+
+    def __init__(self, description):
+        self.description = description

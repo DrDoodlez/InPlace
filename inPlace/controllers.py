@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 from InPlace import app
 from flask import render_template, request, url_for, redirect, session, flash, g, abort
-from .models import User, get_user, authenticate_user, register_user, set_user_avatar
+from .models import User, get_user, authenticate_user, register_user
 from .models import Place, get_place, create_place, update_place, delete_place, find_place
 from .models import Event, get_event, create_event, update_event, delete_event
 from .models import Comment, get_comment, create_comment, update_comment, delete_comment
+from .models import Photo, set_image, delete_old_image
 from .models import add_place_to_user, delete_place_from_user
 from .models import add_event_to_place, delete_event_from_place, add_event_to_user, delete_event_from_user
 from .models import add_comment_to_place, delete_comment_from_place
-from .forms import  RegistrationForm, LoginForm, PlaceForm, SearchForm, EventForm
+from .forms import  RegistrationForm, LoginForm, PlaceForm, SearchForm, EventForm, AvatarForm
 from werkzeug import secure_filename
 
 
@@ -31,8 +32,13 @@ def add_place():
         ###### TODO: Нужно доделать добавление фотографии месту.########
         #photo = request.files[form.photo.name]
         place = create_place(form.name.data, form.description.data)
+        avatar_image = request.files[form.avatar.name]
+        if avatar_image:
+            app.logger.debug("Place image file: %s", avatar_image)
+            set_image(place, avatar_image, 'AVATARS_FOLDER')
         
-        return redirect('/')
+        return redirect('/place/' + str(place.id))
+
 
     return render_template('add_place.html', form = form)
 
@@ -94,6 +100,12 @@ def add_user_place(user_id, place_id):
 @app.route('/place/update/<int:place_id>', methods=["GET", "POST"])
 def change_place(place_id):
     form = PlaceForm(request.form)
+    place = get_place(place_id)
+    if not place:
+        request_text = u"Увы, такого нет места"
+        abort(404, request_text)
+
+    avatar_image = place.avatar_id
     if form.validate_on_submit():
         ###### TODO: Нужно доделать добавление фотографии месту.########
         #photo = request.files[form.photo.name]
@@ -101,22 +113,54 @@ def change_place(place_id):
         if not place: 
             request_text = u"Увы, такого места нет"
             abort(404, request_text)
-        
+        avatar_image = request.files[form.avatar.name]
         if not update_place(place, form.name.data, form.description.data):
             request_text = u"Увы, не удалось изменить место"
             abort(404, request_text)
         
-        return redirect('/')
+        if avatar_image:
+            app.logger.debug("Place image file update: %s", avatar_image)
+            delete_old_image(place, 'AVATARS_FOLDER')
+            app.logger.debug("Deleted image file, now updating ")
+            set_image(place, avatar_image, 'AVATARS_FOLDER')
 
-    place = get_place(place_id)
-    if not place:
-        request_text = u"Увы, такого нет места"
-        abort(404, request_text)
+        return redirect('/place/' + str(place.id))
 
     form.name.data = place.name
     form.description.data = place.description
+    if avatar_image:
+            form.avatar.data = place.avatar_id
 
     return render_template('update_place.html', form = form, id = place_id)
+
+   # place = get_place(place_id)
+   #  if not place: 
+   #      request_text = u"Увы, такого места нет"
+   #      abort(404, request_text)
+    
+   #  form = PlaceForm(request.form) 
+   #  if form.validate_on_submit():
+   #      avatar_image = request.files[form.avatar.name]
+
+   #      if not update_place(place, form.name.data, form.description.data):
+   #          request_text = u"Увы, не удалось изменить место"
+   #          abort(404, request_text)
+        
+   #      if avatar_image:
+   #          app.logger.debug("Place image file update: %s", avatar_image)
+   #          delete_old_image(place, 'AVATARS_FOLDER')
+   #          app.logger.debug("Deleted image file, now updating ")
+   #          set_image(place, avatar_image, 'AVATARS_FOLDER')
+
+   #      return redirect('/place/' + str(place.id))
+
+   #  form.name.data = place.name
+   #  form.description.data = place.description    
+   #  avatar_image = place.avatar_id
+   #  if avatar_image:
+   #      form.avatar.data = avatar_image
+        
+   #  return render_template('update_place.html', form = form, id = place_id)
 
 #########################
 ####### EVENT ###########
@@ -249,6 +293,29 @@ def open_user():
     events = user.events
     return render_template('user.html', user = user, places = places, events = events)
 
+##adds user avatar if it doesn't exsist
+@app.route('/user/update/<int:user_id>', methods=["GET", "POST"])
+def change_user_profile(user_id):
+    user = get_user(user_id)
+    if not user:
+        request_text = u"Увы, такого пользователя нет"
+        abort(404, request_text)
+
+    form = AvatarForm(request.form)
+    if form.validate_on_submit():
+        avatar_image = request.files[form.avatar.name]
+
+        if avatar_image:
+            app.logger.debug("User image file update: %s", avatar_image)
+            #user = User.query.get(int(user_id))
+            delete_old_image(user, 'AVATARS_FOLDER')
+            app.logger.debug("Deleted image file, now updating ")
+            set_image(user, avatar_image, 'AVATARS_FOLDER')
+            app.logger.debug("Avatar '%s' successfully added", form.avatar.data)        
+    
+        return redirect('/user')    
+    return render_template('update_user.html', form = form, id = user_id)
+
 @app.route('/user/remove_place/<int:user_id>/<int:place_id>', methods = ["GET", "POST"])
 def remove_place_from_user(user_id, place_id):
     user = get_user(user_id)
@@ -296,7 +363,7 @@ def registration():
 
         # TODO: обработать ошибки добавления нового пользователя        
         user = register_user(form.login.data, form.email.data, form.name.data, form.password.data)
-        set_user_avatar(user, avatar_image)
+        set_image(user, avatar_image, 'AVATARS_FOLDER')
 
         app.logger.debug("User '%s' successfully registered", user.login)        
         flash(u'Пользователь %s успешно зарегистрирован.' % form.login.data)
