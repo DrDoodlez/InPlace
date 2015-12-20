@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+{% block title %}Редактирование события{% endblock %}
+
+{% block content %}
+
+{% from "_formhelpers.html" import render_field %}
+  <form method="POST" action="{{ url_for('change_event', event_id = id) }}" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+    <p>
+      {{ render_field(form.name) }}
+    </p>
+    <p>
+      {{ render_field(form.description) }}
+    </p>
+    <p>
+      {{ render_field(form.date) }}
+    </p>
+    <p>
+    {{ render_field(form.photo) }}
+    </p>
+    <p><input type="submit" value="Сохранить"></p>
+  </form>
+
+{% endblock %}

@@ -1,14 +1,14 @@
-"""First revision
+"""Rebase
 
-Revision ID: 1efc08ff7e1f
-Revises: 283c496f7afe
-Create Date: 2015-12-17 14:58:28.928978
+Revision ID: 1f78da733f20
+Revises: 
+Create Date: 2015-12-20 13:36:38.619679
 
 """
 
 # revision identifiers, used by Alembic.
-revision = '1efc08ff7e1f'
-down_revision = '283c496f7afe'
+revision = '1f78da733f20'
+down_revision = None
 branch_labels = None
 depends_on = None
 
@@ -52,7 +52,9 @@ def upgrade():
     sa.Column('description', sa.String(length=64), nullable=True),
     sa.Column('date', sa.String(length=64), nullable=True),
     sa.Column('place_id', sa.Integer(), nullable=True),
+    sa.Column('user_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['place_id'], ['place.id'], ),
+    sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('description')
     )

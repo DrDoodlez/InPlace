@@ -17,13 +17,30 @@
     <ul class="image-grid">
     {% for p in places %}
         <li class="grid-item">
-            <a class="place-link" href="{{ url_for('open_place',place_id = p.id) }}">
+            <a class="place-link" href="{{ url_for('open_place', place_id = p.id) }}">
                 <img class="grid-img" src="{{ url_for('static', filename='img/testPlace.jpg') }}">
                 <div>
                     {{p.name}}
                 </div>
             </a> 
-            <a class="place__remove" href="{{ url_for('remove_place_from_user',user_id = user.id, place_id = p.id) }}">Забыть место</a>
+            <a class="place__remove" href="{{ url_for('remove_place_from_user', user_id = user.id, place_id = p.id) }}">Забыть место</a>
+        </li>
+    {% endfor %}
+    </ul>
+</div>
+
+<h1> Мои события: </h1>
+<div class="user__places">
+    <ul class="image-grid">
+    {% for e in events %}
+        <li class="grid-item">
+            <a class="place-link" href="{{ url_for('open_event', event_id = e.id) }}">
+                <img class="grid-img" src="{{ url_for('static', filename='img/testEvent.jpg') }}">
+                <div>
+                    {{e.name}}
+                </div>
+            </a> 
+            <a class="place__remove" href="{{ url_for('remove_event_from_user', user_id = user.id, event_id = e.id) }}">Забыть событие</a>
         </li>
     {% endfor %}
     </ul>

@@ -6,9 +6,9 @@ from .models import Place, get_place, create_place, update_place, delete_place, 
 from .models import Event, get_event, create_event, update_event, delete_event
 from .models import Comment, get_comment, create_comment, update_comment, delete_comment
 from .models import add_place_to_user, delete_place_from_user
-from .models import add_event_to_place, delete_event_from_place
+from .models import add_event_to_place, delete_event_from_place, add_event_to_user, delete_event_from_user
 from .models import add_comment_to_place, delete_comment_from_place
-from .forms import  RegistrationForm, LoginForm, PlaceForm, SearchForm
+from .forms import  RegistrationForm, LoginForm, PlaceForm, SearchForm, EventForm
 from werkzeug import secure_filename
 
 
@@ -54,7 +54,8 @@ def open_place(place_id):
     if not place:
         request_text = u"Увы, нет такого места."
         abort(404, request_text)
-    return render_template('place.html', user = g.user, place = place)
+    events = place.events
+    return render_template('place.html', user = g.user, place = place, events = events)
 
 @app.route('/search', methods = ["POST"])
 def place_search():
@@ -117,13 +118,136 @@ def change_place(place_id):
 
     return render_template('update_place.html', form = form, id = place_id)
 
+#########################
+####### EVENT ###########
+#########################
+
+@app.route('/place/<int:place_id>/event/add', methods=["GET", "POST"])
+def add_event(place_id):
+    place = get_place(place_id)
+    if not place:
+        request_text = u"Увы, такого нет места"
+        abort(404, request_text)
+
+    form = EventForm(request.form)
+    # POST  - сохранение добавленого места
+    if form.validate_on_submit():
+
+        ###### TODO: Нужно доделать добавление фотографии месту.########
+        #photo = request.files[form.photo.name]
+        event = create_event(form.name.data, form.description.data, form.date.data)
+        if not add_event_to_place(place, event):
+            request_text = u"Увы, не удалось добавить событие"
+            abort(404, request_text)
+        
+        return redirect("/place/" + str(place_id))
+
+    return render_template('add_event.html', form = form, place_id = place_id)
+
+@app.route('/event/add_user_event/<int:user_id>/<int:event_id>', methods=["GET", "POST"])
+def add_user_event(user_id, event_id):
+    user = get_user(user_id)
+    if not user:
+        request_text = u"Увы, такого нет пользователя"
+        abort(404, request_text)
+    
+    event = get_event(event_id)
+    if not event:
+        request_text = u"Увы, такого нет события"
+        abort(404, request_text)
+
+    if not add_event_to_user(user, event):
+        request_text = u"Увы, не удалось добавить событие"
+        abort(404, request_text)
+
+    return redirect("/event/" + str(event_id))
+
+@app.route('/user/remove_event/<int:user_id>/<int:event_id>', methods = ["GET", "POST"])
+def remove_event_from_user(user_id, event_id):
+    user = get_user(user_id)
+    if not user:
+        request_text = u"Увы, такого нет пользователя"
+        abort(404, request_text)
+    
+    event = get_event(event_id)
+    if not event:
+        request_text = u"Увы, такого нет события"
+        abort(404, request_text)
+
+    if not delete_event_from_user(user, event):
+        request_text = u"Увы, не удалось удалить событие"
+        abort(404, request_text)
+    return redirect('/user')
+
+@app.route('/user/remove_event_2/<int:user_id>/<int:event_id>', methods = ["GET", "POST"])
+def remove_event_from_user_2(user_id, event_id):
+    user = get_user(user_id)
+    if not user:
+        request_text = u"Увы, такого нет пользователя"
+        abort(404, request_text)
+    
+    event = get_event(event_id)
+    if not event:
+        request_text = u"Увы, такого нет события"
+        abort(404, request_text)
+        
+    if not delete_event_from_user(user, event):
+        request_text = u"Увы, не удалось удалить событие"
+        abort(404, request_text)
+    return redirect("/event/" + str(event_id))
+
+@app.route('/event/<int:event_id>', methods = ["GET"])
+def open_event(event_id):
+    event = get_event(event_id)
+    if not event:
+        request_text = u"Увы, такого нет события"
+        abort(404, request_text)
+    return render_template('event.html', user = g.user, event = event)
+
+@app.route('/event/update/<int:event_id>', methods=["GET", "POST"])
+def change_event(event_id):
+    event = get_event(event_id)
+    if not event:
+        request_text = u"Увы, такого нет события"
+        abort(404, request_text)
+
+    form = EventForm(request.form)
+    if form.validate_on_submit():
+        ###### TODO: Нужно доделать добавление фотографии месту.########
+        #photo = request.files[form.photo.name]
+        print "Controller: %s %s %s" % (form.name.data, form.description.data, form.date.data)
+        if not update_event(event, form.name.data, form.description.data, form.date.data):
+            request_text = u"Увы, не удалось изменить событие"
+            abort(404, request_text)
+        
+        return redirect("/event/" + str(event_id))
+
+    form.name.data = event.name
+    form.description.data = event.description
+    form.date.data = event.date
+
+    return render_template('update_event.html', form = form, id = event.id)
+
+@app.route('/event/remove/<int:event_id>', methods=["GET", "POST"])
+def remove_event(event_id):
+    event = get_event(event_id)
+    if not event:
+        request_text = u"Увы, такого нет события"
+        abort(404, request_text)
+    
+    if not delete_event(event):
+        request_text = u"Увы, не удалось удалить событие"
+        abort(404, request_text)    
+    return redirect('/')
+
 @app.route('/user', methods = ["GET", "POST"])
 def open_user():
     user = g.user
     if not g.user:
         redirect("\login")
     places = user.places
-    return render_template('user.html', user = user, places = places)
+    events = user.events
+    return render_template('user.html', user = user, places = places, events = events)
 
 @app.route('/user/remove_place/<int:user_id>/<int:place_id>', methods = ["GET", "POST"])
 def remove_place_from_user(user_id, place_id):

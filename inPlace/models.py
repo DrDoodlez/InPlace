@@ -17,6 +17,7 @@ class User(db.Model):
     name = db.Column(db.String(128))
     password = db.Column(db.String(64))
     places = db.relationship('Place', backref='user', lazy='dynamic')
+    events = db.relationship('Event', backref='user', lazy='dynamic')
 
     def __init__(self, login, email, name, password):
         self.login = login
@@ -85,20 +86,12 @@ def create_place(name, description):
     return None
 
 def update_place(place, name, description):
-    # place = get_place(place_id)
-    
-    # if not place:
-    #     return None
-    
     place.name = name
     place.description = description
     db.session.commit()
     return place
 
 def delete_place(place):
-    # if not get_place(place_id):
-    #     False
-
     Place.query.filter_by(id = place.id).delete()
     db.session.commit()
     return True
@@ -110,24 +103,12 @@ def find_place(name):
 
 ###   User-Place operation
 def add_place_to_user(user, place):
-    # user = get_user(user_id)
-    # place = get_place(place_id)
-    
-    # if not user or not place:
-    #     return False
-    
     user.places.append(place)
     db.session.add(user)
     db.session.commit()
     return True
 
 def delete_place_from_user(user, place):
-    # user = get_user(user_id)
-    # place = get_place(place_id)
-    
-    # if not user or not place:
-    #     return False
-    
     user.places.remove(place)
     db.session.add(user)
     db.session.commit()
@@ -142,6 +123,7 @@ class Event(db.Model):
     description = db.Column(db.String(64), unique = True)
     date = db.Column(db.String(64))
     place_id = db.Column(db.Integer, db.ForeignKey('place.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def __init__(self, name, description, date):
         self.name = name
@@ -164,11 +146,6 @@ def create_event(name, description, date):
     return None
 
 def update_event(event, name, description, date):
-    # event = get_event(event_id)
-    
-    # if not event:
-    #     return None
-    
     event.name = name
     event.description = description
     event.date = date
@@ -176,37 +153,36 @@ def update_event(event, name, description, date):
     return event
 
 def delete_event(event):
-    # if not get_event(event_id):
-    #     return False
-    
     Event.query.filter_by(id = event.id).delete()
     db.session.commit()
     return True
 
 ###   Place-Event operation
 def add_event_to_place(place, event):
-    # place = get_place(place_id)
-    # event = get_event(event_id)
-    
-    # if not event or not place:
-    #     return False    
-    
     place.events.append(event)
     db.session.add(place)
     db.session.commit()
     return True
 
-def delete_event_from_place(place, event):
-    # place = get_place(place_id)
-    # event = get_event(event_id)
-    
-    # if not event or not place:
-    #     return False
+def add_event_to_user(user, event):
+    user.events.append(event)
+    db.session.add(user)
+    db.session.commit()
+    return True
 
+def delete_event_from_place(place, event):
     place.events.remove(event)
     db.session.add(place)
     db.session.commit()
     return True
+
+def delete_event_from_user(user_id, event_id):
+    user = User.query.get(user_id)
+    event = Event.query.get(event_id)
+    user.events.remove(event)
+    db.session.add(user)
+    db.session.commit()
+    return None
 
 ##################################################################################
 ###   Comment   - Not Used
@@ -238,11 +214,6 @@ def create_comment(author, text, date):
     return None
 
 def update_comment(comment, author, text):
-    # comment = get_comment(comment_id)
-
-    # if not comment:
-    #     return None
-    
     comment.author = author
     comment.text = text
     comment.date = date
@@ -250,9 +221,6 @@ def update_comment(comment, author, text):
     return comment
 
 def delete_comment(comment):
-    # if not get_comment(comment_id):
-    #     return False
-    
     Comment.query.filter_by(id = comment.id).delete()
     db.session.commit()
     return True
@@ -260,24 +228,12 @@ def delete_comment(comment):
 
 ###   Place-comment operation
 def add_comment_to_place(place, comment):
-    # place = Place.query.get(place_id)
-    # comment = Comment.query.get(comment_id)
-
-    # if not comment or not place:
-    #     return False    
-
     place.events.append(comment)
     db.session.add(place)
     db.session.commit()
     return True
 
 def delete_comment_from_place(place, comment):
-    # place = Place.query.get(place_id)
-    # comment = Comment.query.get(comment_id)
-
-    # if not comment or not place:
-    #     return False    
-
     place.events.remove(comment)
     db.session.add(place)
     db.session.comment()
