@@ -38,9 +38,13 @@ def add_place():
 
 @app.route('/place/remove/<int:place_id>', methods=["GET", "POST"])
 def remove_place(place_id):
-    print("sdha;sdh;asdhga;sdjgha;sdjghas")
-    if not delete_place(place_id):
-        request_text = u"Увы, не удалось удалить место, возможно его не существует."
+    place = get_place(place_id)
+    if not place: 
+        request_text = u"Увы, нет такого места."
+        abort(404, request_text)
+    
+    if not delete_place(place):
+        request_text = u"Увы, не удалось удалить место."
         abort(404, request_text)
     return redirect('/')
 
@@ -48,7 +52,7 @@ def remove_place(place_id):
 def open_place(place_id):
     place = get_place(place_id)
     if not place:
-        request_text = u"Увы, нет такого места"
+        request_text = u"Увы, нет такого места."
         abort(404, request_text)
     return render_template('place.html', user = g.user, place = place)
 
@@ -71,8 +75,18 @@ def place_search():
 
 @app.route('/place/add_user_place/<int:user_id>/<int:place_id>', methods=["GET", "POST"])
 def add_user_place(user_id, place_id):
-    if not add_place_to_user(user_id, place_id):
-        request_text = u"Увы, нет такого места"
+    user = get_user(user_id)
+    if not user:
+        request_text = u"Увы, такого пользователя нет"
+        abort(404, request_text)
+    
+    place = get_place(place_id)
+    if not place:
+        request_text = u"Увы, такого места нет"
+        abort(404, request_text)
+    
+    if not add_place_to_user(user, place):
+        request_text = u"Увы, не удалось добавить место"
         abort(404, request_text)
     return redirect("/place/" + str(place_id))
 
@@ -82,7 +96,12 @@ def change_place(place_id):
     if form.validate_on_submit():
         ###### TODO: Нужно доделать добавление фотографии месту.########
         #photo = request.files[form.photo.name]
-        if not update_place(place_id, form.name.data, form.description.data):
+        place = get_place(place_id)
+        if not place: 
+            request_text = u"Увы, такого места нет"
+            abort(404, request_text)
+        
+        if not update_place(place, form.name.data, form.description.data):
             request_text = u"Увы, не удалось изменить место"
             abort(404, request_text)
         
@@ -90,7 +109,7 @@ def change_place(place_id):
 
     place = get_place(place_id)
     if not place:
-        request_text = u"Увы, нет такого места"
+        request_text = u"Увы, такого нет места"
         abort(404, request_text)
 
     form.name.data = place.name
@@ -98,7 +117,6 @@ def change_place(place_id):
 
     return render_template('update_place.html', form = form, id = place_id)
 
-##??? нужна ли проверка или сломается
 @app.route('/user', methods = ["GET", "POST"])
 def open_user():
     user = g.user
@@ -109,14 +127,34 @@ def open_user():
 
 @app.route('/user/remove_place/<int:user_id>/<int:place_id>', methods = ["GET", "POST"])
 def remove_place_from_user(user_id, place_id):
-    if not delete_place_from_user(user_id, place_id):
+    user = get_user(user_id)
+    if not user:
+        request_text = u"Увы, такого пользователя нет"
+        abort(404, request_text)
+    
+    place = get_place(place_id)
+    if not place:
+        request_text = u"Увы, такого места нет"
+        abort(404, request_text)
+
+    if not delete_place_from_user(user, place):
         request_text = u"Не удалось удалить место"
         abort(404, request_text)
     return redirect('/user')
 
 @app.route('/user/remove_place_2/<int:user_id>/<int:place_id>', methods = ["GET", "POST"])
 def remove_place_from_user_2(user_id, place_id):
-    if not delete_place_from_user(user_id, place_id):
+    user = get_user(user_id)
+    if not user:
+        request_text = u"Увы, такого пользователя нет"
+        abort(404, request_text)
+    
+    place = get_place(place_id)
+    if not place:
+        request_text = u"Увы, такого места нет"
+        abort(404, request_text)
+
+    if not delete_place_from_user(user, place):
         request_text = u"Не удалось удалить место"
         abort(404, request_text)
     return redirect("/place/" + str(place_id))
