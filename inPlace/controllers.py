@@ -1,8 +1,13 @@
 # -*- coding: utf-8 -*-
 from InPlace import app
-from flask import render_template, request, url_for, redirect, session, flash, g
-from .models import User, Place, authenticate_user, register_user, set_user_avatar, create_place
-from .models import update_place, delete_place, add_place_to_user, delete_place_from_user, find_place, create_event, update_event, delete_event
+from flask import render_template, request, url_for, redirect, session, flash, g, abort
+from .models import User, get_user, authenticate_user, register_user, set_user_avatar
+from .models import Place, get_place, create_place, update_place, delete_place, find_place
+from .models import Event, get_event, create_event, update_event, delete_event
+from .models import Comment, get_comment, create_comment, update_comment, delete_comment
+from .models import add_place_to_user, delete_place_from_user
+from .models import add_event_to_place, delete_event_from_place
+from .models import add_comment_to_place, delete_comment_from_place
 from .forms import  RegistrationForm, LoginForm, PlaceForm, SearchForm
 from werkzeug import secure_filename
 
@@ -11,28 +16,6 @@ from werkzeug import secure_filename
 def index():
     places = Place.query
     return render_template('index.html', user = g.user, places = places)
-
-@app.route('/search', methods = ["POST"])
-def place_search():
-    if g.searchForm.validate_on_submit():
-        search_input = g.searchForm.search_input.data
-
-        if search_input == "":
-            return redirect('/')
-
-        places = find_place(search_input)
-
-        if places.count() == 0: 
-             request_text = u"Увы, по вашему запросу ничего не найдено"
-             return render_template('request_template.html',request_text = request_text)
-
-        return render_template('index.html', user = g.user, places = places)
-    return redirect('/')
-
-@app.route('/place/<int:place_id>', methods = ["GET"])
-def open_place(place_id):
-    place = Place.query.get(place_id)
-    return render_template('place.html', user = g.user, place = place)
 
 @app.route('/place', methods = ["GET"])
 def open_test_place():
@@ -53,11 +36,45 @@ def add_place():
 
     return render_template('add_place.html', form = form)
 
+@app.route('/place/remove/<int:place_id>', methods=["GET", "POST"])
+def remove_place(place_id):
+    print("sdha;sdh;asdhga;sdjgha;sdjghas")
+    if not delete_place(place_id):
+        request_text = u"Увы, не удалось удалить место, возможно его не существует."
+        abort(404, request_text)
+    return redirect('/')
+
+@app.route('/place/<int:place_id>', methods = ["GET"])
+def open_place(place_id):
+    place = get_place(place_id)
+    if not place:
+        request_text = u"Увы, нет такого места"
+        abort(404, request_text)
+    return render_template('place.html', user = g.user, place = place)
+
+@app.route('/search', methods = ["POST"])
+def place_search():
+    if g.searchForm.validate_on_submit():
+        search_input = g.searchForm.search_input.data
+
+        if search_input == "":
+            return redirect('/')
+
+        places = find_place(search_input)
+
+        if places.count() == 0: 
+             request_text = u"Увы, по вашему запросу ничего не найдено"
+             return render_template('request_template.html',request_text = request_text)
+
+        return render_template('index.html', user = g.user, places = places)
+    return redirect('/')
+
 @app.route('/place/add_user_place/<int:user_id>/<int:place_id>', methods=["GET", "POST"])
 def add_user_place(user_id, place_id):
-	add_place_to_user(user_id, place_id)
-
-	return redirect("/place/" + str(place_id))
+    if not add_place_to_user(user_id, place_id):
+        request_text = u"Увы, нет такого места"
+        abort(404, request_text)
+    return redirect("/place/" + str(place_id))
 
 @app.route('/place/update/<int:place_id>', methods=["GET", "POST"])
 def change_place(place_id):
@@ -65,36 +82,43 @@ def change_place(place_id):
     if form.validate_on_submit():
         ###### TODO: Нужно доделать добавление фотографии месту.########
         #photo = request.files[form.photo.name]
-        print "Controller:   %s %s" % (form.name.data, form.description.data)
-        update_place(place_id, form.name.data, form.description.data)
+        if not update_place(place_id, form.name.data, form.description.data):
+            request_text = u"Увы, не удалось изменить место"
+            abort(404, request_text)
         
         return redirect('/')
 
-    place = Place.query.filter(Place.id == place_id).first()
+    place = get_place(place_id)
+    if not place:
+        request_text = u"Увы, нет такого места"
+        abort(404, request_text)
+
     form.name.data = place.name
     form.description.data = place.description
 
     return render_template('update_place.html', form = form, id = place_id)
 
-@app.route('/place/remove/<int:place_id>', methods=["GET", "POST"])
-def remove_place(place_id):
-    delete_place(place_id)    
-    return redirect('/')
-
+##??? нужна ли проверка или сломается
 @app.route('/user', methods = ["GET", "POST"])
 def open_user():
     user = g.user
+    if not g.user:
+        redirect("\login")
     places = user.places
     return render_template('user.html', user = user, places = places)
 
 @app.route('/user/remove_place/<int:user_id>/<int:place_id>', methods = ["GET", "POST"])
 def remove_place_from_user(user_id, place_id):
-    delete_place_from_user(user_id, place_id)
+    if not delete_place_from_user(user_id, place_id):
+        request_text = u"Не удалось удалить место"
+        abort(404, request_text)
     return redirect('/user')
 
 @app.route('/user/remove_place_2/<int:user_id>/<int:place_id>', methods = ["GET", "POST"])
 def remove_place_from_user_2(user_id, place_id):
-    delete_place_from_user(user_id, place_id)
+    if not delete_place_from_user(user_id, place_id):
+        request_text = u"Не удалось удалить место"
+        abort(404, request_text)
     return redirect("/place/" + str(place_id))
 
 @app.route('/register', methods=["GET", "POST"])
@@ -151,3 +175,7 @@ def verify_user_session():
     g.user = User.query.get(int(user_id))
 
 
+## Код для перехвата ошибки... Пока не нужно, просто передаём текст ошибки в аборт.
+# @app.errorhandler(404)
+# def page_not_found(e):
+#     return render_template('404.html'), 404
