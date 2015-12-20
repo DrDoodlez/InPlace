@@ -7,6 +7,8 @@
 <div class="place-up">
     {% if place.avatar_id %}
     <img class="place-img" src="{{ url_for('static', filename='uploads/avatars/'+place.avatar_id) }}">
+    {% else %}
+    <img class="place-img" src="{{ url_for('static', filename='img/no_image.png') }}">
     {% endif %}
     <div class="place-right"> 
         <div class="place-name">{{place.name}}</div>

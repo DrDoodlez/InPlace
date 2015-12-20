@@ -107,8 +107,6 @@ def change_place(place_id):
 
     avatar_image = place.avatar_id
     if form.validate_on_submit():
-        ###### TODO: Нужно доделать добавление фотографии месту.########
-        #photo = request.files[form.photo.name]
         place = get_place(place_id)
         if not place: 
             request_text = u"Увы, такого места нет"
