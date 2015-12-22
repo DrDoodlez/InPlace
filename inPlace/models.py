@@ -14,21 +14,20 @@ class DuplicateNameError(ModelError):
 
 def set_image(table, image_file, folder):
 	image_filename = uuid.uuid4().hex + ".jpg"
-	#if image_type == 'avatar':
+
 	image_file.save(os.path.join(app.config[folder], image_filename))
 	table.avatar_id = image_filename
-	#else: 
-	#	image_file.save(os.path.join(app.config['PHOTO_FOLDER'], image_filename))
-	#	table.avatar_id = avatar_filename                            
-
 	# TODO: если записать в БД не удалось - удалить файл аватарки
 	db.session.add(table)
 	db.session.commit()
 
 
 def delete_old_image(table, folder):
-	os.remove(os.path.join(app.config[folder], table.avatar_id))
+	removed = os.remove(os.path.join(app.config[folder], table.avatar_id))
+	if not removed:
+		return None 
 	db.session.commit()
+	
 
 
 
@@ -98,11 +97,14 @@ def create_place(name, description):
 
 def update_place(place_id, name, description):
 	place = Place.query.get(place_id)
+	app.logger.debug("In update_place: %s", place.name)	
 	place.name = name
+	app.logger.debug("In update_place name: %s", name)	
 	place.description = description
 
 	# TODO: обработать ошибки добавления нового пользователя       
 	db.session.commit()
+	app.logger.debug("In update_place NEW: %s", place.name)	
 	return place
 
 def delete_place(place_id):
@@ -261,12 +263,8 @@ class Photo(db.Model):
 
 def set_photo(place_id, image_file, folder):
 	image_filename = uuid.uuid4().hex + ".jpg"
-	#if image_type == 'avatar':
 	image_file.save(os.path.join(app.config[folder], image_filename))
-	description = image_filename
-	#else: 
-	#   image_file.save(os.path.join(app.config['PHOTO_FOLDER'], image_filename))
-	#   table.avatar_id = avatar_filename                            
+	description = image_filename                          
 
 	# TODO: если записать в БД не удалось - удалить файл аватарки
 	photo = Photo(description, place_id, image_filename)

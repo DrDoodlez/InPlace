@@ -20,23 +20,4 @@
     <p><input type="submit" value="Сохранить"></p>
   </form>
 
-
-
-<br/>
-<br/>
-<br/>
-
-
-
-
-
-  <form method="POST" action="{{ url_for('load_updated_place', place_id = id) }}" enctype="multipart/form-data">
-    <p><input type="text" name="name" required>Имя</p>
-    <p><input type="textarea" name="description" required>Описание</p>
-    <p><input type="file" name="avatar">Основное изображение</p>
-    <p><input type="file" name="file[]" multiple="">Дополнительные фото</p>
-    <p><input type="submit" value="Сохранить"></p>
-</form>
-
-
 {% endblock %}

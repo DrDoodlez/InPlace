@@ -53,6 +53,13 @@ def add_place():
 			app.logger.debug("Place image file: %s", avatar_image)
 			set_image(place, avatar_image, 'AVATARS_FOLDER')
 		
+		uploaded_files = request.files.getlist("file[]")
+		if uploaded_files[0]:
+			for i in range(len(uploaded_files)):
+				photo_image = uploaded_files[i]
+				app.logger.debug("Setting images array  %s", uploaded_files)
+				set_photo(place.id, photo_image, 'PHOTOS_FOLDER')
+
 		return redirect('/place/' + str(place.id))
 
 	return render_template('add_place.html', form = form)
@@ -68,35 +75,38 @@ def add_user_place(user_id, place_id):
 def change_place(place_id):
 	form = PlaceForm(request.form)
 	place = Place.query.filter(Place.id == place_id).first()
-	form.name.data = place.name
-	form.description.data = place.description
-	
 	if form.validate_on_submit():
+		app.logger.debug("Will update place: %s", place_id)	
+		upd_place = update_place(place_id, form.name.data, form.description.data)
+		app.logger.debug("Updated place: %s", place_id)
+		
 		avatar_image = request.files[form.avatar.name]
-		update_place(place_id, form.name.data, form.description.data)
-		place = Place.query.filter(Place.id == place_id).first()
-
+		if avatar_image and not place.avatar_id:	
+			set_image(place, avatar_image, 'AVATARS_FOLDER')
+		
 		if avatar_image and place.avatar_id:
 			app.logger.debug("Place image file update: %s", avatar_image)
 			delete_old_image(place, 'AVATARS_FOLDER')
 			app.logger.debug("Deleted image file, now updating ")
-		
-		if avatar_image:	
-			set_image(place, avatar_image, 'AVATARS_FOLDER')	
-		
-		form.name.data = place.name
-		form.description.data = place.description
-		form.avatar.data = place.avatar_id
+			set_image(place, avatar_image, 'AVATARS_FOLDER')
 
 		uploaded_files = request.files.getlist("file[]")
-		
-		if uploaded_files:
-		#print uploaded_files
+		if uploaded_files[0]:
 			for i in range(len(uploaded_files)):
 				photo_image = uploaded_files[i]
-				set_photo(place_id, photo_image, 'AVATARS_FOLDER')	
-		
-		return redirect('/place/' + str(place.id))
+				app.logger.debug("Setting images array  %s", uploaded_files)
+				set_photo(place_id, photo_image, 'PHOTOS_FOLDER')
+
+		upd_place = Place.query.filter(Place.id == place_id).first()
+		form.name.data = upd_place.name
+		form.description.data = upd_place.description
+		form.avatar.data = upd_place.avatar_id
+
+		return redirect('/place/' + str(upd_place.id))
+
+	place = Place.query.filter(Place.id == place_id).first()
+	form.name.data = place.name
+	form.description.data = place.description	
 	return render_template('update_place.html', form = form, id = place_id)
 
 
@@ -110,27 +120,22 @@ def load_updated_place(place_id):
 def change_user_profile(user_id):
 	form = AvatarForm(request.form)
 	if form.validate_on_submit():
-		avatar_image = request.files[form.avatar.name]
+		user = User.query.get(int(user_id))
 
-		if avatar_image:
+		avatar_image = request.files[form.avatar.name]
+		if avatar_image and user.avatar_id:
 			app.logger.debug("User image file update: %s", avatar_image)
-			user = User.query.get(int(user_id))
 			delete_old_image(user, 'AVATARS_FOLDER')
 			app.logger.debug("Deleted image file, now updating ")
 			set_image(user, avatar_image, 'AVATARS_FOLDER')
-			app.logger.debug("Avatar '%s' successfully added", form.avatar.data)        
-	
+			app.logger.debug("Avatar '%s' successfully added", form.avatar.data)  
+
+		if avatar_image and not user.avatar_id:	      
+			set_image(user, avatar_image, 'AVATARS_FOLDER')
+			app.logger.debug("Avatar '%s' successfully added", form.avatar.data) 
+
 		return redirect('/user')	
 	return render_template('update_user.html', form = form, id = user_id)
-
-
-def upload(place_id):
-	uploaded_files = request.files.getlist("file[]")
-	#print uploaded_files
-	for i in range(len(uploaded_files)):
-		photo_image = uploaded_files[i]
-		set_photo(place_id, photo_image, 'AVATARS_FOLDER')
-	return redirect('/place/' + str(place_id)) #return render_template('update_place.html', files = uploaded_files, place_id= place_id)
 
 
 @app.route("/remove_photo/<int:photo_id>/<int:place_id>", methods=["POST"])

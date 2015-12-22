@@ -11,6 +11,7 @@ class DefaultConfig:
     SQLALCHEMY_TRACK_MODIFICATIONS = True
     UPLOAD_FOLDER = os.path.join(basedir, "InPlace/static/uploads/")
     AVATARS_FOLDER = os.path.join(UPLOAD_FOLDER, "avatars/")
+    PHOTOS_FOLDER = os.path.join(UPLOAD_FOLDER, "photos/")
     LOG_FILE = os.path.join(basedir, "InPlace.log")
 
     

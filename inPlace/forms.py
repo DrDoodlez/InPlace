@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from flask.ext.wtf import Form
 from wtforms import BooleanField, StringField, PasswordField, SelectField, FileField, validators
+from wtforms.widgets import TextArea
 import re
 class CreateBoxForm(Form):
 	name = StringField(u'Название Коробочки!', [validators.InputRequired()])
@@ -11,12 +12,12 @@ class CreateBoxForm(Form):
 	
 
 class AvatarForm(Form):
-	avatar = FileField(u'О')
+	avatar = FileField(u'Выбрать основную фотографию')
 
 ###### TODO: Добавить недостающие поля формы.########
 class PlaceForm(Form):
     name = StringField(u'Имя', [validators.InputRequired()])
-    description = StringField(u'Описание', [validators.InputRequired()])
+    description = StringField(u'Описание', [validators.InputRequired()], widget=TextArea())
     avatar = FileField(u'Основная фотография места')
 
 
