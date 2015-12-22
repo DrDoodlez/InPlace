@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from InPlace import app
 from flask import render_template, request, url_for, redirect, session, flash, g
-from .models import User, Place, Photo, authenticate_user, register_user, create_place, set_image, delete_old_image, set_photo
+from .models import User, Place, Photo, authenticate_user, register_user, create_place, set_image, delete_old_image, allowed_file, set_photo
 from .models import update_place, delete_place, add_place_to_user, delete_photo, delete_place_from_user, find_place, create_event, update_event, delete_event
 from .forms import  RegistrationForm, LoginForm, PlaceForm, SearchForm, AvatarForm
 from werkzeug import secure_filename
@@ -49,16 +49,17 @@ def add_place():
 		place = create_place(form.name.data, form.description.data)
 
 		avatar_image = request.files[form.avatar.name]
-		if avatar_image:
+		if avatar_image and allowed_file(avatar_image.filename):
 			app.logger.debug("Place image file: %s", avatar_image)
 			set_image(place, avatar_image, 'AVATARS_FOLDER')
 		
 		uploaded_files = request.files.getlist("file[]")
 		if uploaded_files[0]:
 			for i in range(len(uploaded_files)):
-				photo_image = uploaded_files[i]
-				app.logger.debug("Setting images array  %s", uploaded_files)
-				set_photo(place.id, photo_image, 'PHOTOS_FOLDER')
+				if allowed_file(uploaded_files[i].filename):
+					photo_image = uploaded_files[i]
+					app.logger.debug("Setting images array  %s", uploaded_files)
+					set_photo(place_id, photo_image, 'PHOTOS_FOLDER')
 
 		return redirect('/place/' + str(place.id))
 
@@ -81,10 +82,10 @@ def change_place(place_id):
 		app.logger.debug("Updated place: %s", place_id)
 		
 		avatar_image = request.files[form.avatar.name]
-		if avatar_image and not place.avatar_id:	
+		if avatar_image and allowed_file(avatar_image.filename) and not place.avatar_id:	
 			set_image(place, avatar_image, 'AVATARS_FOLDER')
 		
-		if avatar_image and place.avatar_id:
+		if avatar_image and allowed_file(avatar_image.filename) and place.avatar_id:
 			app.logger.debug("Place image file update: %s", avatar_image)
 			delete_old_image(place, 'AVATARS_FOLDER')
 			app.logger.debug("Deleted image file, now updating ")
@@ -93,9 +94,10 @@ def change_place(place_id):
 		uploaded_files = request.files.getlist("file[]")
 		if uploaded_files[0]:
 			for i in range(len(uploaded_files)):
-				photo_image = uploaded_files[i]
-				app.logger.debug("Setting images array  %s", uploaded_files)
-				set_photo(place_id, photo_image, 'PHOTOS_FOLDER')
+				if allowed_file(uploaded_files[i].filename):
+					photo_image = uploaded_files[i]
+					app.logger.debug("Setting images array  %s", uploaded_files)
+					set_photo(place_id, photo_image, 'PHOTOS_FOLDER')
 
 		upd_place = Place.query.filter(Place.id == place_id).first()
 		form.name.data = upd_place.name
@@ -115,7 +117,8 @@ def change_place(place_id):
 def load_updated_place(place_id):
 	return redirect('/place/' + str(place_id)) 
 
-##adds user avatar if it doesn't exsist
+
+
 @app.route('/user/update/<int:user_id>', methods=["GET", "POST"])
 def change_user_profile(user_id):
 	form = AvatarForm(request.form)
@@ -123,14 +126,16 @@ def change_user_profile(user_id):
 		user = User.query.get(int(user_id))
 
 		avatar_image = request.files[form.avatar.name]
-		if avatar_image and user.avatar_id:
+		app.logger.debug("User image filename: %s", allowed_file(avatar_image.filename))
+
+		if avatar_image and allowed_file(avatar_image.filename) and user.avatar_id:
 			app.logger.debug("User image file update: %s", avatar_image)
 			delete_old_image(user, 'AVATARS_FOLDER')
 			app.logger.debug("Deleted image file, now updating ")
 			set_image(user, avatar_image, 'AVATARS_FOLDER')
 			app.logger.debug("Avatar '%s' successfully added", form.avatar.data)  
 
-		if avatar_image and not user.avatar_id:	      
+		if avatar_image and allowed_file(avatar_image.filename) and not user.avatar_id:	      
 			set_image(user, avatar_image, 'AVATARS_FOLDER')
 			app.logger.debug("Avatar '%s' successfully added", form.avatar.data) 
 
