@@ -27,7 +27,7 @@ def delete_old_image(table, folder):
 	if not removed:
 		return None 
 	db.session.commit()
-	
+
 
 
 
@@ -272,11 +272,11 @@ def set_photo(place_id, image_file, folder):
 	db.session.commit()  
 
 
-def delete_photo(ph_id, folder):
-	photo = Photo.query.filter_by(id = ph_id)
-	os.remove(os.path.join(app.config[folder], photo.photo_id))
+def delete_photo(ph_id, photo_id, folder):
+	app.logger.debug("Deleting photo: ")	
+	os.remove(os.path.join(app.config[folder], photo_id))
 
-	photo = Photo.query.filter_by(id = ph_id).delete()	
+	photo = Photo.query.filter_by(id = ph_id, photo_id = photo_id).delete()	
 	db.session.commit()
 
 	return None	  

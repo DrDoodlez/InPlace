@@ -2,7 +2,7 @@
 from InPlace import app
 from flask import render_template, request, url_for, redirect, session, flash, g
 from .models import User, Place, Photo, authenticate_user, register_user, create_place, set_image, delete_old_image, set_photo
-from .models import update_place, delete_place, add_place_to_user, delete_place_from_user, find_place, create_event, update_event, delete_event
+from .models import update_place, delete_place, add_place_to_user, delete_photo, delete_place_from_user, find_place, create_event, update_event, delete_event
 from .forms import  RegistrationForm, LoginForm, PlaceForm, SearchForm, AvatarForm
 from werkzeug import secure_filename
 
@@ -138,9 +138,9 @@ def change_user_profile(user_id):
 	return render_template('update_user.html', form = form, id = user_id)
 
 
-@app.route("/remove_photo/<int:photo_id>/<int:place_id>", methods=["POST"])
-def remove_photo(photo_id):
-	delete_photo(place_id)    	
+@app.route("/remove_photo/<int:place_id>/<int:ph_id>/<photo_id>", methods=["GET", "POST"])
+def remove_photo(ph_id, place_id, photo_id):
+	delete_photo(ph_id, photo_id, 'PHOTOS_FOLDER')    	
 	return redirect('/place/' + str(place_id)) #return render_template('update_place.html', files = uploaded_files, place_id= place_id)	
 		
 

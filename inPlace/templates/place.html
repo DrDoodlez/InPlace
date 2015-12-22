@@ -34,7 +34,7 @@
     <img src="{{ url_for('static', filename='uploads/photos/'+photo.photo_id) }}">
    
      <br/>
-     <a href="">Удалить</a>
+     <a href="{{ url_for('remove_photo', place_id=place.id, ph_id=photo.id, photo_id=photo.photo_id) }}">Удалить</a>
      <br/>
      <br/>
      <br/>
