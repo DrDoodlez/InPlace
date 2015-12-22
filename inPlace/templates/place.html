@@ -27,6 +27,23 @@
         <a class="place-link" href="{{ url_for('add_user_place', user_id=user.id, place_id=place.id) }}">Добавить в мои места<br/></a>
     {% endif %}
 {% endif %}
+
+<p>photo: {{ photos }}</p>
+{% if photos %}
+  {% for photo in photos %}
+  <div>
+    <img src="{{ url_for('static', filename='uploads/avatars/'+photo.photo_id) }}">
+     {% if place.user_id == user.id %}
+     <br/>
+     <a href="">Удалить</a>
+     <br/>
+     <br/>
+     <br/>
+     {% endif %}
+  </div>   
+  {% endfor %}
+{% endif %}
+
 <!-- TODO: http://demo.pixelcom.crimea.ua/javascript/tabs/tabs-aria.htm  настроить стили табов -->
 <!-- <ul class="tabs">
   <li><a href="#one">Меню</a></li>

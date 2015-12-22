@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from InPlace import app
 from flask import render_template, request, url_for, redirect, session, flash, g
-from .models import User, Place, authenticate_user, register_user, create_place, set_image, delete_old_image
+from .models import User, Place, Photo, authenticate_user, register_user, create_place, set_image, delete_old_image, set_photo
 from .models import update_place, delete_place, add_place_to_user, delete_place_from_user, find_place, create_event, update_event, delete_event
 from .forms import  RegistrationForm, LoginForm, PlaceForm, SearchForm, AvatarForm
 from werkzeug import secure_filename
@@ -32,7 +32,8 @@ def place_search():
 @app.route('/place/<int:place_id>', methods = ["GET"])
 def open_place(place_id):
 	place = Place.query.get(place_id)
-	return render_template('place.html', user = g.user, place = place)
+	photos = Photo.query.filter_by(place_id=place_id)
+	return render_template('place.html', user = g.user, place = place, photos = photos)
 
 @app.route('/place', methods = ["GET"])
 def open_test_place():
@@ -55,6 +56,7 @@ def add_place():
 		return redirect('/place/' + str(place.id))
 
 	return render_template('add_place.html', form = form)
+	
 
 @app.route('/place/add_user_place/<int:user_id>/<int:place_id>', methods=["GET", "POST"])
 def add_user_place(user_id, place_id):
@@ -65,31 +67,43 @@ def add_user_place(user_id, place_id):
 @app.route('/place/update/<int:place_id>', methods=["GET", "POST"])
 def change_place(place_id):
 	form = PlaceForm(request.form)
+	place = Place.query.filter(Place.id == place_id).first()
+	form.name.data = place.name
+	form.description.data = place.description
+	
 	if form.validate_on_submit():
-		###### TODO: Нужно доделать добавление фотографии месту.########
-		#photo = request.files[form.photo.name]
-		#print "Controller:   %s %s" % (form.name.data, form.description.data, form.avatar.data)
-		#avatar_image = request.files[form.avatar.name]
-		#app.logger.debug("Place image file: %s", avatar_image)
 		avatar_image = request.files[form.avatar.name]
 		update_place(place_id, form.name.data, form.description.data)
 		place = Place.query.filter(Place.id == place_id).first()
 
-		if avatar_image:
+		if avatar_image and place.avatar_id:
 			app.logger.debug("Place image file update: %s", avatar_image)
 			delete_old_image(place, 'AVATARS_FOLDER')
 			app.logger.debug("Deleted image file, now updating ")
-			set_image(place, avatar_image, 'AVATARS_FOLDER')
-
+		
+		if avatar_image:	
+			set_image(place, avatar_image, 'AVATARS_FOLDER')	
+		
 		form.name.data = place.name
 		form.description.data = place.description
+		form.avatar.data = place.avatar_id
 
-		if avatar_image:
-			form.avatar.data = place.avatar_id
+		uploaded_files = request.files.getlist("file[]")
+		
+		if uploaded_files:
+		#print uploaded_files
+			for i in range(len(uploaded_files)):
+				photo_image = uploaded_files[i]
+				set_photo(place_id, photo_image, 'AVATARS_FOLDER')	
 		
 		return redirect('/place/' + str(place.id))
 	return render_template('update_place.html', form = form, id = place_id)
 
+
+
+@app.route("/upload/<int:place_id>", methods=["POST"])
+def load_updated_place(place_id):
+	return redirect('/place/' + str(place_id)) 
 
 ##adds user avatar if it doesn't exsist
 @app.route('/user/update/<int:user_id>', methods=["GET", "POST"])
@@ -109,6 +123,20 @@ def change_user_profile(user_id):
 		return redirect('/user')	
 	return render_template('update_user.html', form = form, id = user_id)
 
+
+def upload(place_id):
+	uploaded_files = request.files.getlist("file[]")
+	#print uploaded_files
+	for i in range(len(uploaded_files)):
+		photo_image = uploaded_files[i]
+		set_photo(place_id, photo_image, 'AVATARS_FOLDER')
+	return redirect('/place/' + str(place_id)) #return render_template('update_place.html', files = uploaded_files, place_id= place_id)
+
+
+@app.route("/remove_photo/<int:photo_id>/<int:place_id>", methods=["POST"])
+def remove_photo(photo_id):
+	delete_photo(place_id)    	
+	return redirect('/place/' + str(place_id)) #return render_template('update_place.html', files = uploaded_files, place_id= place_id)	
 		
 
 @app.route('/place/remove/<int:place_id>', methods=["GET", "POST"])

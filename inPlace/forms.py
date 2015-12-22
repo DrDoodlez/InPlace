@@ -3,15 +3,15 @@ from flask.ext.wtf import Form
 from wtforms import BooleanField, StringField, PasswordField, SelectField, FileField, validators
 import re
 class CreateBoxForm(Form):
-    name = StringField(u'Название Коробочки!', [validators.InputRequired()])
-    # FIXME: генерировать список доступных цветов на основе модели
-    color = SelectField(u'Цвет Коробочки!', choices=[("blue", u'Синий'),
-                                                     ("red", u'Красный'),
-                                                     ("green", u'Зеленый')])
-    
+	name = StringField(u'Название Коробочки!', [validators.InputRequired()])
+	# FIXME: генерировать список доступных цветов на основе модели
+	color = SelectField(u'Цвет Коробочки!', choices=[("blue", u'Синий'),
+													 ("red", u'Красный'),
+													 ("green", u'Зеленый')])
+	
 
 class AvatarForm(Form):
-    avatar = FileField(u'О')
+	avatar = FileField(u'О')
 
 ###### TODO: Добавить недостающие поля формы.########
 class PlaceForm(Form):
@@ -19,19 +19,20 @@ class PlaceForm(Form):
     description = StringField(u'Описание', [validators.InputRequired()])
     avatar = FileField(u'Основная фотография места')
 
+
 class RegistrationForm(Form):
-    login = StringField(u'Имя пользователя', [validators.Length(min=4, max=25)])
-    name = StringField(u'Имя', [validators.InputRequired()])
-    email = StringField(u'Эл. адрес', [validators.Email()])
-    avatar = FileField(u'Изображение пользователя')
-    password = PasswordField(u'Пароль', [
-        validators.InputRequired(),
-        validators.EqualTo('confirm', message=u'Пароли должны совпадать')])
-    confirm = PasswordField(u'Повторите пароль')
+	login = StringField(u'Имя пользователя', [validators.Length(min=4, max=25)])
+	name = StringField(u'Имя', [validators.InputRequired()])
+	email = StringField(u'Эл. адрес', [validators.Email()])
+	avatar = FileField(u'Изображение пользователя')
+	password = PasswordField(u'Пароль', [
+		validators.InputRequired(),
+		validators.EqualTo('confirm', message=u'Пароли должны совпадать')])
+	confirm = PasswordField(u'Повторите пароль')
 
 class LoginForm(Form):
-    login = StringField(u'Имя пользователя', [validators.InputRequired()])
-    password = PasswordField(u'Пароль', [validators.InputRequired()])
+	login = StringField(u'Имя пользователя', [validators.InputRequired()])
+	password = PasswordField(u'Пароль', [validators.InputRequired()])
 
 class SearchForm(Form):
-    search_input = StringField()
+	search_input = StringField()
