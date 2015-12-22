@@ -285,8 +285,8 @@ def remove_event(event_id):
 @app.route('/user', methods = ["GET", "POST"])
 def open_user():
     user = g.user
-    if not g.user:
-        redirect("\login")
+    if not user:
+        return redirect("\login")
     places = user.places
     events = user.events
     return render_template('user.html', user = user, places = places, events = events)
