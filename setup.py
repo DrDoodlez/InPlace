@@ -12,6 +12,8 @@ setup(
         'flask',
         'Flask-WTF',
         'Flask-SQLAlchemy',
-        'alembic'
+        'alembic',
+        'mysql-python',
+        'Fabric'
     ]
 )
