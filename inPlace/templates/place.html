@@ -29,7 +29,8 @@
         <a class="place-link" href="{{ url_for('add_user_place', user_id=user.id, place_id=place.id) }}">Добавить в мои места<br/></a>
     {% endif %}
 {% endif %}
-<p>Фото</p>
+<div class="place-name">События</div>
+<a class="place-add-link" href="">Добавить фото<br/></a>
 {% if photos %}
   {% for photo in photos %}
   <div>

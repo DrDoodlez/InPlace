@@ -13,20 +13,23 @@ class DuplicateNameError(ModelError):
 ###   Common methods
 
 def set_image(table, image_file, folder):
+    
     image_filename = uuid.uuid4().hex + ".jpg"
-
     image_file.save(os.path.join(app.config[folder], image_filename))
     table.avatar_id = image_filename
-    # TODO: если записать в БД не удалось - удалить файл аватарки
+    	
     db.session.add(table)
     db.session.commit()
 
 
-def delete_old_image(table, folder):
-    removed = os.remove(os.path.join(app.config[folder], table.avatar_id))
-    if not removed:
-        return None 
-    db.session.commit()
+def delete_old_image(obj, folder):
+	path = os.path.join(app.config[folder], obj.avatar_id)
+
+	if os.path.isfile(path):
+		removed = os.remove(os.path.join(app.config[folder], obj.avatar_id))
+   		#table.query.filter_by(id = place.id).delete()
+    	#db.session.commit()
+    
 
 def allowed_file(filename):
     return '.' in filename and \

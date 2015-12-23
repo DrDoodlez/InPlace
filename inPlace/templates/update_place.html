@@ -16,7 +16,10 @@
      <p>
     {{ render_field(form.avatar) }}
     </p>
-    <p><input type="file" name="file[]" multiple="">Дополнительные фото</p>
+    <p><b>
+      Фото:
+    </b></p>
+    <p><input type="file" name="file[]" multiple="" max="3" accept="image"></p>
     <p><input type="submit" value="Сохранить"></p>
   </form>
 
