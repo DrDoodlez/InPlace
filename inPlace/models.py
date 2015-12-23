@@ -14,24 +14,23 @@ class DuplicateNameError(ModelError):
 
 def set_image(table, image_file, folder):
     image_filename = uuid.uuid4().hex + ".jpg"
-    #if image_type == 'avatar':
+
     image_file.save(os.path.join(app.config[folder], image_filename))
     table.avatar_id = image_filename
-    #else: 
-    #	image_file.save(os.path.join(app.config['PHOTO_FOLDER'], image_filename))
-    #	table.avatar_id = avatar_filename                            
-
     # TODO: если записать в БД не удалось - удалить файл аватарки
     db.session.add(table)
     db.session.commit()
 
 
 def delete_old_image(table, folder):
-    os.remove(os.path.join(app.config[folder], table.avatar_id))
+    removed = os.remove(os.path.join(app.config[folder], table.avatar_id))
+    if not removed:
+        return None 
     db.session.commit()
 
-
-
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1] in set(['png', 'jpg', 'jpeg', 'gif', 'JPEG'])	
 
 
 ##################################################################################
@@ -63,7 +62,7 @@ def register_user(login, email, name, password):
     db.session.commit()
 
     return user
-        
+
 def authenticate_user(login, password):
     user = User.query.filter_by(login=login).first()
     if user and user.password == password:
@@ -97,7 +96,7 @@ def create_place(name, description):
     place = Place(name, description)
 
     queryPlace = Place.query.filter_by(name=name, description=description).first()
-    
+
     if not queryPlace:
         db.session.add(place)
         db.session.commit()
@@ -106,11 +105,14 @@ def create_place(name, description):
     return None
 
 def update_place(place, name, description):
+    app.logger.debug("In update_place: %s", place.name)
     place.name = name
     place.description = description
+    app.logger.debug("In update_place name: %s", name)
 
     # TODO: обработать ошибки добавления нового пользователя       
     db.session.commit()
+    app.logger.debug("In update_place NEW: %s", place.name)	
     return place
 
 def delete_place(place):
@@ -159,7 +161,7 @@ def create_event(name, description, date):
     event = Event(name, description, date)
 
     queryPlace = Event.query.filter_by(name=name, description=description).first()
-    
+
     if not queryPlace:
         db.session.add(event)
         db.session.commit()
@@ -227,7 +229,7 @@ def create_comment(author, text, date):
     comment = Comment(author, text)
 
     queryComment = Comment.query.filter_by(author=author, text=text).first()
-    
+
     if not queryComment:
         db.session.add(comment)
         db.session.commit()
@@ -265,8 +267,31 @@ def delete_comment_from_place(place, comment):
 ###   Photo   - Not Used
 class Photo(db.Model):
     id = db.Column(db.Integer, primary_key = True)
-    description = db.Column(db.String(64), unique = True)
+    description = db.Column(db.String(64))
     place_id = db.Column(db.Integer, db.ForeignKey('place.id'))
+    photo_id = db.Column(db.String(64))
 
-    def __init__(self, description):
+    def __init__(self, description, place_id, photo_id):
         self.description = description
+        self.place_id = place_id
+        self.photo_id = photo_id
+
+def set_photo(place_id, image_file, folder):
+    image_filename = uuid.uuid4().hex + ".jpg"
+    image_file.save(os.path.join(app.config[folder], image_filename))
+    description = image_filename                          
+
+    # TODO: если записать в БД не удалось - удалить файл аватарки
+    photo = Photo(description, place_id, image_filename)
+    db.session.add(photo)
+    db.session.commit()  
+
+
+def delete_photo(ph_id, photo_id, folder):
+    app.logger.debug("Deleting photo: ")	
+    os.remove(os.path.join(app.config[folder], photo_id))
+
+    photo = Photo.query.filter_by(id = ph_id, photo_id = photo_id).delete()	
+    db.session.commit()
+
+    return None	  

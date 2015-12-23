@@ -10,8 +10,11 @@ class DefaultConfig:
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'InPlace.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = True
     UPLOAD_FOLDER = os.path.join(basedir, "InPlace/static/uploads/")
+    ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif', 'JPEG'])
     AVATARS_FOLDER = os.path.join(UPLOAD_FOLDER, "avatars/")
+    PHOTOS_FOLDER = os.path.join(UPLOAD_FOLDER, "photos/")
     LOG_FILE = os.path.join(basedir, "InPlace.log")
+
 
     
 class DevelConfig(DefaultConfig):

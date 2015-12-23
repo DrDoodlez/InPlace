@@ -29,10 +29,26 @@
         <a class="place-link" href="{{ url_for('add_user_place', user_id=user.id, place_id=place.id) }}">Добавить в мои места<br/></a>
     {% endif %}
 {% endif %}
+<p>Фото</p>
+{% if photos %}
+  {% for photo in photos %}
+  <div>
+    <img src="{{ url_for('static', filename='uploads/photos/'+photo.photo_id) }}">
+   
+     <br/>
+     <a href="{{ url_for('remove_photo', place_id=place.id, ph_id=photo.id, photo_id=photo.photo_id) }}">Удалить</a>
+     <br/>
+     <br/>
+     <br/>
+       {% if place.user_id == user.id %}
+     {% endif %}
+  </div>   
+  {% endfor %}
+{% endif %}
 
-<a class="place-add-link" href="{{ url_for('add_event', place_id=place.id) }}">Добавить событие<br/></a>
 
 <div class="place-name">События</div>
+<a class="place-add-link" href="{{ url_for('add_event', place_id=place.id) }}">Добавить событие<br/></a>
 
 {% for e in events %}
       <li class="grid-item">
@@ -44,6 +60,9 @@
             </a>
       </li>
 {% endfor %}
+
+
+
 <!-- TODO: http://demo.pixelcom.crimea.ua/javascript/tabs/tabs-aria.htm  настроить стили табов -->
 <!-- <ul class="tabs">
   <li><a href="#one">Меню</a></li>

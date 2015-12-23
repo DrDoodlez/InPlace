@@ -1,27 +1,21 @@
 # -*- coding: utf-8 -*-
 from flask.ext.wtf import Form
 from wtforms import BooleanField, StringField, PasswordField, SelectField, FileField, validators
+from wtforms.widgets import TextArea
 import re
-class CreateBoxForm(Form):
-    name = StringField(u'Название Коробочки!', [validators.InputRequired()])
-    # FIXME: генерировать список доступных цветов на основе модели
-    color = SelectField(u'Цвет Коробочки!', choices=[("blue", u'Синий'),
-                                                     ("red", u'Красный'),
-                                                     ("green", u'Зеленый')])
-    
 
 class AvatarForm(Form):
-    avatar = FileField(u'О')
+    avatar = FileField(u'Выбрать основную фотографию')
 
 ###### TODO: Добавить недостающие поля формы.########
 class PlaceForm(Form):
     name = StringField(u'Имя', [validators.InputRequired(), validators.Length(min = 1, max = 64)])
-    description = StringField(u'Описание', [validators.InputRequired(), validators.Length(min = 3, max = 200)])
+    description = StringField(u'Описание', [validators.InputRequired(), validators.Length(min = 3, max = 200)], widget=TextArea())
     avatar = FileField(u'Основная фотография места', [validators.Length(max = 64)])
 
 class EventForm(Form):
     name = StringField(u'Имя', [validators.InputRequired(),validators.Length(max = 64)])
-    description = StringField(u'Описание', [validators.InputRequired(),validators.Length(max = 64)])
+    description = StringField(u'Описание', [validators.InputRequired(),validators.Length(max = 64)], widget=TextArea())
     date = StringField(u'Дата', [validators.InputRequired(),validators.Length(max = 64)])
     photo = FileField(u'Основная фотография события')
 

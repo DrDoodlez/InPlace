@@ -3,6 +3,7 @@ from flask.ext.sqlalchemy import SQLAlchemy
 import os
 
 app = Flask(__name__)
+app.config['MAX_CONTENT_LENGTH'] = 32 * 1024 * 1024
 
 app.config.from_object('InPlace.config.DevelConfig')
 if 'INPLACE_SETTINGS' in os.environ:

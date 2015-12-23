@@ -5,7 +5,7 @@ from .models import User, get_user, authenticate_user, register_user
 from .models import Place, get_place, create_place, update_place, delete_place, find_place
 from .models import Event, get_event, create_event, update_event, delete_event
 from .models import Comment, get_comment, create_comment, update_comment, delete_comment
-from .models import Photo, set_image, delete_old_image
+from .models import Photo, set_image, delete_old_image, allowed_file, set_photo, delete_photo
 from .models import add_place_to_user, delete_place_from_user
 from .models import add_event_to_place, delete_event_from_place, add_event_to_user, delete_event_from_user
 from .models import add_comment_to_place, delete_comment_from_place
@@ -28,15 +28,20 @@ def add_place():
     form = PlaceForm(request.form)
     # POST  - сохранение добавленого места
     if form.validate_on_submit():
-
-        ###### TODO: Нужно доделать добавление фотографии месту.########
-        #photo = request.files[form.photo.name]
         place = create_place(form.name.data, form.description.data)
         avatar_image = request.files[form.avatar.name]
-        if avatar_image:
+        if avatar_image and allowed_file(avatar_image.filename):
             app.logger.debug("Place image file: %s", avatar_image)
             set_image(place, avatar_image, 'AVATARS_FOLDER')
         
+        uploaded_files = request.files.getlist("file[]")
+        if uploaded_files[0]:
+            for i in range(len(uploaded_files)):
+                if allowed_file(uploaded_files[i].filename):
+                    photo_image = uploaded_files[i]
+                    app.logger.debug("Setting images array  %s", uploaded_files)
+                    set_photo(place_id, photo_image, 'PHOTOS_FOLDER')
+
         return redirect('/place/' + str(place.id))
 
 
@@ -60,8 +65,10 @@ def open_place(place_id):
     if not place:
         request_text = u"Увы, нет такого места."
         abort(404, request_text)
+    photos = Photo.query.filter_by(place_id=place_id)
     events = place.events
-    return render_template('place.html', user = g.user, place = place, events = events)
+    return render_template('place.html', user = g.user, place = place, 
+        events = events, photos = photos)
 
 @app.route('/search', methods = ["POST"])
 def place_search():
@@ -107,58 +114,56 @@ def change_place(place_id):
 
     avatar_image = place.avatar_id
     if form.validate_on_submit():
-        place = get_place(place_id)
+        #place = get_place(place_id)
+        app.logger.debug("Will update place: %s", place_id)
         if not place: 
             request_text = u"Увы, такого места нет"
             abort(404, request_text)
-        avatar_image = request.files[form.avatar.name]
-        if not update_place(place, form.name.data, form.description.data):
+        
+        upd_place = update_place(place, form.name.data, form.description.data)
+        if not upd_place:
             request_text = u"Увы, не удалось изменить место"
             abort(404, request_text)
+
+        app.logger.debug("Updated place: %s", place_id)
+            
+        avatar_image = request.files[form.avatar.name]
+        if avatar_image and allowed_file(avatar_image.filename) and not place.avatar_id:    
+            set_image(place, avatar_image, 'AVATARS_FOLDER')
         
-        if avatar_image:
+        if avatar_image and allowed_file(avatar_image.filename) and place.avatar_id:
             app.logger.debug("Place image file update: %s", avatar_image)
             delete_old_image(place, 'AVATARS_FOLDER')
             app.logger.debug("Deleted image file, now updating ")
             set_image(place, avatar_image, 'AVATARS_FOLDER')
 
+        uploaded_files = request.files.getlist("file[]")
+        if uploaded_files[0]:
+            for i in range(len(uploaded_files)):
+                if allowed_file(uploaded_files[i].filename):
+                    photo_image = uploaded_files[i]
+                    app.logger.debug("Setting images array  %s", uploaded_files)
+                    set_photo(place_id, photo_image, 'PHOTOS_FOLDER')
+
+        upd_place = get_place(place_id)
+        if not upd_place: 
+            request_text = u"Увы, такого места нет (после обновления)"
+            abort(404, request_text)
+
+        form.name.data = upd_place.name
+        form.description.data = upd_place.description
+        form.avatar.data = upd_place.avatar_id
+
         return redirect('/place/' + str(place.id))
 
     form.name.data = place.name
     form.description.data = place.description
-    if avatar_image:
-            form.avatar.data = place.avatar_id
 
     return render_template('update_place.html', form = form, id = place_id)
 
-   # place = get_place(place_id)
-   #  if not place: 
-   #      request_text = u"Увы, такого места нет"
-   #      abort(404, request_text)
-    
-   #  form = PlaceForm(request.form) 
-   #  if form.validate_on_submit():
-   #      avatar_image = request.files[form.avatar.name]
-
-   #      if not update_place(place, form.name.data, form.description.data):
-   #          request_text = u"Увы, не удалось изменить место"
-   #          abort(404, request_text)
-        
-   #      if avatar_image:
-   #          app.logger.debug("Place image file update: %s", avatar_image)
-   #          delete_old_image(place, 'AVATARS_FOLDER')
-   #          app.logger.debug("Deleted image file, now updating ")
-   #          set_image(place, avatar_image, 'AVATARS_FOLDER')
-
-   #      return redirect('/place/' + str(place.id))
-
-   #  form.name.data = place.name
-   #  form.description.data = place.description    
-   #  avatar_image = place.avatar_id
-   #  if avatar_image:
-   #      form.avatar.data = avatar_image
-        
-   #  return render_template('update_place.html', form = form, id = place_id)
+@app.route("/upload/<int:place_id>", methods=["POST"])
+def load_updated_place(place_id):
+    return redirect('/place/' + str(place_id)) 
 
 #########################
 ####### EVENT ###########
@@ -302,17 +307,27 @@ def change_user_profile(user_id):
     form = AvatarForm(request.form)
     if form.validate_on_submit():
         avatar_image = request.files[form.avatar.name]
+        app.logger.debug("User image filename: %s", allowed_file(avatar_image.filename))
 
-        if avatar_image:
+        if avatar_image and allowed_file(avatar_image.filename) and user.avatar_id:
             app.logger.debug("User image file update: %s", avatar_image)
-            #user = User.query.get(int(user_id))
             delete_old_image(user, 'AVATARS_FOLDER')
             app.logger.debug("Deleted image file, now updating ")
             set_image(user, avatar_image, 'AVATARS_FOLDER')
-            app.logger.debug("Avatar '%s' successfully added", form.avatar.data)        
-    
+            app.logger.debug("Avatar '%s' successfully added", form.avatar.data)  
+
+        if avatar_image and allowed_file(avatar_image.filename) and not user.avatar_id:       
+            set_image(user, avatar_image, 'AVATARS_FOLDER')
+            app.logger.debug("Avatar '%s' successfully added", form.avatar.data) 
+
         return redirect('/user')    
     return render_template('update_user.html', form = form, id = user_id)
+
+@app.route("/remove_photo/<int:place_id>/<int:ph_id>/<photo_id>", methods=["GET", "POST"])
+def remove_photo(ph_id, place_id, photo_id):
+    delete_photo(ph_id, photo_id, 'PHOTOS_FOLDER')      
+    return redirect('/place/' + str(place_id)) #return render_template('update_place.html', files = uploaded_files, place_id= place_id) 
+        
 
 @app.route('/user/remove_place/<int:user_id>/<int:place_id>', methods = ["GET", "POST"])
 def remove_place_from_user(user_id, place_id):
