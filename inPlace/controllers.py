@@ -376,6 +376,9 @@ def registration():
 
         # TODO: обработать ошибки добавления нового пользователя        
         user = register_user(form.login.data, form.email.data, form.name.data, form.password.data)
+        if not user:
+            request_text = u"Увы, пользователь с таким логином или почтой уже существует. "
+            return render_template('request_template.html',request_text = request_text)
         set_image(user, avatar_image, 'AVATARS_FOLDER')
 
         app.logger.debug("User '%s' successfully registered", user.login)        

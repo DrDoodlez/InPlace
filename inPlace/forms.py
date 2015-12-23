@@ -21,7 +21,7 @@ class EventForm(Form):
 
 class RegistrationForm(Form):
     login = StringField(u'Имя пользователя', [validators.Length(min=4, max=25)])
-    name = StringField(u'Имя', [validators.InputRequired(),validators.Length(max = 128)])
+    name = StringField(u'Имя', [validators.InputRequired(), validators.Length(max = 128)])
     email = StringField(u'Эл. адрес', [validators.Email()])
     avatar = FileField(u'Изображение пользователя')
     password = PasswordField(u'Пароль', [

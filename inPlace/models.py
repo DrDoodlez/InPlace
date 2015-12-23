@@ -57,11 +57,22 @@ def get_user(user_id):
 
 def register_user(login, email, name, password):
     user = User(login, email, name, password)
+    
+    # Проверка на то есть ли такой логин и майл в базе
+    userDataExist = False
 
-    db.session.add(user)
-    db.session.commit()
+    if User.query.filter_by(login=login).count != 0:
+        userDataExist = True
+    if User.query.filter_by(email=email).count != 0:
+        userDataExist = True
 
-    return user
+
+    if not userDataExist:
+        db.session.add(user)
+        db.session.commit()
+        return user
+
+    return None
 
 def authenticate_user(login, password):
     user = User.query.filter_by(login=login).first()
