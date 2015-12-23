@@ -31,11 +31,11 @@
 {% endif %}
 <div class="place-name">Фото</div>
 
-<a class="place-add-link" href="">Добавить фото<br/></a>
+<!-- <a class="place-add-link" href="">Добавить фото<br/></a> -->
 {% if photos %}
   {% for photo in photos %}
   <div>
-    <img src="{{ url_for('static', filename='uploads/photos/'+photo.photo_id) }}">
+    <img class="myimg" src="{{ url_for('static', filename='uploads/photos/'+photo.photo_id) }}">
    
      <br/>
      <a href="{{ url_for('remove_photo', place_id=place.id, ph_id=photo.id, photo_id=photo.photo_id) }}">Удалить</a>
@@ -52,16 +52,18 @@
 <div class="place-name">События</div>
 <a class="place-add-link" href="{{ url_for('add_event', place_id=place.id) }}">Добавить событие<br/></a>
 
+<ul class="image-grid">
 {% for e in events %}
       <li class="grid-item">
             <a class="place-link" href="{{ url_for('open_event', event_id = e.id) }}">
-                <img class="grid-img" src="{{ url_for('static', filename='img/testEvent.jpg') }}">
+                <img class="grid-img" src="{{ url_for('static', filename='img/no_image.png') }}">
                 <div>
                     {{e.name}}
                 </div>
             </a>
       </li>
 {% endfor %}
+</ul>
 
 
 

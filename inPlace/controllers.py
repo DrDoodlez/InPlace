@@ -25,6 +25,8 @@ def open_test_place():
 
 @app.route('/place/add', methods=["GET", "POST"])
 def add_place():
+    if not g.user:
+        return redirect("/login")
     form = PlaceForm(request.form)
     # POST  - сохранение добавленого места
     if form.validate_on_submit():
@@ -49,6 +51,8 @@ def add_place():
 
 @app.route('/place/remove/<int:place_id>', methods=["GET", "POST"])
 def remove_place(place_id):
+    if not g.user:
+        return redirect("/login")
     place = get_place(place_id)
     if not place: 
         request_text = u"Увы, нет такого места."
@@ -87,13 +91,20 @@ def place_search():
         return render_template('index.html', user = g.user, places = places)
     return redirect('/')
 
+# TODO: Использовать сессию
 @app.route('/place/add_user_place/<int:user_id>/<int:place_id>', methods=["GET", "POST"])
 def add_user_place(user_id, place_id):
+    if not g.user:
+        return redirect("/login")
+    if g.user.id != user_id:
+        request_text = u"Нельзя проводить операции над другими пользователями!!"
+        abort(404, request_text)
     user = get_user(user_id)
+    
     if not user:
         request_text = u"Увы, такого пользователя нет"
         abort(404, request_text)
-    
+
     place = get_place(place_id)
     if not place:
         request_text = u"Увы, такого места нет"
@@ -106,6 +117,8 @@ def add_user_place(user_id, place_id):
 
 @app.route('/place/update/<int:place_id>', methods=["GET", "POST"])
 def change_place(place_id):
+    if not g.user:
+        return redirect("/login")
     form = PlaceForm(request.form)
     place = get_place(place_id)
     if not place:
@@ -171,6 +184,8 @@ def load_updated_place(place_id):
 
 @app.route('/place/<int:place_id>/event/add', methods=["GET", "POST"])
 def add_event(place_id):
+    if not g.user:
+        return redirect("/login")
     place = get_place(place_id)
     if not place:
         request_text = u"Увы, такого нет места"
@@ -193,6 +208,12 @@ def add_event(place_id):
 
 @app.route('/event/add_user_event/<int:user_id>/<int:event_id>', methods=["GET", "POST"])
 def add_user_event(user_id, event_id):
+    if not g.user:
+        return redirect("/login")
+    if g.user.id != user_id:
+        request_text = u"Нельзя проводить операции над другими пользователями!!"
+        abort(404, request_text)
+
     user = get_user(user_id)
     if not user:
         request_text = u"Увы, такого нет пользователя"
@@ -201,7 +222,7 @@ def add_user_event(user_id, event_id):
     event = get_event(event_id)
     if not event:
         request_text = u"Увы, такого нет события"
-        abort(404, request_text)
+        abort(404, request_text)       
 
     if not add_event_to_user(user, event):
         request_text = u"Увы, не удалось добавить событие"
@@ -211,6 +232,12 @@ def add_user_event(user_id, event_id):
 
 @app.route('/user/remove_event/<int:user_id>/<int:event_id>', methods = ["GET", "POST"])
 def remove_event_from_user(user_id, event_id):
+    if not g.user:
+        return redirect("/login")
+    if g.user.id != user_id:
+        request_text = u"Нельзя проводить операции над другими пользователями!!"
+        abort(404, request_text)
+
     user = get_user(user_id)
     if not user:
         request_text = u"Увы, такого нет пользователя"
@@ -228,6 +255,12 @@ def remove_event_from_user(user_id, event_id):
 
 @app.route('/user/remove_event_2/<int:user_id>/<int:event_id>', methods = ["GET", "POST"])
 def remove_event_from_user_2(user_id, event_id):
+    if not g.user:
+        return redirect("/login")
+    if g.user.id != user_id:
+        request_text = u"Нельзя проводить операции над другими пользователями!!"
+        abort(404, request_text)
+
     user = get_user(user_id)
     if not user:
         request_text = u"Увы, такого нет пользователя"
@@ -253,6 +286,8 @@ def open_event(event_id):
 
 @app.route('/event/update/<int:event_id>', methods=["GET", "POST"])
 def change_event(event_id):
+    if not g.user:
+        return redirect("/login")
     event = get_event(event_id)
     if not event:
         request_text = u"Увы, такого нет события"
@@ -277,6 +312,8 @@ def change_event(event_id):
 
 @app.route('/event/remove/<int:event_id>', methods=["GET", "POST"])
 def remove_event(event_id):
+    if not g.user:
+        return redirect("/login")
     event = get_event(event_id)
     if not event:
         request_text = u"Увы, такого нет события"
@@ -291,7 +328,7 @@ def remove_event(event_id):
 def open_user():
     user = g.user
     if not user:
-        return redirect("\login")
+        return redirect("/login")
     places = user.places
     events = user.events
     return render_template('user.html', user = user, places = places, events = events)
@@ -299,6 +336,12 @@ def open_user():
 ##adds user avatar if it doesn't exsist
 @app.route('/user/update/<int:user_id>', methods=["GET", "POST"])
 def change_user_profile(user_id):
+    if not g.user:
+        return redirect("/login")
+    if g.user.id != user_id:
+        request_text = u"Нельзя проводить операции над другими пользователями!!"
+        abort(404, request_text)
+
     user = get_user(user_id)
     if not user:
         request_text = u"Увы, такого пользователя нет"
@@ -325,12 +368,20 @@ def change_user_profile(user_id):
 
 @app.route("/remove_photo/<int:place_id>/<int:ph_id>/<photo_id>", methods=["GET", "POST"])
 def remove_photo(ph_id, place_id, photo_id):
+    if not g.user:
+        return redirect("/login")
     delete_photo(ph_id, photo_id, 'PHOTOS_FOLDER')      
     return redirect('/place/' + str(place_id)) #return render_template('update_place.html', files = uploaded_files, place_id= place_id) 
         
 
 @app.route('/user/remove_place/<int:user_id>/<int:place_id>', methods = ["GET", "POST"])
 def remove_place_from_user(user_id, place_id):
+    if not g.user:
+        return redirect("/login")
+    if g.user.id != user_id:
+        request_text = u"Нельзя проводить операции над другими пользователями!!"
+        abort(404, request_text)
+
     user = get_user(user_id)
     if not user:
         request_text = u"Увы, такого пользователя нет"
@@ -348,6 +399,12 @@ def remove_place_from_user(user_id, place_id):
 
 @app.route('/user/remove_place_2/<int:user_id>/<int:place_id>', methods = ["GET", "POST"])
 def remove_place_from_user_2(user_id, place_id):
+    if not g.user:
+        return redirect("/login")
+    if g.user.id != user_id:
+        request_text = u"Нельзя проводить операции над другими пользователями!!"
+        abort(404, request_text)
+
     user = get_user(user_id)
     if not user:
         request_text = u"Увы, такого пользователя нет"

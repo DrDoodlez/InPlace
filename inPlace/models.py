@@ -64,9 +64,10 @@ def register_user(login, email, name, password):
     # Проверка на то есть ли такой логин и майл в базе
     userDataExist = False
 
-    if User.query.filter_by(login=login).count != 0:
+    if User.query.filter_by(login=login).count() != 0:
         userDataExist = True
-    if User.query.filter_by(email=email).count != 0:
+    
+    if User.query.filter_by(email=email).count() != 0:
         userDataExist = True
 
 
