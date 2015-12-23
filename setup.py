@@ -9,7 +9,7 @@ setup(
     zip_safe=False,
     test_suite="tests.all_tests",
     install_requires=[
-        'flask',
+        'flask>=0.10',
         'Flask-WTF',
         'Flask-SQLAlchemy',
         'alembic',
