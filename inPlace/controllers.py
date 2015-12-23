@@ -40,7 +40,7 @@ def add_place():
                 if allowed_file(uploaded_files[i].filename):
                     photo_image = uploaded_files[i]
                     app.logger.debug("Setting images array  %s", uploaded_files)
-                    set_photo(place_id, photo_image, 'PHOTOS_FOLDER')
+                    set_photo(place.id, photo_image, 'PHOTOS_FOLDER')
 
         return redirect('/place/' + str(place.id))
 
