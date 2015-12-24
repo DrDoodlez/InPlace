@@ -3,10 +3,10 @@
 import os
 import unittest
 
-from InPlace import app, db
-from InPlace.models import User, Place, register_user, authenticate_user
+from inplace import app, db
+from inplace.models import User, Place, register_user, authenticate_user
 
-app.config.from_object('InPlace.config.TestingConfig')
+app.config.from_object('inplace.config.TestingConfig')
 
 class RegistrationTestCase(unittest.TestCase):
     def setUp(self):

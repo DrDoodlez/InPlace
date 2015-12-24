@@ -7,13 +7,13 @@ class DefaultConfig:
     LISTEN_PORT = 5000
     WTF_CSRF_ENABLED = True
     SECRET_KEY = '?ZW]eJW2Wf"|P&1P7rPOOXKEv6PHw|ZPjftEY$H^&Vu6q<Z,":<)H@M'
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'InPlace.db')
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'inplace.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = True
-    UPLOAD_FOLDER = os.path.join(basedir, "InPlace/static/uploads/")
+    UPLOAD_FOLDER = os.path.join(basedir, "inplace/static/uploads/")
     ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif', 'JPEG'])
     AVATARS_FOLDER = os.path.join(UPLOAD_FOLDER, "avatars/")
     PHOTOS_FOLDER = os.path.join(UPLOAD_FOLDER, "photos/")
-    LOG_FILE = os.path.join(basedir, "InPlace.log")
+    LOG_FILE = os.path.join(basedir, "inplace.log")
 
 
     

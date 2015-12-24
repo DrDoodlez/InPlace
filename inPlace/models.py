@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from InPlace import app, db
+from inplace import app, db
 import uuid, os
 
 class ModelError(Exception):

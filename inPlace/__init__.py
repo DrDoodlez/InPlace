@@ -5,7 +5,7 @@ import os
 app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
-app.config.from_object('InPlace.config.DevelConfig')
+app.config.from_object('inplace.config.DevelConfig')
 if 'INPLACE_SETTINGS' in os.environ:
     app.config.from_envvar('INPLACE_SETTINGS')
     
@@ -20,4 +20,4 @@ if not app.debug:
     for logger in loggers:
         logger.addHandler(file_handler)
     
-import InPlace.controllers
+import inplace.controllers

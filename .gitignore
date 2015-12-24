@@ -63,6 +63,7 @@ docs/_build/
 
 # PyBuilder
 target/
-/InPlace.db
+/inplace.db
 
-/InPlace/static/uploads/avatars
+/inplace/static/uploads/avatars
+/inplace/static/uploads/photos

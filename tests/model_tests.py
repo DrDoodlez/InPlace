@@ -3,16 +3,16 @@
 import os
 import unittest
 
-from InPlace import app, db
-from InPlace.models import User, get_user, authenticate_user, register_user
-from InPlace.models import Place, get_place, create_place, update_place, delete_place, find_place
-from InPlace.models import Event, get_event, create_event, update_event, delete_event
-from InPlace.models import Comment, get_comment, create_comment, update_comment, delete_comment
-from InPlace.models import add_place_to_user, delete_place_from_user
-from InPlace.models import add_event_to_place, delete_event_from_place, add_event_to_user, delete_event_from_user
-from InPlace.models import add_comment_to_place, delete_comment_from_place
+from inplace import app, db
+from inplace.models import User, get_user, authenticate_user, register_user
+from inplace.models import Place, get_place, create_place, update_place, delete_place, find_place
+from inplace.models import Event, get_event, create_event, update_event, delete_event
+from inplace.models import Comment, get_comment, create_comment, update_comment, delete_comment
+from inplace.models import add_place_to_user, delete_place_from_user
+from inplace.models import add_event_to_place, delete_event_from_place, add_event_to_user, delete_event_from_user
+from inplace.models import add_comment_to_place, delete_comment_from_place
 
-app.config.from_object('InPlace.config.TestingConfig')
+app.config.from_object('inplace.config.TestingConfig')
 
 class UserTestCase(unittest.TestCase):
     def setUp(self):
