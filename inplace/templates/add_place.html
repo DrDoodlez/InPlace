@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% block title %}Добавление места{% endblock %}
+
+{% block content %}
+
+{% from "_formhelpers.html" import render_field %}
+  <form method="POST" action="{{ url_for('add_place') }}" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+    <p>
+      {{ render_field(form.name) }}
+    </p>
+    <p>
+      {{ render_field(form.description) }}
+    </p>
+    <p>
+    {{ render_field(form.avatar) }}
+    </p>
+    <p><input type="file" name="file[]" multiple="">Дополнительные фото</p>
+    <p><input type="submit" value="Добавить"></p>
+  </form>
+
+{% endblock %}

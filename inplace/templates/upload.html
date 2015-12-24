@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+{% block title %}Добавление фоток{% endblock %}
+
+{% block content %}
+
+  <br/>
+  <br/>
+  <br/>
+    <h1>Файлы:</h1>
+    {% for file in files %}
+    <p>{{ file }}</p>
+    {% endfor %}
+    <h1>Место:</h1>
+    <p>{{ place_id }}</p>
+
+
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% block title %}Редактирование места{% endblock %}
+
+{% block content %}
+
+
+{% from "_formhelpers.html" import render_field %}
+  <form method="POST" action="" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+    <p>
+    {{ render_field(form.name) }}
+    </p>
+     <p>
+    {{ render_field(form.description) }}
+    </p>
+     <p>
+    {{ render_field(form.avatar) }}
+    </p>
+    <p><b>
+      Фото:
+    </b></p>
+    <p><input type="file" name="file[]" multiple="" max="3" accept="image"></p>
+    <p><input type="submit" value="Сохранить"></p>
+  </form>
+
+{% endblock %}

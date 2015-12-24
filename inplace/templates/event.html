@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+{% block title %}EventName{% endblock %}
+
+<!-- TODO: Добавить использование фотографий из данных модели -->
+{% block content %}
+
+<div class="place-up">
+    <img class="place-img" src="{{ url_for('static', filename='img/testEvent.jpg') }}">
+
+    <div class="place-right"> 
+        <div class="place-name">{{event.name}}</div>
+        <div class="place-text">
+            {{event.description}}
+        </div>
+    </div>
+</div>
+
+<a class="place-link" href="{{ url_for('change_event', event_id=event.id) }}">Изменить<br/></a>
+<a class="place-link" href="{{ url_for('remove_event', event_id=event.id) }}">Удалить<br/></a>
+
+{% if user %}
+    {% if event.user_id == user.id %}
+        <a class="place-link" href="{{ url_for('remove_event_from_user_2', user_id = user.id, event_id = event.id) }}">Удалить из моих событий<br/></a>
+    {% else %}
+        <a class="place-link" href="{{ url_for('add_user_event', user_id = user.id, event_id = event.id) }}">Добавить в мои события<br/></a>
+    {% endif %}
+{% endif %}
+
+{% endblock %}

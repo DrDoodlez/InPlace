@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+{% block title %}Регистрация{% endblock %}
+{% block content %}
+  {% from "_formhelpers.html" import render_field %}
+  <form method="POST" action="{{ url_for('registration') }}" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+    <p>
+      {{ render_field(form.login) }}
+    </p>
+    <p>
+      {{ render_field(form.name) }}
+    </p>
+    <p>
+      {{ render_field(form.email) }}
+    </p>
+    <p>
+    {{ render_field(form.avatar) }}
+    </p>
+    <p>
+      {{ render_field(form.password) }}
+    </p>
+    <p>
+      {{ render_field(form.confirm) }}
+    </p>
+    <p><input type="submit" value="Зарегистрироваться"></p>
+  </form>
+{% endblock %}

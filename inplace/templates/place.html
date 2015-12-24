@@ -1,0 +1,88 @@
+{% extends "layout.html" %}
+{% block title %}{{place.name}}{% endblock %}
+
+<!-- TODO: Добавить использование фотографий из данных модели -->
+{% block content %}
+
+<div class="place-up">
+    {% if place.avatar_id %}
+    <img class="place-img" src="{{ url_for('static', filename='uploads/avatars/'+place.avatar_id) }}">
+    {% else %}
+    <img class="place-img" src="{{ url_for('static', filename='img/no_image.png') }}">
+    {% endif %}
+    <div class="place-right"> 
+        <div class="place-name">{{place.name}}</div>
+        <div class="place-text">
+            {{place.description}}
+        </div>
+    </div>
+</div>
+<br/>
+
+<a class="place-link" href="{{ url_for('change_place', place_id=place.id) }}">Изменить<br/></a>
+<a class="place-link" href="{{ url_for('remove_place', place_id=place.id) }}">Удалить<br/></a>
+
+{% if user %}
+    {% if place.user_id == user.id %}
+        <a class="place-link" href="{{ url_for('remove_place_from_user_2', user_id=user.id, place_id=place.id) }}">Удалить из моих мест<br/></a>
+    {% else %}
+        <a class="place-link" href="{{ url_for('add_user_place', user_id=user.id, place_id=place.id) }}">Добавить в мои места<br/></a>
+    {% endif %}
+{% endif %}
+<div class="place-name">Фото</div>
+
+<!-- <a class="place-add-link" href="">Добавить фото<br/></a> -->
+{% if photos %}
+  {% for photo in photos %}
+  <div>
+    <img class="myimg" src="{{ url_for('static', filename='uploads/photos/'+photo.photo_id) }}">
+   
+     <br/>
+     <a href="{{ url_for('remove_photo', place_id=place.id, ph_id=photo.id, photo_id=photo.photo_id) }}">Удалить</a>
+     <br/>
+     <br/>
+     <br/>
+       {% if place.user_id == user.id %}
+     {% endif %}
+  </div>   
+  {% endfor %}
+{% endif %}
+
+
+<div class="place-name">События</div>
+<a class="place-add-link" href="{{ url_for('add_event', place_id=place.id) }}">Добавить событие<br/></a>
+
+<ul class="image-grid">
+{% for e in events %}
+      <li class="grid-item">
+            <a class="place-link" href="{{ url_for('open_event', event_id = e.id) }}">
+                <img class="grid-img" src="{{ url_for('static', filename='img/no_image.png') }}">
+                <div>
+                    {{e.name}}
+                </div>
+            </a>
+      </li>
+{% endfor %}
+</ul>
+
+
+
+<!-- TODO: http://demo.pixelcom.crimea.ua/javascript/tabs/tabs-aria.htm  настроить стили табов -->
+<!-- <ul class="tabs">
+  <li><a href="#one">Меню</a></li>
+  <li><a href="#two">Описание</a></li>
+  <li><a href="#three">Отзывы</a></li>
+  <li><a href="#four">Мероприятия</a></li>
+  <li><a href="#five">Фотографии</a></li>
+</ul>
+<div class="tabs-content">
+<ul>
+  <li id="one">Содержимое 1-й вкладки</li>
+  <li id="two">Содержимое 2-й вкладки</li>
+  <li id="three">Содержимое 3-й вкладки</li>
+  <li id="four">Содержимое 4-й вкладки</li>
+  <li id="five">Содержимое 5-й вкладки</li>
+</ul>
+</div> -->
+
+{% endblock %}
