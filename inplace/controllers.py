@@ -26,7 +26,7 @@ def open_test_place():
 @app.route('/place/add', methods=["GET", "POST"])
 def add_place():
     if not g.user:
-        return redirect("/login")
+        return redirect(url_for("login"))
     form = PlaceForm(request.form)
     # POST  - сохранение добавленого места
     if form.validate_on_submit():
